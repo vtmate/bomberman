@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -15,7 +16,7 @@ public class BombermanApplication extends Application {
     @Override
     public void start(Stage stage1) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(BombermanApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
+        Scene scene = new Scene(fxmlLoader.load(), 900, 600);
         //scene.getStylesheets().add(getClass().getResource("mainpage.css").toExternalForm());
 
         stage = new Stage();
@@ -24,10 +25,13 @@ public class BombermanApplication extends Application {
 
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
-                we.consume();
+                //we.consume();
                 System.out.println("Stage is closing");
             }
         });
+
+        Image icon = new Image("bomb.png");
+        stage.getIcons().add(icon);
 
         stage.setResizable(false);
         stage.setTitle("Bomberman");

@@ -10,6 +10,9 @@ import java.io.IOException;
 import static javafx.application.Platform.exit;
 
 public class BombermanController {
+
+    private final int WIDTH = 900;
+    private final int HEIGHT = 600;
     @FXML
     private Label welcomeText;
 
@@ -22,7 +25,7 @@ public class BombermanController {
     protected void goToGameConfiguration() throws IOException {
         System.out.println("Játék konfigurálása");
         FXMLLoader fxmlGameConf = new FXMLLoader(getClass().getResource("gameConfiguration-view.fxml"));
-        Scene scene = new Scene(fxmlGameConf.load(), 1200, 800);
+        Scene scene = new Scene(fxmlGameConf.load(), WIDTH, HEIGHT);
         BombermanApplication.changeScene(scene);
     }
 
@@ -30,7 +33,7 @@ public class BombermanController {
     protected void goToDescription() throws IOException {
         System.out.println("Leírás");
         FXMLLoader fxmlDesc = new FXMLLoader(getClass().getResource("description-view.fxml"));
-        Scene scene = new Scene(fxmlDesc.load(), 1200, 800);
+        Scene scene = new Scene(fxmlDesc.load(), WIDTH, HEIGHT);
         BombermanApplication.changeScene(scene);
     }
 
@@ -39,7 +42,7 @@ public class BombermanController {
         System.out.println("Főoldal");
         FXMLLoader fxmlMain = new FXMLLoader(getClass().getResource("hello-view.fxml"));
 
-        Scene scene = new Scene(fxmlMain.load(), 1200, 800);
+        Scene scene = new Scene(fxmlMain.load(), WIDTH, HEIGHT);
         BombermanApplication.changeScene(scene);
     }
 
@@ -47,7 +50,7 @@ public class BombermanController {
     protected void goToInGame() throws IOException {
         System.out.println("Játszma");
         FXMLLoader fxmlInGame = new FXMLLoader(getClass().getResource("inGame-view.fxml"));
-        Scene scene = new Scene(fxmlInGame.load(), 1200, 800);
+        Scene scene = new Scene(fxmlInGame.load(), WIDTH, HEIGHT);
         BombermanApplication.changeScene(scene);
     }
 
