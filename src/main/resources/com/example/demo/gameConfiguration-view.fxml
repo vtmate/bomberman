@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-image: url('bg.jpg'); -fx-background-position: center; -fx-background-repeat: no-repeat; -fx-background-size: contain;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.BombermanController">
+   <top>
+      <VBox alignment="TOP_CENTER" prefHeight="117.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="81.0" fitWidth="195.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../title.png" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" prefHeight="30.0" prefWidth="222.0" text="Játék konfigurálása" />
+         </children>
+      </VBox>
+   </top>
+   <bottom>
+      <GridPane prefHeight="94.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+             <Button mnemonicParsing="false" onAction="#goToMainPage" style="-fx-font-size: 20px;" styleClass="btn" stylesheets="@mainpage.css" text="Vissza a főmenübe" translateX="30.0">
+               <effect>
+                  <DropShadow height="5.0" radius="2.0" spread="1.0" width="5.0" />
+               </effect></Button>
+            <Button mnemonicParsing="false" onAction="#goToInGame" style="-fx-font-size: 20px;" styleClass="btn" stylesheets="@mainpage.css" text="START" translateX="-30.0" GridPane.columnIndex="1">
+               <effect>
+                  <DropShadow height="5.0" radius="2.0" spread="1.0" width="5.0" />
+               </effect></Button>
+         </children>
+      </GridPane>
+   </bottom>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="40.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="172.0" text="Dzsungel" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Arial Black" size="24.0" />
+                     </font></Label>
+                  <Label text="Pokol" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Arial Black" size="24.0" />
+                     </font></Label>
+                  <Label text="Vadnyugat" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Arial Black" size="24.0" />
+                     </font></Label>
+                  <ImageView fitHeight="201.0" fitWidth="297.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <image>
+                        <Image url="@../../../bg.jpg" />
+                     </image>
+                     <effect>
+                        <DropShadow blurType="TWO_PASS_BOX" height="20.0" radius="9.5" spread="1.0" width="20.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </ImageView>
+                  <ImageView fitHeight="201.0" fitWidth="297.0" layoutX="62.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                     <image>
+                        <Image url="@../../../bg.jpg" />
+                     </image>
+                     <effect>
+                        <DropShadow blurType="TWO_PASS_BOX" height="20.0" radius="9.5" spread="1.0" width="20.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </ImageView>
+                  <ImageView fitHeight="201.0" fitWidth="297.0" layoutX="462.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                     <image>
+                        <Image url="@../../../bg.jpg" />
+                     </image>
+                     <effect>
+                        <DropShadow blurType="TWO_PASS_BOX" height="20.0" radius="9.5" spread="1.0" width="20.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </DropShadow>
+                     </effect>
+                  </ImageView>
+               </children>
+            </GridPane>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="200.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <TextField prefHeight="40.0" prefWidth="200.0" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="50.0" right="50.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <TextField prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="50.0" right="50.0" />
+                     </GridPane.margin>
+                  </TextField>
+                  <Label text="Játékos 1" GridPane.halignment="CENTER" />
+                  <Label text="Játékos 2" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <ImageView fitHeight="207.0" fitWidth="284.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                     <image>
+                        <Image url="@../../../keyboard.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="207.0" fitWidth="284.0" layoutX="207.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                     <image>
+                        <Image url="@../../../keyboard.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </GridPane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
