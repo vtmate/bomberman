@@ -6,7 +6,7 @@ public class GameModel {
     public ArrayList<Wall> walls;
     public ArrayList<Player> players;
     private ArrayList<Monster> monsters;
-    private ArrayList<Bomb> bombs;
+    public ArrayList<Bomb> bombs;
     private ArrayList<Box> boxes;
     private ArrayList<PowerUp> powerUps;
 
@@ -14,6 +14,7 @@ public class GameModel {
 
         this.walls = new ArrayList<>();
         this.players = new ArrayList<>();
+        this.bombs = new ArrayList<>();
         createBorder();
         setUpPlayers();
         printEntity(this.players);
@@ -49,6 +50,11 @@ public class GameModel {
         Player player2 = new Player(11,9);
         this.players.add(player1);
         this.players.add(player2);
+    }
+
+    public void placeBomb(Player player) {
+        Bomb bomb = new Bomb(player.x, player.y);
+        this.bombs.add(bomb);
     }
 
     public void printEntity(ArrayList<? extends Entity> entities) {

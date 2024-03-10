@@ -6,4 +6,10 @@ public class Player extends Entity{
     public Player(double x, double y) {
         super(x, y);
     }
+    public int getCountOfBombs() {
+        return countOfBombs;
+    }
+    public void setCountOfBombs() {
+        countOfBombs++;
+    }
 }

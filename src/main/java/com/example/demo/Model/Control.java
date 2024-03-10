@@ -11,47 +11,67 @@ public class Control {
 
 
     public void moveUp0() {
-        if (intersection(gm.players.get(0), gm.walls, "UP")) gm.players.get(0).y -= 1;
+        if (intersection(gm.players.get(0), gm.walls, "UP") && intersection(gm.players.get(0), gm.bombs, "UP")) gm.players.get(0).y -= 1;
         System.out.println("Fel");
     }
 
     public void moveDown0() {
-        if (intersection(gm.players.get(0), gm.walls, "DOWN")) gm.players.get(0).y += 1;
+        if (intersection(gm.players.get(0), gm.walls, "DOWN") && intersection(gm.players.get(0), gm.bombs, "DOWN")) gm.players.get(0).y += 1;
 
         System.out.println("Le");
     }
 
     public void moveLeft0() {
-        if (intersection(gm.players.get(0), gm.walls, "LEFT")) gm.players.get(0).x -= 1;
+        if (intersection(gm.players.get(0), gm.walls, "LEFT") && intersection(gm.players.get(0), gm.bombs, "LEFT")) gm.players.get(0).x -= 1;
         System.out.println("Balra");
     }
 
     public void moveRight0() {
 
-        if (intersection(gm.players.get(0), gm.walls, "RIGHT")) gm.players.get(0).x += 1;
+        if (intersection(gm.players.get(0), gm.walls, "RIGHT") && intersection(gm.players.get(0), gm.bombs, "RIGHT")) gm.players.get(0).x += 1;
         System.out.println("Jobbra");
     }
     public void moveUp1() {
 
-        if (intersection(gm.players.get(1), gm.walls, "UP")) gm.players.get(1).y -= 1;
+        if (intersection(gm.players.get(1), gm.walls, "UP") && intersection(gm.players.get(1), gm.bombs, "UP")) gm.players.get(1).y -= 1;
         System.out.println("Fel");
     }
 
     public void moveDown1() {
 
-        if (intersection(gm.players.get(1), gm.walls, "DOWN")) gm.players.get(1).y += 1;
+        if (intersection(gm.players.get(1), gm.walls, "DOWN") && intersection(gm.players.get(1), gm.bombs, "DOWN")) gm.players.get(1).y += 1;
         System.out.println("Le");
     }
 
     public void moveLeft1() {
 
-        if (intersection(gm.players.get(1), gm.walls, "LEFT")) gm.players.get(1).x -= 1;
+        if (intersection(gm.players.get(1), gm.walls, "LEFT") && intersection(gm.players.get(1), gm.bombs, "LEFT")) gm.players.get(1).x -= 1;
         System.out.println("Balra");
     }
 
     public void moveRight1() {
-        if (intersection(gm.players.get(1), gm.walls, "RIGHT")) gm.players.get(1).x += 1;
+        if (intersection(gm.players.get(1), gm.walls, "RIGHT") && intersection(gm.players.get(1), gm.bombs, "RIGHT")) gm.players.get(1).x += 1;
         System.out.println("Jobbra");
+    }
+
+    public void placeBomb0() {
+
+        if (gm.players.get(0).getCountOfBombs() == 0) {
+            gm.placeBomb(gm.players.get(0));
+            gm.players.get(0).setCountOfBombs();
+
+        }
+        System.out.println("Bomba lehelyezése");
+    }
+
+    public void placeBomb1() {
+
+        if (gm.players.get(1).getCountOfBombs() == 0) {
+            gm.placeBomb(gm.players.get(1));
+            gm.players.get(1).setCountOfBombs();
+
+        }
+        System.out.println("Bomba lehelyezése");
     }
 
     private boolean intersection(Player player, ArrayList<? extends Entity> entities, String direction){

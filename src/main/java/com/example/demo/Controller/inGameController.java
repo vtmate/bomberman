@@ -1,10 +1,7 @@
 package com.example.demo.Controller;
 
 import com.example.demo.BombermanApplication;
-import com.example.demo.Model.Control;
-import com.example.demo.Model.GameModel;
-import com.example.demo.Model.Wall;
-import com.example.demo.Model.Player;
+import com.example.demo.Model.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,11 +44,15 @@ public class inGameController {
                             case DOWN -> control.moveDown1();
                             case LEFT -> control.moveLeft1();
                             case RIGHT -> control.moveRight1();
+                            case Q -> control.placeBomb0();
+                            case CONTROL -> control.placeBomb1();
                         }
                         BombermanApplication.changeScene(newScene, false);
                         gamePane.getChildren().removeIf(node -> node instanceof Rectangle);
                         createWalls(gm.walls);
+                        createBombs(gm.bombs);
                         createPlayers(gm.players);
+
                     }
                 });
             }
@@ -91,6 +92,19 @@ public class inGameController {
             r.setX(player.x * size);
             r.setY(player.y * size);
             r.setFill(Color.BLUEVIOLET);
+            r.setWidth(size);
+            r.setHeight(size);
+            this.gamePane.getChildren().add(r);
+        }
+    }
+
+    public void createBombs(ArrayList<Bomb> bombs) {
+        int size = 40;
+        for (Bomb bomb : bombs) {
+            Rectangle r = new Rectangle();
+            r.setFill(Color.ORANGE);
+            r.setX(bomb.x * size);
+            r.setY(bomb.y * size);
             r.setWidth(size);
             r.setHeight(size);
             this.gamePane.getChildren().add(r);
