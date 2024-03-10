@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-image: url('bg.jpg'); -fx-background-position: center; -fx-background-repeat: no-repeat; -fx-background-size: contain;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.BombermanController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-image: url('bg.jpg'); -fx-background-position: center; -fx-background-repeat: no-repeat; -fx-background-size: contain;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controller.MainPageController">
    <top>
       <VBox alignment="TOP_CENTER" prefHeight="62.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
@@ -129,12 +129,12 @@
                   </TextField>
                   <Label text="Játékos 1" GridPane.halignment="CENTER" />
                   <Label text="Játékos 2" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <ImageView fitHeight="207.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                  <ImageView fitHeight="133.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <image>
                         <Image url="@../../../keyboard.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="207.0" fitWidth="200.0" layoutX="207.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                  <ImageView fitHeight="133.0" fitWidth="200.0" layoutX="207.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <image>
                         <Image url="@../../../keyboard.png" />
                      </image>

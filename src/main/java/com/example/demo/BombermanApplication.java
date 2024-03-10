@@ -15,7 +15,7 @@ public class BombermanApplication extends Application {
 
     @Override
     public void start(Stage stage1) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(BombermanApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(BombermanApplication.class.getResource("mainPage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 900, 600);
         //scene.getStylesheets().add(getClass().getResource("mainpage.css").toExternalForm());
 

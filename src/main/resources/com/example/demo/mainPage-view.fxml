@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="289.0" prefWidth="462.0" spacing="20.0" style="-fx-background-image: url('bg.jpg'); -fx-background-position: center; -fx-background-size: cover;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.BombermanController">
+<VBox alignment="CENTER" prefHeight="289.0" prefWidth="462.0" spacing="20.0" style="-fx-background-image: url('bg.jpg'); -fx-background-position: center; -fx-background-size: cover;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo.Controller.MainPageController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -17,7 +17,7 @@
          <Image url="@../../../title.png" />
       </image>
    </ImageView>
-    <Button id="button" onAction="#goToGameConfiguration" prefHeight="72.0" prefWidth="378.0" styleClass="btn" stylesheets="@mainpage.css" text="Játék indítása" textAlignment="CENTER">
+    <Button fx:id="startBTN" id="button" onAction="#goToGameConfiguration" prefHeight="72.0" prefWidth="378.0" styleClass="btn" stylesheets="@mainpage.css" text="Játék indítása" textAlignment="CENTER">
       <font>
          <Font name="Arial Black" size="30.0" />
       </font>
