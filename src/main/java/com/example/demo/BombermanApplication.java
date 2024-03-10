@@ -1,6 +1,9 @@
 package com.example.demo;
 
+import com.example.demo.Controller.inGameController;
 import com.example.demo.Model.GameModel;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -8,14 +11,16 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 
 import java.io.IOException;
 
 public class BombermanApplication extends Application {
     static Stage stage;
-
+    private Timeline timeline;
 
     @Override
     public void start(Stage stage1) throws IOException {
@@ -30,6 +35,7 @@ public class BombermanApplication extends Application {
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
                 //we.consume();
+                timeline.stop();
                 System.out.println("Stage is closing");
             }
         });
@@ -43,10 +49,18 @@ public class BombermanApplication extends Application {
         stage.setMinWidth(900);
         changeScene(scene, false);
 
+        timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0.033), e -> {
+
+                    BombermanApplication.changeScene(stage.getScene(), false);
+                })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+
     }
 
     public static void changeScene(Scene scene, boolean createGame ) {
-        System.out.println("Screen has been changed!");
         stage.setScene(scene);
         stage.show();
     }

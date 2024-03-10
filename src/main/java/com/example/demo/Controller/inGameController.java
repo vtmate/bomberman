@@ -2,6 +2,8 @@ package com.example.demo.Controller;
 
 import com.example.demo.BombermanApplication;
 import com.example.demo.Model.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,16 +13,18 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class inGameController {
     private final int WIDTH = 900;
     private final int HEIGHT = 600;
     @FXML
     private Pane gamePane;
-
     private GameModel gm;
 
     public void initialize() {
@@ -47,19 +51,16 @@ public class inGameController {
                             case Q -> control.placeBomb0();
                             case CONTROL -> control.placeBomb1();
                         }
-                        BombermanApplication.changeScene(newScene, false);
                         gamePane.getChildren().removeIf(node -> node instanceof Rectangle);
                         createWalls(gm.walls);
                         createBombs(gm.bombs);
                         createPlayers(gm.players);
-
                     }
                 });
             }
         });
         createWalls(gm.walls);
         createPlayers(gm.players);
-
     }
 
     @FXML
