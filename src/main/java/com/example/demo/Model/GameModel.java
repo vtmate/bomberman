@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class GameModel {
     public ArrayList<Wall> walls;
-    private ArrayList<Player> players;
+    public ArrayList<Player> players;
     private ArrayList<Monster> monsters;
     private ArrayList<Bomb> bombs;
     private ArrayList<Box> boxes;
@@ -17,6 +17,8 @@ public class GameModel {
         createBorder();
         setUpPlayers();
         printEntity(this.players);
+
+        System.out.println("Created GameModel");
     }
 
     public void createBorder() {
@@ -43,8 +45,8 @@ public class GameModel {
     }
 
     private void setUpPlayers() {
-        Player player1 = new Player(2,2 );
-        Player player2 = new Player(12,12 );
+        Player player1 = new Player(1,1);
+        Player player2 = new Player(11,9);
         this.players.add(player1);
         this.players.add(player2);
     }

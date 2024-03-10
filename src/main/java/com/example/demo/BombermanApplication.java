@@ -1,10 +1,13 @@
 package com.example.demo;
 
+import com.example.demo.Model.GameModel;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -12,6 +15,7 @@ import java.io.IOException;
 
 public class BombermanApplication extends Application {
     static Stage stage;
+
 
     @Override
     public void start(Stage stage1) throws IOException {
@@ -37,14 +41,18 @@ public class BombermanApplication extends Application {
         stage.setTitle("Bomberman");
         stage.setMinHeight(600);
         stage.setMinWidth(900);
-        changeScene(scene);
+        changeScene(scene, false);
 
     }
 
-    public static void changeScene(Scene scene) {
-
+    public static void changeScene(Scene scene, boolean createGame ) {
+        System.out.println("Screen has been changed!");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public static Stage getStage() {
+        return stage;
     }
 
     public static void main(String[] args) {

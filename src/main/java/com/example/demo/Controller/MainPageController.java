@@ -1,10 +1,14 @@
 package com.example.demo.Controller;
 
 import com.example.demo.BombermanApplication;
+import com.example.demo.Model.Control;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
@@ -41,7 +45,7 @@ public class MainPageController {
         System.out.println("Játék konfigurálása");
         FXMLLoader fxmlGameConf = new FXMLLoader(BombermanApplication.class.getResource("gameConfiguration-view.fxml"));
         Scene scene = new Scene(fxmlGameConf.load(), WIDTH, HEIGHT);
-        BombermanApplication.changeScene(scene);
+        BombermanApplication.changeScene(scene, false);
     }
 
     @FXML
@@ -49,7 +53,7 @@ public class MainPageController {
         System.out.println("Leírás");
         FXMLLoader fxmlDesc = new FXMLLoader(BombermanApplication.class.getResource("description-view.fxml"));
         Scene scene = new Scene(fxmlDesc.load(), WIDTH, HEIGHT);
-        BombermanApplication.changeScene(scene);
+        BombermanApplication.changeScene(scene, false);
     }
 
     @FXML
@@ -58,7 +62,7 @@ public class MainPageController {
         FXMLLoader fxmlMain = new FXMLLoader(BombermanApplication.class.getResource("mainPage-view.fxml"));
 
         Scene scene = new Scene(fxmlMain.load(), WIDTH, HEIGHT);
-        BombermanApplication.changeScene(scene);
+        BombermanApplication.changeScene(scene, false);
     }
 
     @FXML
@@ -68,8 +72,10 @@ public class MainPageController {
         FXMLLoader fxmlInGame = new FXMLLoader(BombermanApplication.class.getResource("inGame-view.fxml"));
         //System.out.println(this.gamePane);
         //this.gamePane.getChildren().add(r);
-        Scene scene = new Scene(fxmlInGame.load(), WIDTH, HEIGHT);
-        BombermanApplication.changeScene(scene);
+        Parent root = fxmlInGame.load();
+        Scene scene = new Scene(root, WIDTH, HEIGHT);
+
+        BombermanApplication.changeScene(scene, true);
 
     }
 
