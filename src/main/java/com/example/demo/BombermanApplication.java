@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.Controller.GameController;
 import com.example.demo.Model.GameModel;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -19,12 +20,6 @@ public class BombermanApplication extends Application {
 
     @Override
     public void start(Stage stage1) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(BombermanApplication.class.getResource("mainPage-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 900, 600);
-        //scene.getStylesheets().add(getClass().getResource("mainpage.css").toExternalForm());
-
-        stage = new Stage();
-        //stage.getIcons().add(new Image("/resources/icon.png"));
         stage = stage1;
 
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -41,14 +36,9 @@ public class BombermanApplication extends Application {
         stage.setTitle("Bomberman");
         stage.setMinHeight(600);
         stage.setMinWidth(900);
-        changeScene(scene, false);
+        new GameController(stage);
 
-    }
 
-    public static void changeScene(Scene scene, boolean createGame ) {
-        System.out.println("Screen has been changed!");
-        stage.setScene(scene);
-        stage.show();
     }
 
     public static Stage getStage() {

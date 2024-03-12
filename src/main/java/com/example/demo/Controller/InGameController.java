@@ -6,7 +6,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -15,7 +14,7 @@ import javafx.scene.shape.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class inGameController {
+public class InGameController {
     private final int WIDTH = 900;
     private final int HEIGHT = 600;
     @FXML
@@ -23,6 +22,12 @@ public class inGameController {
 
     private GameModel gm;
 
+    private GameController gc;
+
+
+    public InGameController(GameController gc) {
+        this.gc = gc;
+    }
     public void initialize() {
 
         this.gm = new GameModel();
@@ -47,7 +52,6 @@ public class inGameController {
                             case Q -> control.placeBomb0();
                             case CONTROL -> control.placeBomb1();
                         }
-                        BombermanApplication.changeScene(newScene, false);
                         gamePane.getChildren().removeIf(node -> node instanceof Rectangle);
                         createWalls(gm.walls);
                         createBombs(gm.bombs);
@@ -69,7 +73,6 @@ public class inGameController {
 
 
         Scene scene = new Scene(fxmlMain.load(), WIDTH, HEIGHT);
-        BombermanApplication.changeScene(scene, false);
     }
 
     public void createWalls(ArrayList<Wall> walls) {

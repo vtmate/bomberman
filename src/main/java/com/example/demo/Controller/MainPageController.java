@@ -30,7 +30,13 @@ public class MainPageController {
         System.out.println("Katt");
     }
 
-    public void initialize() {
+    private GameController gc;
+
+    public MainPageController(GameController gc) {
+        this.gc = gc;
+    }
+
+    /*public void initialize() {
         // gamePane inicializálása, ha szükséges
         // Például:
         if (startBTN == null) {
@@ -38,44 +44,33 @@ public class MainPageController {
         } else {
             System.out.println("startBTN is not null");
         }
-    }
+    }*/
 
     @FXML
     protected void goToGameConfiguration() throws IOException {
         System.out.println("Játék konfigurálása");
-        FXMLLoader fxmlGameConf = new FXMLLoader(BombermanApplication.class.getResource("gameConfiguration-view.fxml"));
-        Scene scene = new Scene(fxmlGameConf.load(), WIDTH, HEIGHT);
-        BombermanApplication.changeScene(scene, false);
+        this.gc.changeScene("gameConfiguration");
     }
 
     @FXML
     protected void goToDescription() throws IOException {
         System.out.println("Leírás");
-        FXMLLoader fxmlDesc = new FXMLLoader(BombermanApplication.class.getResource("description-view.fxml"));
-        Scene scene = new Scene(fxmlDesc.load(), WIDTH, HEIGHT);
-        BombermanApplication.changeScene(scene, false);
+        this.gc.changeScene("description");
     }
 
     @FXML
     protected void goToMainPage() throws IOException {
         System.out.println("Főoldal");
-        FXMLLoader fxmlMain = new FXMLLoader(BombermanApplication.class.getResource("mainPage-view.fxml"));
-
-        Scene scene = new Scene(fxmlMain.load(), WIDTH, HEIGHT);
-        BombermanApplication.changeScene(scene, false);
+        this.gc.changeScene("mainPage");
     }
 
     @FXML
     protected void goToInGame() throws IOException {
 
         System.out.println("Játszma");
-        FXMLLoader fxmlInGame = new FXMLLoader(BombermanApplication.class.getResource("inGame-view.fxml"));
-        //System.out.println(this.gamePane);
-        //this.gamePane.getChildren().add(r);
-        Parent root = fxmlInGame.load();
-        Scene scene = new Scene(root, WIDTH, HEIGHT);
 
-        BombermanApplication.changeScene(scene, true);
+
+        this.gc.changeScene("inGame");
 
     }
 
