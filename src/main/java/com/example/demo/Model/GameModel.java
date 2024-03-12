@@ -61,19 +61,21 @@ public class GameModel {
     }
 
     public void placeBomb(Player player) {
-        Bomb bomb = new Bomb(player.x, player.y);
+        final Bomb bomb = new Bomb(player.x, player.y);
         this.bombs.add(bomb);
-        explosion(player);
-    }
-
-    private void explosion(Player player){
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Delayed execution after 2000 milliseconds");
-                player.addBomb();
+                explosion(player);
+                GameModel.this.bombs.remove(bomb);
+                //adbomb = null; //állítólag így már nem hivatkozik rá semmi, ezért törölve lesz
             }
-        }, 1000);
+        }, 3000);
+    }
+
+    private void explosion(Player player){
+        System.out.println("Delayed execution after 2000 milliseconds");
+        player.addBomb();
     }
 
     public void printEntity(ArrayList<? extends Entity> entities) {
