@@ -43,14 +43,14 @@ public class InGameController {
                     @Override
                     public void handle(KeyEvent event) {
                         switch (event.getCode()) {
-                            case W -> control.moveUp0();
-                            case S -> control.moveDown0();
-                            case A -> control.moveLeft0();
-                            case D -> control.moveRight0();
-                            case UP -> control.moveUp1();
-                            case DOWN -> control.moveDown1();
-                            case LEFT -> control.moveLeft1();
-                            case RIGHT -> control.moveRight1();
+                            case W -> control.moveCharacter("UP", 0);
+                            case S -> control.moveCharacter("DOWN", 0);
+                            case A -> control.moveCharacter("LEFT", 0);
+                            case D -> control.moveCharacter("RIGHT", 0);
+                            case UP -> control.moveCharacter("UP", 1);
+                            case DOWN -> control.moveCharacter("DOWN", 1);
+                            case LEFT -> control.moveCharacter("LEFT", 1);
+                            case RIGHT -> control.moveCharacter("RIGHT", 1);
                             case Q -> control.placeBomb(0);
                             case CONTROL -> control.placeBomb(1);
                         }

@@ -13,48 +13,16 @@ public class Control {
         this.gm = gm;
     }
 
-
-    public void moveUp0() {
-        if (intersection(gm.players.get(0), gm.walls, "UP") && intersection(gm.players.get(0), gm.bombs, "UP")) move(0, -4, 0);
-        System.out.println("Fel");
-    }
-
-    public void moveDown0() {
-        if (intersection(gm.players.get(0), gm.walls, "DOWN") && intersection(gm.players.get(0), gm.bombs, "DOWN")) move(0, 4, 0);
-
-        System.out.println("Le");
-    }
-
-    public void moveLeft0() {
-        if (intersection(gm.players.get(0), gm.walls, "LEFT") && intersection(gm.players.get(0), gm.bombs, "LEFT")) move(-4, 0, 0);
-        System.out.println("Balra");
-    }
-
-    public void moveRight0() {
-        if (intersection(gm.players.get(0), gm.walls, "RIGHT") && intersection(gm.players.get(0), gm.bombs, "RIGHT")) move(4, 0, 0);
-        System.out.println("Jobbra");
-    }
-    public void moveUp1() {
-
-        if (intersection(gm.players.get(1), gm.walls, "UP") && intersection(gm.players.get(1), gm.bombs, "UP")) move(0, -4, 1);
-        System.out.println("Fel");
-    }
-
-    public void moveDown1() {
-
-        if (intersection(gm.players.get(1), gm.walls, "DOWN") && intersection(gm.players.get(1), gm.bombs, "DOWN")) move(0, +4, 1);
-        System.out.println("Le");
-    }
-
-    public void moveLeft1() {
-
-        if (intersection(gm.players.get(1), gm.walls, "LEFT") && intersection(gm.players.get(1), gm.bombs, "LEFT")) move(-4, 0, 1);
-        System.out.println("Balra");
-    }
-
-    public void moveRight1() {
-        if (intersection(gm.players.get(1), gm.walls, "RIGHT") && intersection(gm.players.get(1), gm.bombs, "RIGHT")) move(4, 0, 1);
-        System.out.println("Jobbra");
+    public void moveCharacter(String direction, int playerId){
+        Player player = gm.players.get(playerId);
+        if(intersection(player, gm.walls, direction) && intersection(player, gm.bombs, direction)){
+            switch(direction){
+                case "UP" -> move(0, -4, playerId);
+                case "DOWN" -> move(0, 4, playerId);
+                case "LEFT" -> move(-4, 0, playerId);
+                case "RIGHT" -> move(4, 0, playerId);
+            }
+        }
     }
 
     public void placeBomb(int playerId) {
