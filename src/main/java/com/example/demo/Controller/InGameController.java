@@ -2,6 +2,8 @@ package com.example.demo.Controller;
 
 import com.example.demo.BombermanApplication;
 import com.example.demo.Model.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,6 +67,16 @@ public class InGameController {
         createWalls(gm.walls);
         createPlayers(gm.players);
 
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0.033), e -> {
+
+                    refresh();
+                })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+
+
     }
 
     @FXML
@@ -90,10 +103,10 @@ public class InGameController {
         int size = 40;
 
         for (Player player : players) {
-            System.out.println(player.x + " " + player.y);
+            //System.out.println(player.x + " " + player.y);
             Rectangle r = new Rectangle();
-            r.setX(player.x * size);
-            r.setY(player.y * size);
+            r.setX(player.x);
+            r.setY(player.y);
             r.setFill(Color.BLUEVIOLET);
             r.setWidth(size);
             r.setHeight(size);
@@ -106,11 +119,19 @@ public class InGameController {
         for (Bomb bomb : bombs) {
             Rectangle r = new Rectangle();
             r.setFill(Color.ORANGE);
-            r.setX(bomb.x * size);
-            r.setY(bomb.y * size);
+            r.setX(bomb.x);
+            r.setY(bomb.y);
             r.setWidth(size);
             r.setHeight(size);
             this.gamePane.getChildren().add(r);
         }
+    }
+
+    public void refresh() {
+        gamePane.getChildren().removeIf(node -> node instanceof Rectangle);
+        createWalls(gm.walls);
+        createBombs(gm.bombs);
+        createPlayers(gm.players);
+
     }
 }

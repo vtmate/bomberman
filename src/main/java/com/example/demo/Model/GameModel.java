@@ -46,8 +46,8 @@ public class GameModel {
     }
 
     private void setUpPlayers() {
-        Player player1 = new Player(1,1);
-        Player player2 = new Player(11,9);
+        Player player1 = new Player(40,40);
+        Player player2 = new Player(440,360);
         this.players.add(player1);
         this.players.add(player2);
     }
