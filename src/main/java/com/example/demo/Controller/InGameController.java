@@ -22,9 +22,7 @@ public class InGameController {
     private final int HEIGHT = 600;
     @FXML
     private Pane gamePane;
-
     private GameModel gm;
-
     private GameController gc;
 
 
@@ -59,11 +57,11 @@ public class InGameController {
                         createWalls(gm.walls);
                         createBombs(gm.bombs);
                         createPlayers(gm.players);
-
                     }
                 });
             }
         });
+
         createWalls(gm.walls);
         createPlayers(gm.players);
 
@@ -75,17 +73,20 @@ public class InGameController {
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-
-
     }
 
-    @FXML
+    @FXML //ezt egyenlőre nem használjuk, majd arra kell, hogy a játékból vissza tudjunk menni a főoldalra (esc)
     protected void goToMainPage() throws IOException {
         System.out.println("Főoldal");
         FXMLLoader fxmlMain = new FXMLLoader(BombermanApplication.class.getResource("mainPage-view.fxml"));
-
-
         Scene scene = new Scene(fxmlMain.load(), WIDTH, HEIGHT);
+    }
+
+    public void refresh() {
+        gamePane.getChildren().removeIf(node -> node instanceof Rectangle);
+        createWalls(gm.walls);
+        createBombs(gm.bombs);
+        createPlayers(gm.players);
     }
 
     public void createWalls(ArrayList<Wall> walls) {
@@ -103,7 +104,6 @@ public class InGameController {
         int size = 40;
 
         for (Player player : players) {
-            //System.out.println(player.x + " " + player.y);
             Rectangle r = new Rectangle();
             r.setX(player.x);
             r.setY(player.y);
@@ -125,13 +125,5 @@ public class InGameController {
             r.setHeight(size);
             this.gamePane.getChildren().add(r);
         }
-    }
-
-    public void refresh() {
-        gamePane.getChildren().removeIf(node -> node instanceof Rectangle);
-        createWalls(gm.walls);
-        createBombs(gm.bombs);
-        createPlayers(gm.players);
-
     }
 }

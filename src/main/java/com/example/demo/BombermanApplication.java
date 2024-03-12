@@ -17,14 +17,12 @@ import java.io.IOException;
 public class BombermanApplication extends Application {
     static Stage stage;
 
-
     @Override
     public void start(Stage stage1) throws IOException {
         stage = stage1;
 
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
-                //we.consume();
                 System.out.println("Stage is closing");
             }
         });
@@ -36,13 +34,8 @@ public class BombermanApplication extends Application {
         stage.setTitle("Bomberman");
         stage.setMinHeight(600);
         stage.setMinWidth(900);
+
         new GameController(stage);
-
-
-    }
-
-    public static Stage getStage() {
-        return stage;
     }
 
     public static void main(String[] args) {

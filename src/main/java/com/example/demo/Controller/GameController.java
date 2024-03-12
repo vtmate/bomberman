@@ -21,10 +21,6 @@ public class GameController {
     public void changeScene(String name) throws IOException {
         this.fxmlLoader = new FXMLLoader(BombermanApplication.class.getResource(name + "-view.fxml"));
 
-
-
-
-
         switch (name) {
             case "mainPage" -> this.fxmlLoader.setController(new MainPageController(this));
             case "gameConfiguration" -> this.fxmlLoader.setController(new MainPageController(this));
@@ -33,11 +29,9 @@ public class GameController {
         }
 
         Parent root = this.fxmlLoader.load();
-
         Scene scene = new Scene(root, 900, 600);
 
         this.stage.setScene(scene);
         this.stage.show();
-
     }
 }

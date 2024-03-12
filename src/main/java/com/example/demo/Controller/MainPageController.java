@@ -17,34 +17,11 @@ import static javafx.application.Platform.exit;
 
 public class MainPageController {
 
-    private final int WIDTH = 900;
-    private final int HEIGHT = 600;
-    @FXML
-    private Pane gamePane;
-
-    @FXML
-    private Button startBTN;
-
-    @FXML
-    protected void onHelloButtonClick() {
-        System.out.println("Katt");
-    }
-
     private GameController gc;
 
     public MainPageController(GameController gc) {
         this.gc = gc;
     }
-
-    /*public void initialize() {
-        // gamePane inicializálása, ha szükséges
-        // Például:
-        if (startBTN == null) {
-            System.out.println("startBTN is null");
-        } else {
-            System.out.println("startBTN is not null");
-        }
-    }*/
 
     @FXML
     protected void goToGameConfiguration() throws IOException {
@@ -66,15 +43,9 @@ public class MainPageController {
 
     @FXML
     protected void goToInGame() throws IOException {
-
         System.out.println("Játszma");
-
-
         this.gc.changeScene("inGame");
-
     }
-
-
 
     @FXML
     protected void exitGame() throws IOException {
