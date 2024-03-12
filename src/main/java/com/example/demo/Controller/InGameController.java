@@ -29,6 +29,7 @@ public class InGameController {
     public InGameController(GameController gc) {
         this.gc = gc;
     }
+
     public void initialize() {
 
         this.gm = new GameModel();
@@ -50,8 +51,8 @@ public class InGameController {
                             case DOWN -> control.moveDown1();
                             case LEFT -> control.moveLeft1();
                             case RIGHT -> control.moveRight1();
-                            case Q -> control.placeBomb0();
-                            case CONTROL -> control.placeBomb1();
+                            case Q -> control.placeBomb(0);
+                            case CONTROL -> control.placeBomb(1);
                         }
                         gamePane.getChildren().removeIf(node -> node instanceof Rectangle);
                         createWalls(gm.walls);
@@ -67,7 +68,6 @@ public class InGameController {
 
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0.033), e -> {
-
                     refresh();
                 })
         );

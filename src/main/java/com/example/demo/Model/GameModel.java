@@ -1,6 +1,8 @@
 package com.example.demo.Model;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameModel {
     public ArrayList<Wall> walls;
@@ -9,6 +11,7 @@ public class GameModel {
     public ArrayList<Bomb> bombs;
     private ArrayList<Box> boxes;
     private ArrayList<PowerUp> powerUps;
+    private Timer timer;
 
     public GameModel() {
 
@@ -18,6 +21,8 @@ public class GameModel {
         createBorder();
         setUpPlayers();
         printEntity(this.players);
+
+        timer = new Timer();
 
         System.out.println("Created GameModel");
     }
@@ -48,13 +53,27 @@ public class GameModel {
     private void setUpPlayers() {
         Player player1 = new Player(40,40);
         Player player2 = new Player(440,360);
+        player1.addBomb();
+        player2.addBomb();
         this.players.add(player1);
         this.players.add(player2);
+        System.out.println("kezdeti bomba: " + player1.getCountOfBombs());
     }
 
     public void placeBomb(Player player) {
         Bomb bomb = new Bomb(player.x, player.y);
         this.bombs.add(bomb);
+        explosion(player);
+    }
+
+    private void explosion(Player player){
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Delayed execution after 2000 milliseconds");
+                player.addBomb();
+            }
+        }, 1000);
     }
 
     public void printEntity(ArrayList<? extends Entity> entities) {

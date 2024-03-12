@@ -57,22 +57,11 @@ public class Control {
         System.out.println("Jobbra");
     }
 
-    public void placeBomb0() {
-
-        if (gm.players.get(0).getCountOfBombs() == 0) {
-            gm.placeBomb(gm.players.get(0));
-            gm.players.get(0).setCountOfBombs();
-
-        }
-        System.out.println("Bomba lehelyezése");
-    }
-
-    public void placeBomb1() {
-
-        if (gm.players.get(1).getCountOfBombs() == 0) {
-            gm.placeBomb(gm.players.get(1));
-            gm.players.get(1).setCountOfBombs();
-
+    public void placeBomb(int playerId) {
+        Player player = gm.players.get(playerId);
+        if (player.getCountOfBombs() > 0) {
+            gm.placeBomb(player);
+            player.removeBomb();
         }
         System.out.println("Bomba lehelyezése");
     }
@@ -113,9 +102,6 @@ public class Control {
     }
 
     private void moveMove(int x, int y, int player) {
-
-
-
         Timer timer = new Timer();
 
         // Időzített feladat definiálása
