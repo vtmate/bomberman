@@ -9,15 +9,19 @@ public class GameModel {
     public ArrayList<Player> players;
     private ArrayList<Monster> monsters;
     public ArrayList<Bomb> bombs;
+    public ArrayList<Explosion> explosions;
     private ArrayList<Box> boxes;
     private ArrayList<PowerUp> powerUps;
     private Timer timer;
+    private boolean tovabb; //ehelyett majd a hatótávot kell csekkolni
+
 
     public GameModel() {
 
         this.walls = new ArrayList<>();
         this.players = new ArrayList<>();
         this.bombs = new ArrayList<>();
+        this.explosions = new ArrayList<>();
         createBorder();
         setUpPlayers();
         printEntity(this.players);
@@ -61,37 +65,77 @@ public class GameModel {
     public void placeBomb(Player player) {
         final Bomb bomb = new Bomb(player.x, player.y);
         this.bombs.add(bomb);
+        this.tovabb = true;
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                explosion(player, bomb);
+                explosion(bomb.x, bomb.y);
+                player.addBomb();
                 GameModel.this.bombs.remove(bomb);
                 //bomb = null; //állítólag így már nem hivatkozik rá semmi, ezért törölve lesz
             }
-        }, 3000);
+        }, 2000);
     }
 
-    private void explosion(Player player, Bomb bomb){
-        player.addBomb();
+    private void explosion(double bombX, double bombY){
+        //először csak azt nézem, hogy jobbra mizu
+        if (checkForWall(bombY, bombX, bombX+40)){
+            System.out.println("Jobbra fal volt, nem történik semmi");
+        } else {
+            //nem volt fal -> kirajzoljuk a bombát
+            drawExposion(bombX+40, bombY);
+            int playerDeath = checkForPlayer(bombY, bombX, bombX+40);
+            if (playerDeath >= 0){
+                //valamelyik játékos meghalt
+                System.out.println(playerDeath + ". játékos meghalt");
+            } /*szörny és doboz check*/ else {
+                System.out.println("Nem volt ott semmi");
+                if(tovabb){
+                    tovabb = false;
+                    explosion(bombX+40, bombY);
+                }
+            }
+        }
+        //balra mizu
+        if (checkForWall(bombY, bombX, bombX-40)){
+            System.out.println("Balra fal volt, nem történik semmi");
+        } else {
+            //nem volt fal -> kirajzoljuk a bombát
+            drawExposion(bombX-40, bombY);
+            int playerDeath = checkForPlayer(bombY, bombX, bombX-40);
+            if (playerDeath >= 0){
+                //valamelyik játékos meghalt
+                System.out.println(playerDeath + ". játékos meghalt");
+            } /*szörny és doboz check*/ else {
+                System.out.println("Nem volt ott semmi");
+                if(tovabb){
+                    tovabb = false;
+                    explosion(bombX-40, bombY);
+                }
+            }
+        }
+    }
+
+    private void drawExposion(double x, double y){
+        Explosion explosion = new Explosion(x, y);
+        this.explosions.add(explosion);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                GameModel.this.explosions.remove(explosion);
+            }
+        }, 200);
+    }
+
+    private int checkForPlayer(double same, double smaller, double bigger){
         for (int i = 0; i < 2; i++) {
             double x = this.players.get(i).x;
             double y = this.players.get(i).y;
-
-            if (bomb.x == x && isBetween(y, bomb.y-40, bomb.y)){
-                System.out.println("bomba felett volt egyel");
-            }
-            if (bomb.x == x && isBetween(y, bomb.y, bomb.y+40)){
-                System.out.println("bomba alatt volt egyel");
-            }
-            if (bomb.y == y && isBetween(x, bomb.x-40, bomb.x)){
-                System.out.println("bomba mellett balra volt egyel");
-            }
-            if (bomb.y == y && isBetween(x, bomb.x, bomb.x+40)){
-                System.out.println("bomba mellett jobbra volt egyel");
-            } else if (checkForWall(bomb.y, bomb.x, bomb.x+40 )){
-                System.out.println("fal van tőle jobbra");
+            if(same == y && isBetween(x, smaller, bigger)){
+                return i;
             }
         }
+        return -1; //egyik játékos sem halt meg
     }
 
     private boolean checkForWall(double bombY, double smaller, double bigger){

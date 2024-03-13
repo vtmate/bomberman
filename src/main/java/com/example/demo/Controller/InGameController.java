@@ -54,10 +54,7 @@ public class InGameController {
                             case Q -> control.placeBomb(0);
                             case CONTROL -> control.placeBomb(1);
                         }
-                        gamePane.getChildren().removeIf(node -> node instanceof Rectangle);
-                        createWalls(gm.walls);
-                        createBombs(gm.bombs);
-                        createPlayers(gm.players);
+                        refresh();
                     }
                 });
             }
@@ -87,6 +84,7 @@ public class InGameController {
         createWalls(gm.walls);
         createBombs(gm.bombs);
         createPlayers(gm.players);
+        createExplosion(gm.explosions);
     }
 
     public void createWalls(ArrayList<Wall> walls) {
@@ -121,6 +119,19 @@ public class InGameController {
             r.setFill(Color.ORANGE);
             r.setX(bomb.x);
             r.setY(bomb.y);
+            r.setWidth(size);
+            r.setHeight(size);
+            this.gamePane.getChildren().add(r);
+        }
+    }
+
+    public void createExplosion(ArrayList<Explosion> explosions){
+        int size = 40;
+        for (Explosion explosion : explosions) {
+            Rectangle r = new Rectangle();
+            r.setFill(Color.YELLOW);
+            r.setX(explosion.x);
+            r.setY(explosion.y);
             r.setWidth(size);
             r.setHeight(size);
             this.gamePane.getChildren().add(r);
