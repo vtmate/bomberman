@@ -45,7 +45,6 @@ public class GameModel {
                         }
                     }
                 }
-
             }
         }
     }
@@ -57,7 +56,6 @@ public class GameModel {
         player2.addBomb();
         this.players.add(player1);
         this.players.add(player2);
-        System.out.println("kezdeti bomba: " + player1.getCountOfBombs());
     }
 
     public void placeBomb(Player player) {
@@ -66,16 +64,45 @@ public class GameModel {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                explosion(player);
+                explosion(player, bomb);
                 GameModel.this.bombs.remove(bomb);
-                //adbomb = null; //állítólag így már nem hivatkozik rá semmi, ezért törölve lesz
+                //bomb = null; //állítólag így már nem hivatkozik rá semmi, ezért törölve lesz
             }
         }, 3000);
     }
 
-    private void explosion(Player player){
-        System.out.println("Delayed execution after 2000 milliseconds");
+    private void explosion(Player player, Bomb bomb){
         player.addBomb();
+        for (int i = 0; i < 2; i++) {
+            double x = this.players.get(i).x;
+            double y = this.players.get(i).y;
+
+            //csak 2-2 mező vizsgálata mindegyik irányba
+            if(bomb.x == x && bomb.y-80 <= y && bomb.y+80 >= y){
+                System.out.println("az " + i + ". játékos meghalt");
+            } else if(bomb.y == y && bomb.x-80 <= x && bomb.x+80 >= x){
+                System.out.println("az " + i + ". játékos meghalt");
+            }
+            //szerintem itt mind a 8 esetet meg kellene nézni
+
+
+            if (bomb.x == x && isBetween(y, bomb.y-40, bomb.y)){
+                System.out.println("bomba felett volt egyel");
+            }
+            if (bomb.x == x && isBetween(y, bomb.y, bomb.y+40)){
+                System.out.println("bomba alatt volt egyel");
+            }
+            if (bomb.y == y && isBetween(x, bomb.x-40, bomb.x)){
+                System.out.println("bomba mellett balra volt egyel");
+            }
+            if (bomb.y == y && isBetween(x, bomb.x, bomb.x+40)){
+                System.out.println("bomba mellett jobbra volt egyel");
+            }
+        }
+    }
+
+    private boolean isBetween(double value, double smaller, double bigger){
+        return smaller <= value && bigger >= value;
     }
 
     public void printEntity(ArrayList<? extends Entity> entities) {

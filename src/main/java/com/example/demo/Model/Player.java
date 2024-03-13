@@ -9,8 +9,6 @@ public class Player extends Entity{
     public int getCountOfBombs() {
         return countOfBombs;
     }
-    public void addBomb() {
-        countOfBombs++;
-    }
+    public void addBomb() { countOfBombs++; }
     public void removeBomb() {countOfBombs--; }
 }
