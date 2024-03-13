@@ -97,7 +97,7 @@ public class GameModel {
             }
         }
         //balra mizu
-        if (checkForWall(bombY, bombX, bombX-40)){
+        /*if (checkForWall(bombY, bombX, bombX-40)){
             System.out.println("Balra fal volt, nem történik semmi");
         } else {
             //nem volt fal -> kirajzoljuk a bombát
@@ -106,14 +106,14 @@ public class GameModel {
             if (playerDeath >= 0){
                 //valamelyik játékos meghalt
                 System.out.println(playerDeath + ". játékos meghalt");
-            } /*szörny és doboz check*/ else {
+            } szörny és doboz check else {
                 System.out.println("Nem volt ott semmi");
                 if(tovabb){
                     tovabb = false;
                     explosion(bombX-40, bombY);
                 }
             }
-        }
+        }*/
     }
 
     private void drawExposion(double x, double y){
