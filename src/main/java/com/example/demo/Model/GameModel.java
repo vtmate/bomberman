@@ -31,16 +31,16 @@ public class GameModel {
         for (int i = 0; i < 13; i++) {
             for (int j = 0; j < 11; j++) {
                 if ( i == 0 || i == 12) {
-                    Wall wall = new Wall(i, j);
+                    Wall wall = new Wall(i*40, j*40);
                     this.walls.add(wall);
                 } else {
                     if ( j == 0 || j == 10) {
-                        Wall wall = new Wall(i, j);
+                        Wall wall = new Wall(i*40, j*40);
                         this.walls.add(wall);
                     }
                     else {
                         if ( i % 2 == 0 && j % 2 == 0) {
-                            Wall wall = new Wall(i, j);
+                            Wall wall = new Wall(i*40, j*40);
                             this.walls.add(wall);
                         }
                     }
@@ -77,15 +77,6 @@ public class GameModel {
             double x = this.players.get(i).x;
             double y = this.players.get(i).y;
 
-            //csak 2-2 mező vizsgálata mindegyik irányba
-            if(bomb.x == x && bomb.y-80 <= y && bomb.y+80 >= y){
-                System.out.println("az " + i + ". játékos meghalt");
-            } else if(bomb.y == y && bomb.x-80 <= x && bomb.x+80 >= x){
-                System.out.println("az " + i + ". játékos meghalt");
-            }
-            //szerintem itt mind a 8 esetet meg kellene nézni
-
-
             if (bomb.x == x && isBetween(y, bomb.y-40, bomb.y)){
                 System.out.println("bomba felett volt egyel");
             }
@@ -97,8 +88,19 @@ public class GameModel {
             }
             if (bomb.y == y && isBetween(x, bomb.x, bomb.x+40)){
                 System.out.println("bomba mellett jobbra volt egyel");
+            } else if (checkForWall(bomb.y, bomb.x, bomb.x+40 )){
+                System.out.println("fal van tőle jobbra");
             }
         }
+    }
+
+    private boolean checkForWall(double bombY, double smaller, double bigger){
+        for(Wall wall : this.walls){
+            if(bombY == wall.y && isBetween(wall.x, smaller, bigger)){
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isBetween(double value, double smaller, double bigger){

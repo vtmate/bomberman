@@ -93,8 +93,8 @@ public class InGameController {
         int size = 40;
         for (Wall wall : walls) {
             Rectangle r = new Rectangle();
-            r.setX(wall.x * size);
-            r.setY(wall.y * size);
+            r.setX(wall.x);
+            r.setY(wall.y);
             r.setWidth(size);
             r.setHeight(size);
             this.gamePane.getChildren().add(r);
