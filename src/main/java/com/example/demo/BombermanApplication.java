@@ -24,6 +24,7 @@ public class BombermanApplication extends Application {
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
                 System.out.println("Stage is closing");
+                System.exit(0);
             }
         });
 
