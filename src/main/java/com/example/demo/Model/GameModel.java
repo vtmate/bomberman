@@ -14,7 +14,7 @@ public class GameModel {
     private ArrayList<PowerUp> powerUps;
     private Timer timer;
     //private boolean tovabb; //ehelyett majd a hatótávot kell csekkolni
-    private int toUp, toRight, toDown, toLeft;
+    //private int toUp, toRight, toDown, toLeft;
 
 
     public GameModel() {
@@ -75,10 +75,6 @@ public class GameModel {
     public void placeBomb(Player player) {
         final Bomb bomb = new Bomb(player.x, player.y, 2);
         this.bombs.add(bomb);
-        this.toUp = 0;
-        this.toRight = 0;
-        this.toDown = 0;
-        this.toLeft = 0;
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -91,12 +87,30 @@ public class GameModel {
     }
 
     private void explosion(double bombX, double bombY, int radius){
-        rightExplosion(bombX, bombY, radius);
-        leftExplosion(bombX, bombY, radius);
-        upExplosion(bombX, bombY, radius);
-        downExplosion(bombX, bombY, radius);
+        int toUp = 0;
+        int toRight = 0;
+        int toDown = 0;
+        int toLeft = 0;
+        if(!isPlayerOnBomb(bombX, bombY)){ //ha a karakter nem maradt a bombán, akkor tovább nézzük
+            rightExplosion(bombX, bombY, radius, toRight);
+            leftExplosion(bombX, bombY, radius, toLeft);
+            upExplosion(bombX, bombY, radius, toUp);
+            downExplosion(bombX, bombY, radius, toDown);
+        }
     }
-    private void rightExplosion(double bombX, double bombY, int radius){
+
+    private boolean isPlayerOnBomb(double bombX, double bombY){
+        for (int i = 0; i < 2; i++) {
+            double x = this.players.get(i).x;
+            double y = this.players.get(i).y;
+            if(bombX == x && bombY == y){
+                System.out.println(i + ". játékos meghalt");
+                return true;
+            }
+        }
+        return false;
+    }
+    private void rightExplosion(double bombX, double bombY, int radius, int iteration){
         if (checkForWall(bombY, bombX, bombX+40)){
             System.out.println("Jobbra fal volt, nem történik semmi");
         } else {
@@ -108,14 +122,14 @@ public class GameModel {
                 System.out.println(playerDeath + ". játékos meghalt");
             } /*szörny és doboz check*/ else {
                 System.out.println("Nem volt ott semmi");
-                if(this.toRight < radius-1){
-                    this.toRight++;
-                    rightExplosion(bombX+40, bombY, radius);
+                if(iteration < radius-1){
+                    iteration++;
+                    rightExplosion(bombX+40, bombY, radius, iteration);
                 }
             }
         }
     }
-    private void leftExplosion(double bombX, double bombY, int radius){
+    private void leftExplosion(double bombX, double bombY, int radius, int iteration){
         if (checkForWall(bombY, bombX-40, bombX)){
             System.out.println("Balra fal volt, nem történik semmi");
         } else {
@@ -127,14 +141,14 @@ public class GameModel {
                 System.out.println(playerDeath + ". játékos meghalt");
             } /*szörny és doboz check*/ else {
                 System.out.println("Nem volt ott semmi");
-                if(this.toLeft < radius-1){
-                    this.toLeft++;
-                    leftExplosion(bombX-40, bombY, radius);
+                if(iteration < radius-1){
+                    iteration++;
+                    leftExplosion(bombX-40, bombY, radius, iteration);
                 }
             }
         }
     }
-    private void upExplosion(double bombX, double bombY, int radius){
+    private void upExplosion(double bombX, double bombY, int radius, int iteration){
         if (checkForWall(bombX, bombY-40, bombY)){
             System.out.println("Felfelé fal volt, nem történik semmi");
         } else {
@@ -146,14 +160,14 @@ public class GameModel {
                 System.out.println(playerDeath + ". játékos meghalt");
             } /*szörny és doboz check*/ else {
                 System.out.println("Nem volt ott semmi");
-                if(this.toUp < radius-1){
-                    this.toUp++;
-                    upExplosion(bombX, bombY-40, radius);
+                if(iteration < radius-1){
+                    iteration++;
+                    upExplosion(bombX, bombY-40, radius, iteration);
                 }
             }
         }
     }
-    private void downExplosion(double bombX, double bombY, int radius){
+    private void downExplosion(double bombX, double bombY, int radius, int iteration){
         if (checkForWall(bombX, bombY, bombY+40)){
             System.out.println("Felfelé fal volt, nem történik semmi");
         } else {
@@ -165,9 +179,9 @@ public class GameModel {
                 System.out.println(playerDeath + ". játékos meghalt");
             } /*szörny és doboz check*/ else {
                 System.out.println("Nem volt ott semmi");
-                if(this.toDown < radius-1){
-                    this.toDown++;
-                    downExplosion(bombX, bombY+40, radius);
+                if(iteration < radius-1){
+                    iteration++;
+                    downExplosion(bombX, bombY+40, radius, iteration);
                 }
             }
         }
