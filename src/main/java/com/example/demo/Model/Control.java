@@ -1,11 +1,11 @@
 package com.example.demo.Model;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
+import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class Control {
     private final int SIZE = 40;
@@ -26,6 +26,32 @@ public class Control {
                 case "RIGHT" -> move(4, 0, playerId);
             }
         }
+    }
+
+    public void moveMonster(Monster monster) {
+        System.out.println("run");
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0.01), e -> {
+                    if (monster.x % 40 == 0 && monster.y % 40 == 0) {
+                        Random rand = new Random();
+                        if (rand.nextInt(5) == 2) changeDirection(monster, monster.direction);
+                    }
+                    if(monsterIntersectsEntity(monster, monster.direction)) {
+                        switch(monster.direction){
+                            case "UP" -> monster.y -= 1;
+                            case "DOWN" -> monster.y += 1;
+                            case "LEFT" -> monster.x -= 1;
+                            case "RIGHT" -> monster.x += 1;
+                        }
+                    }
+                    else {
+                        changeDirection(monster, monster.direction);
+                    }
+
+                })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 
     public void placeBomb(int playerId) {
@@ -122,4 +148,45 @@ public class Control {
         // Időzített feladatok ütemezése
         timer.scheduleAtFixedRate(task, 0, 10);
     }
+
+    private void changeDirection(Monster monster, String direction) {
+        ArrayList<String> directions = new ArrayList<>(Arrays.asList("UP", "DOWN", "LEFT", "RIGHT"));
+        String newDirection = direction;
+        Random rand = new Random();
+
+        while (newDirection.equals(direction)) {
+            int random = rand.nextInt(4);
+            newDirection = directions.get(random);
+        }
+
+        monster.direction = newDirection;
+    }
+
+    private boolean monsterIntersectsEntity(Monster monster, String direction){
+        double x = monster.x;
+        double y = monster.y;
+        if (checkEntitiesIntersectionM(x, y, gm.walls, direction)) return false;
+        if (checkEntitiesIntersection(x, y, gm.monsters, direction)) return false;
+        if (checkEntitiesIntersectionM(x, y, gm.bombs, direction)) return false;
+        return true;
+    }
+
+    private boolean checkEntitiesIntersectionM(double x, double y, ArrayList<? extends Entity> entities, String direction) {
+        for (Entity entity : entities) {
+            if (Objects.equals(direction, "DOWN")) {
+                if (checkInteraction(x, y+1, entity.x, entity.y)) return true;
+            }
+            if (Objects.equals(direction, "UP")) {
+                if (checkInteraction(x, y-1, entity.x, entity.y)) return true;
+            }
+            if (Objects.equals(direction, "LEFT")) {
+                if (checkInteraction(x-1, y, entity.x, entity.y)) return true;
+            }
+            if (Objects.equals(direction, "RIGHT")) {
+                if (checkInteraction(x+1, y, entity.x, entity.y)) return true;
+            }
+        }
+        return false;
+    }
+
 }
