@@ -82,10 +82,24 @@ public class GameModel {
     }
 
     private void explosion(double bombX, double bombY, int radius){
-        rightExplosion(bombX, bombY, radius);
-        leftExplosion(bombX, bombY, radius);
-        upExplosion(bombX, bombY, radius);
-        downExplosion(bombX, bombY, radius);
+        if(!isPlayerOnBomb(bombX, bombY)){ //ha a karakter nem maradt a bombán, akkor tovább nézzük
+            rightExplosion(bombX, bombY, radius);
+            leftExplosion(bombX, bombY, radius);
+            upExplosion(bombX, bombY, radius);
+            downExplosion(bombX, bombY, radius);
+        }
+    }
+
+    private boolean isPlayerOnBomb(double bombX, double bombY){
+        for (int i = 0; i < 2; i++) {
+            double x = this.players.get(i).x;
+            double y = this.players.get(i).y;
+            if(bombX == x && bombY == y){
+                System.out.println(i + ". játékos meghalt");
+                return true;
+            }
+        }
+        return false;
     }
     private void rightExplosion(double bombX, double bombY, int radius){
         if (checkForWall(bombY, bombX, bombX+40)){
