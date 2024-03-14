@@ -40,55 +40,28 @@ public class Control {
     private boolean playerIntersectsEntity(Player player, String direction){
         double x = player.x;
         double y = player.y;
-        for (Wall wall : gm.walls) {
-            if (Objects.equals(direction, "DOWN")) {
-                System.out.println(checkInteraction(x, y+SIZE, wall.x, wall.y));
-                if (checkInteraction(x, y+SIZE, wall.x, wall.y)) return false;
-            }
-            if (Objects.equals(direction, "UP")) {
-                System.out.println(checkInteraction(x, y-SIZE, wall.x, wall.y));
-                if (checkInteraction(x, y-SIZE, wall.x, wall.y)) return false;
-            }
-            if (Objects.equals(direction, "LEFT")) {
-                if (checkInteraction(x-SIZE, y, wall.x, wall.y)) return false;
-            }
-            if (Objects.equals(direction, "RIGHT")) {
-                if (checkInteraction(x+SIZE, y, wall.x, wall.y)) return false;
-            }
-        }
-        for (Player wall : gm.players) {
-            if (Objects.equals(direction, "DOWN")) {
-                System.out.println(checkInteraction(x, y+SIZE, wall.x, wall.y));
-                if (checkInteraction(x, y+SIZE, wall.x, wall.y)) return false;
-            }
-            if (Objects.equals(direction, "UP")) {
-                System.out.println(checkInteraction(x, y-SIZE, wall.x, wall.y));
-                if (checkInteraction(x, y-SIZE, wall.x, wall.y)) return false;
-            }
-            if (Objects.equals(direction, "LEFT")) {
-                if (checkInteraction(x-SIZE, y, wall.x, wall.y)) return false;
-            }
-            if (Objects.equals(direction, "RIGHT")) {
-                if (checkInteraction(x+SIZE, y, wall.x, wall.y)) return false;
-            }
-        }
-        for (Bomb wall : gm.bombs) {
-            if (Objects.equals(direction, "DOWN")) {
-                System.out.println(checkInteraction(x, y+SIZE, wall.x, wall.y));
-                if (checkInteraction(x, y+SIZE, wall.x, wall.y)) return false;
-            }
-            if (Objects.equals(direction, "UP")) {
-                System.out.println(checkInteraction(x, y-SIZE, wall.x, wall.y));
-                if (checkInteraction(x, y-SIZE, wall.x, wall.y)) return false;
-            }
-            if (Objects.equals(direction, "LEFT")) {
-                if (checkInteraction(x-SIZE, y, wall.x, wall.y)) return false;
-            }
-            if (Objects.equals(direction, "RIGHT")) {
-                if (checkInteraction(x+SIZE, y, wall.x, wall.y)) return false;
-            }
-        }
+        if (checkEntitiesIntersection(x, y, gm.walls, direction)) return false;
+        if (checkEntitiesIntersection(x, y, gm.players, direction)) return false;
+        if (checkEntitiesIntersection(x, y, gm.bombs, direction)) return false;
         return true;
+    }
+
+    private boolean checkEntitiesIntersection(double x, double y, ArrayList<? extends Entity> entities, String direction) {
+        for (Entity entity : entities) {
+            if (Objects.equals(direction, "DOWN")) {
+                if (checkInteraction(x, y+SIZE, entity.x, entity.y)) return true;
+            }
+            if (Objects.equals(direction, "UP")) {
+                if (checkInteraction(x, y-SIZE, entity.x, entity.y)) return true;
+            }
+            if (Objects.equals(direction, "LEFT")) {
+                if (checkInteraction(x-SIZE, y, entity.x, entity.y)) return true;
+            }
+            if (Objects.equals(direction, "RIGHT")) {
+                if (checkInteraction(x+SIZE, y, entity.x, entity.y)) return true;
+            }
+        }
+        return false;
     }
 
     private boolean checkInteraction(double x1, double y1, double x2, double y2) {
