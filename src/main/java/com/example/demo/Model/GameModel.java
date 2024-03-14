@@ -13,7 +13,8 @@ public class GameModel {
     private ArrayList<Box> boxes;
     private ArrayList<PowerUp> powerUps;
     private Timer timer;
-    private boolean tovabb; //ehelyett majd a hatótávot kell csekkolni
+    //private boolean tovabb; //ehelyett majd a hatótávot kell csekkolni
+    private int toUp, toRight, toDown, toLeft;
 
 
     public GameModel() {
@@ -63,13 +64,16 @@ public class GameModel {
     }
 
     public void placeBomb(Player player) {
-        final Bomb bomb = new Bomb(player.x, player.y);
+        final Bomb bomb = new Bomb(player.x, player.y, 2);
         this.bombs.add(bomb);
-        this.tovabb = true;
+        this.toUp = 0;
+        this.toRight = 0;
+        this.toDown = 0;
+        this.toLeft = 0;
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                explosion(bomb.x, bomb.y);
+                explosion(bomb.x, bomb.y, bomb.getRadius());
                 player.addBomb();
                 GameModel.this.bombs.remove(bomb);
                 //bomb = null; //állítólag így már nem hivatkozik rá semmi, ezért törölve lesz
@@ -77,43 +81,87 @@ public class GameModel {
         }, 2000);
     }
 
-    private void explosion(double bombX, double bombY){
-        //először csak azt nézem, hogy jobbra mizu
+    private void explosion(double bombX, double bombY, int radius){
+        rightExplosion(bombX, bombY, radius);
+        leftExplosion(bombX, bombY, radius);
+        upExplosion(bombX, bombY, radius);
+        downExplosion(bombX, bombY, radius);
+    }
+    private void rightExplosion(double bombX, double bombY, int radius){
         if (checkForWall(bombY, bombX, bombX+40)){
             System.out.println("Jobbra fal volt, nem történik semmi");
         } else {
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX+40, bombY);
-            int playerDeath = checkForPlayer(bombY, bombX, bombX+40);
+            int playerDeath = checkForPlayer(bombY, bombX, bombX+40, true);
             if (playerDeath >= 0){
                 //valamelyik játékos meghalt
                 System.out.println(playerDeath + ". játékos meghalt");
             } /*szörny és doboz check*/ else {
                 System.out.println("Nem volt ott semmi");
-                if(tovabb){
-                    tovabb = false;
-                    explosion(bombX+40, bombY);
+                if(this.toRight < radius-1){
+                    this.toRight++;
+                    rightExplosion(bombX+40, bombY, radius);
                 }
             }
         }
-        //balra mizu
-        /*if (checkForWall(bombY, bombX, bombX-40)){
+    }
+    private void leftExplosion(double bombX, double bombY, int radius){
+        if (checkForWall(bombY, bombX-40, bombX)){
             System.out.println("Balra fal volt, nem történik semmi");
         } else {
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX-40, bombY);
-            int playerDeath = checkForPlayer(bombY, bombX, bombX-40);
+            int playerDeath = checkForPlayer(bombY, bombX-40, bombX, true);
             if (playerDeath >= 0){
                 //valamelyik játékos meghalt
                 System.out.println(playerDeath + ". játékos meghalt");
-            } szörny és doboz check else {
+            } /*szörny és doboz check*/ else {
                 System.out.println("Nem volt ott semmi");
-                if(tovabb){
-                    tovabb = false;
-                    explosion(bombX-40, bombY);
+                if(this.toLeft < radius-1){
+                    this.toLeft++;
+                    leftExplosion(bombX-40, bombY, radius);
                 }
             }
-        }*/
+        }
+    }
+    private void upExplosion(double bombX, double bombY, int radius){
+        if (checkForWall(bombX, bombY-40, bombY)){
+            System.out.println("Felfelé fal volt, nem történik semmi");
+        } else {
+            //nem volt fal -> kirajzoljuk a bombát
+            drawExposion(bombX, bombY-40);
+            int playerDeath = checkForPlayer(bombX, bombY-40, bombY, false);
+            if (playerDeath >= 0){
+                //valamelyik játékos meghalt
+                System.out.println(playerDeath + ". játékos meghalt");
+            } /*szörny és doboz check*/ else {
+                System.out.println("Nem volt ott semmi");
+                if(this.toUp < radius-1){
+                    this.toUp++;
+                    upExplosion(bombX, bombY-40, radius);
+                }
+            }
+        }
+    }
+    private void downExplosion(double bombX, double bombY, int radius){
+        if (checkForWall(bombX, bombY, bombY+40)){
+            System.out.println("Felfelé fal volt, nem történik semmi");
+        } else {
+            //nem volt fal -> kirajzoljuk a bombát
+            drawExposion(bombX, bombY+40);
+            int playerDeath = checkForPlayer(bombX, bombY, bombY+40, false);
+            if (playerDeath >= 0){
+                //valamelyik játékos meghalt
+                System.out.println(playerDeath + ". játékos meghalt");
+            } /*szörny és doboz check*/ else {
+                System.out.println("Nem volt ott semmi");
+                if(this.toDown < radius-1){
+                    this.toDown++;
+                    downExplosion(bombX, bombY+40, radius);
+                }
+            }
+        }
     }
 
     private void drawExposion(double x, double y){
@@ -127,20 +175,26 @@ public class GameModel {
         }, 200);
     }
 
-    private int checkForPlayer(double same, double smaller, double bigger){
+    private int checkForPlayer(double same, double smaller, double bigger, boolean isHorizontal){
         for (int i = 0; i < 2; i++) {
             double x = this.players.get(i).x;
             double y = this.players.get(i).y;
-            if(same == y && isBetween(x, smaller, bigger)){
-                return i;
+            if(isHorizontal){
+                if(same == y && isBetween(x, smaller, bigger)){
+                    return i;
+                }
+            } else {
+                if(same == x && isBetween(y, smaller, bigger)){
+                    return i;
+                }
             }
         }
         return -1; //egyik játékos sem halt meg
     }
 
-    private boolean checkForWall(double bombY, double smaller, double bigger){
+    private boolean checkForWall(double same, double smaller, double bigger){
         for(Wall wall : this.walls){
-            if(bombY == wall.y && isBetween(wall.x, smaller, bigger)){
+            if(same == wall.y && isBetween(wall.x, smaller, bigger)){
                 return true;
             }
         }
