@@ -1,11 +1,14 @@
 package com.example.demo.Model;
 
+import javafx.fxml.FXML;
+
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class Control {
+    private final int SIZE = 40;
     private boolean isMoving0 = false;
     private boolean isMoving1 = false;
     GameModel gm;
@@ -15,7 +18,7 @@ public class Control {
 
     public void moveCharacter(String direction, int playerId){
         Player player = gm.players.get(playerId);
-        if(intersection(player, gm.walls, direction) && intersection(player, gm.bombs, direction)){
+        if(playerIntersectsEntity(player, direction)){
             switch(direction){
                 case "UP" -> move(0, -4, playerId);
                 case "DOWN" -> move(0, 4, playerId);
@@ -34,23 +37,67 @@ public class Control {
         System.out.println("Bomba lehelyezése");
     }
 
-    private boolean intersection(Player player, ArrayList<? extends Entity> entities, String direction){
-        for (Entity entity : entities) {
+    private boolean playerIntersectsEntity(Player player, String direction){
+        double x = player.x;
+        double y = player.y;
+        for (Wall wall : gm.walls) {
             if (Objects.equals(direction, "DOWN")) {
-                if (player.y + 40 == entity.y *40 && player.x == entity.x*40) return false;
+                System.out.println(checkInteraction(x, y+SIZE, wall.x, wall.y));
+                if (checkInteraction(x, y+SIZE, wall.x, wall.y)) return false;
             }
             if (Objects.equals(direction, "UP")) {
-                if (player.y - 40 == entity.y*40 && player.x == entity.x*40) return false;
+                System.out.println(checkInteraction(x, y-SIZE, wall.x, wall.y));
+                if (checkInteraction(x, y-SIZE, wall.x, wall.y)) return false;
             }
             if (Objects.equals(direction, "LEFT")) {
-                if (player.y == entity.y*40 && player.x - 40 == entity.x*40) return false;
+                if (checkInteraction(x-SIZE, y, wall.x, wall.y)) return false;
             }
             if (Objects.equals(direction, "RIGHT")) {
-                if (player.y == entity.y*40 && player.x + 40 == entity.x*40) return false;
+                if (checkInteraction(x+SIZE, y, wall.x, wall.y)) return false;
+            }
+        }
+        for (Player wall : gm.players) {
+            if (Objects.equals(direction, "DOWN")) {
+                System.out.println(checkInteraction(x, y+SIZE, wall.x, wall.y));
+                if (checkInteraction(x, y+SIZE, wall.x, wall.y)) return false;
+            }
+            if (Objects.equals(direction, "UP")) {
+                System.out.println(checkInteraction(x, y-SIZE, wall.x, wall.y));
+                if (checkInteraction(x, y-SIZE, wall.x, wall.y)) return false;
+            }
+            if (Objects.equals(direction, "LEFT")) {
+                if (checkInteraction(x-SIZE, y, wall.x, wall.y)) return false;
+            }
+            if (Objects.equals(direction, "RIGHT")) {
+                if (checkInteraction(x+SIZE, y, wall.x, wall.y)) return false;
+            }
+        }
+        for (Bomb wall : gm.bombs) {
+            if (Objects.equals(direction, "DOWN")) {
+                System.out.println(checkInteraction(x, y+SIZE, wall.x, wall.y));
+                if (checkInteraction(x, y+SIZE, wall.x, wall.y)) return false;
+            }
+            if (Objects.equals(direction, "UP")) {
+                System.out.println(checkInteraction(x, y-SIZE, wall.x, wall.y));
+                if (checkInteraction(x, y-SIZE, wall.x, wall.y)) return false;
+            }
+            if (Objects.equals(direction, "LEFT")) {
+                if (checkInteraction(x-SIZE, y, wall.x, wall.y)) return false;
+            }
+            if (Objects.equals(direction, "RIGHT")) {
+                if (checkInteraction(x+SIZE, y, wall.x, wall.y)) return false;
             }
         }
         return true;
     }
+
+    private boolean checkInteraction(double x1, double y1, double x2, double y2) {
+        if (x1 + SIZE - 1 < x2 || x2 + SIZE - 1 < x1 || y1 + SIZE - 1 < y2 || y2 + SIZE - 1 < y1) {
+            return false;
+        }
+        return true;
+    }
+
 
     private void move(int x, int y, int player) {
         if (player == 0){
