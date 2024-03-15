@@ -68,10 +68,14 @@ public class GameModel {
         Player player2 = new Player(440,360);
         player1.addBomb();
         player2.addBomb();
-        PowerUp p = new PowerUp(0,0,PowerUpType.ROLLERSKATE);
-        PowerUp p2 = new PowerUp(0,0,PowerUpType.SNAIL);
-        player1.addPowerUp(p2);
-        player2.addPowerUp(new PowerUp(0,0, PowerUpType.SMALLERRADIUS));
+
+        //powerUp-ok kipróbálása:
+        //PowerUp p = new PowerUp(0,0,PowerUpType.ROLLERSKATE);
+        //PowerUp p2 = new PowerUp(0,0,PowerUpType.SNAIL);
+        //player1.addPowerUp(p2);
+        //player2.addPowerUp(new PowerUp(0,0, PowerUpType.SMALLERRADIUS));
+        //player2.addPowerUp(new PowerUp(0,0, PowerUpType.IMMADIATEBOMB));
+
         this.players.add(player1);
         this.players.add(player2);
     }
@@ -233,6 +237,20 @@ public class GameModel {
             }
         }
         return false;
+    }
+
+    public void checkImmadiateBombs(){
+        //valahogy meg lehet azt csinálni, hogy csak akkor kerüljön ez bele a gameloopba, ha az ????????????????????
+        //adott játékos felveszi a powerupot?
+        for (int i = 0; i < 2; i++) {
+            Player player = players.get(i);
+            if(player.hasPowerUp(PowerUpType.IMMADIATEBOMB)){
+                if(player.getCountOfBombs() > 0){
+                    placeBomb(player);
+                    player.removeBomb();
+                }
+            }
+        }
     }
 
     private boolean isBetween(double value, double smaller, double bigger){

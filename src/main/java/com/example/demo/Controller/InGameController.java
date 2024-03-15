@@ -90,6 +90,7 @@ public class InGameController {
         createPlayers(gm.players);
         createMonsters(gm.monsters);
         createExplosion(gm.explosions);
+        gm.checkImmadiateBombs();
     }
 
     public void createWalls(ArrayList<Wall> walls) {
