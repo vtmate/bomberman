@@ -19,13 +19,39 @@ public class Control {
     public void moveCharacter(String direction, int playerId){
         Player player = gm.players.get(playerId);
         if(playerIntersectsEntity(player, direction)){
-            switch(direction){
-                case "UP" -> move(0, -4, playerId);
-                case "DOWN" -> move(0, 4, playerId);
-                case "LEFT" -> move(-4, 0, playerId);
-                case "RIGHT" -> move(4, 0, playerId);
+            //ha van adott powerupja emberünknek, akkor ez így fusson le
+            if(hasPowerUp(player, PowerUpType.SNAIL)){ //ez mondjuk lehetne osztályszintű metódusa a player-nek
+                switch(direction){
+                    case "UP" -> move(0, -1, playerId, 40);
+                    case "DOWN" -> move(0, 1, playerId, 40);
+                    case "LEFT" -> move(-1, 0, playerId, 40);
+                    case "RIGHT" -> move(1, 0, playerId, 40);
+                }
+            } else if(hasPowerUp(player, PowerUpType.ROLLERSKATE)){
+                switch(direction){
+                    case "UP" -> move(0, -8, playerId, 5);
+                    case "DOWN" -> move(0, 8, playerId, 5);
+                    case "LEFT" -> move(-8, 0, playerId, 5);
+                    case "RIGHT" -> move(8, 0, playerId, 5);
+                }
+            } else {
+                switch(direction){
+                    case "UP" -> move(0, -4, playerId, 10);
+                    case "DOWN" -> move(0, 4, playerId, 10);
+                    case "LEFT" -> move(-4, 0, playerId, 10);
+                    case "RIGHT" -> move(4, 0, playerId, 10);
+                }
             }
         }
+    }
+
+    public boolean hasPowerUp(Player player, PowerUpType powerUp){
+        for (PowerUpType powerUpType : player.getPowerUps()) {
+            if (powerUpType == powerUp) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void placeBomb(int playerId) {
@@ -72,7 +98,7 @@ public class Control {
     }
 
 
-    private void move(int x, int y, int player) {
+    private void move(int x, int y, int player, int iteration) {
         if (player == 0){
             if (isMoving0) {
                 return;
@@ -86,40 +112,33 @@ public class Control {
             isMoving1 = true;
 
         }
-        moveMove(x, y, player);
+        moveMove(x, y, player, iteration);
     }
 
-    private void moveMove(int x, int y, int player) {
+    private void moveMove(int x, int y, int player, int iteration) {
         Timer timer = new Timer();
 
-        // Időzített feladat definiálása
         TimerTask task = new TimerTask() {
-            int count = 0; // Változó a függvényhívások számának nyomon követésére
+            int count = 0;
 
             @Override
             public void run() {
-                // Függvényhívás
                 gm.players.get(player).x += x;
                 gm.players.get(player).y += y;
 
-                // Növeljük a hívások számát
                 count++;
 
-                // Ha elérjük az öt hívást, leállítjuk a timert
-                if (count == 10) {
+                if (count == iteration) {
                     if (player == 0) {
                         isMoving0 = false;
                     }
                     else {
                         isMoving1 = false;
                     }
-
                     timer.cancel();
                 }
             }
         };
-
-        // Időzített feladatok ütemezése
         timer.scheduleAtFixedRate(task, 0, 10);
     }
 }
