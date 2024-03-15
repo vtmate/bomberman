@@ -20,14 +20,14 @@ public class Control {
         Player player = gm.players.get(playerId);
         if(playerIntersectsEntity(player, direction)){
             //ha van adott powerupja emberünknek, akkor ez így fusson le
-            if(hasPowerUp(player, PowerUpType.SNAIL)){ //ez mondjuk lehetne osztályszintű metódusa a player-nek
+            if(player.hasPowerUp(PowerUpType.SNAIL)){ //ez mondjuk lehetne osztályszintű metódusa a player-nek
                 switch(direction){
                     case "UP" -> move(0, -1, playerId, 40);
                     case "DOWN" -> move(0, 1, playerId, 40);
                     case "LEFT" -> move(-1, 0, playerId, 40);
                     case "RIGHT" -> move(1, 0, playerId, 40);
                 }
-            } else if(hasPowerUp(player, PowerUpType.ROLLERSKATE)){
+            } else if(player.hasPowerUp(PowerUpType.ROLLERSKATE)){
                 switch(direction){
                     case "UP" -> move(0, -8, playerId, 5);
                     case "DOWN" -> move(0, 8, playerId, 5);
@@ -43,15 +43,6 @@ public class Control {
                 }
             }
         }
-    }
-
-    public boolean hasPowerUp(Player player, PowerUpType powerUpType){
-        for (PowerUp playerPowerUp : player.getPowerUps()) {
-            if (playerPowerUp.getPowerUpType() == powerUpType){
-                return true;
-            }
-        }
-        return false;
     }
 
     public void moveMonster(Monster monster) {

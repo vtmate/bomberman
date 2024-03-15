@@ -71,12 +71,20 @@ public class GameModel {
         PowerUp p = new PowerUp(0,0,PowerUpType.ROLLERSKATE);
         PowerUp p2 = new PowerUp(0,0,PowerUpType.SNAIL);
         player1.addPowerUp(p2);
+        player2.addPowerUp(new PowerUp(0,0, PowerUpType.SMALLERRADIUS));
         this.players.add(player1);
         this.players.add(player2);
     }
 
     public void placeBomb(Player player) {
-        final Bomb bomb = new Bomb(player.x, player.y, 2);
+        Bomb bomb;
+        if(player.hasPowerUp(PowerUpType.BIGGERRADIUS)){
+            bomb = new Bomb(player.x, player.y, 3);
+        } else if(player.hasPowerUp(PowerUpType.SMALLERRADIUS)){
+            bomb = new Bomb(player.x, player.y, 1);
+        } else {
+            bomb = new Bomb(player.x, player.y, 2);
+        }
         this.bombs.add(bomb);
         timer.schedule(new TimerTask() {
             @Override

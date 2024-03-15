@@ -21,4 +21,12 @@ public class Player extends Entity{
     public void addPowerUp(PowerUp powerUp){
         powerUps.add(powerUp);
     }
+    public boolean hasPowerUp(PowerUpType powerUpType){
+        for (PowerUp playerPowerUp : getPowerUps()) {
+            if (playerPowerUp.getPowerUpType() == powerUpType){
+                return true;
+            }
+        }
+        return false;
+    }
 }
