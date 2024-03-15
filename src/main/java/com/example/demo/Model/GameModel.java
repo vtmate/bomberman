@@ -7,7 +7,7 @@ import java.util.TimerTask;
 public class GameModel {
     public ArrayList<Wall> walls;
     public ArrayList<Player> players;
-    private ArrayList<Monster> monsters;
+    public ArrayList<Monster> monsters;
     public ArrayList<Bomb> bombs;
     public ArrayList<Explosion> explosions;
     private ArrayList<Box> boxes;
@@ -23,8 +23,10 @@ public class GameModel {
         this.players = new ArrayList<>();
         this.bombs = new ArrayList<>();
         this.explosions = new ArrayList<>();
+        this.monsters = new ArrayList<>();
         createBorder();
         setUpPlayers();
+        createMonsters();
         printEntity(this.players);
 
         timer = new Timer();
@@ -52,6 +54,13 @@ public class GameModel {
                 }
             }
         }
+    }
+
+    private void createMonsters() {
+        Monster monster = new Monster(40*4, 40*1);
+        monsters.add(monster);
+        monster = new Monster(40*7, 40*4);
+        monsters.add(monster);
     }
 
     private void setUpPlayers() {
