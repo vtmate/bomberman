@@ -45,9 +45,9 @@ public class Control {
         }
     }
 
-    public boolean hasPowerUp(Player player, PowerUpType powerUp){
-        for (PowerUpType powerUpType : player.getPowerUps()) {
-            if (powerUpType == powerUp) {
+    public boolean hasPowerUp(Player player, PowerUpType powerUpType){
+        for (PowerUp playerPowerUp : player.getPowerUps()) {
+            if (playerPowerUp.getPowerUpType() == powerUpType){
                 return true;
             }
         }

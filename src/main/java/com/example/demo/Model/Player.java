@@ -5,20 +5,20 @@ import java.util.ArrayList;
 public class Player extends Entity{
     private String name;
     private int countOfBombs;
-    private final ArrayList<PowerUpType> powerUps;
+    private final ArrayList<PowerUp> powerUps;
     public Player(double x, double y) {
         super(x, y);
-        this.powerUps = new ArrayList<PowerUpType>();
+        this.powerUps = new ArrayList<PowerUp>();
     }
     public int getCountOfBombs() {
         return countOfBombs;
     }
     public void addBomb() { countOfBombs++; }
     public void removeBomb() {countOfBombs--; }
-    public ArrayList<PowerUpType> getPowerUps(){
+    public ArrayList<PowerUp> getPowerUps(){
         return powerUps;
     }
-    public void addPowerUp(PowerUpType powerUp){
+    public void addPowerUp(PowerUp powerUp){
         powerUps.add(powerUp);
     }
 }

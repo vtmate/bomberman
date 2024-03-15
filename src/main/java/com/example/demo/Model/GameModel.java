@@ -68,9 +68,9 @@ public class GameModel {
         Player player2 = new Player(440,360);
         player1.addBomb();
         player2.addBomb();
-        PowerUpType p = PowerUpType.ROLLERSKATE;
-        PowerUpType p2 = PowerUpType.SNAIL;
-        player1.addPowerUp(p);
+        PowerUp p = new PowerUp(0,0,PowerUpType.ROLLERSKATE);
+        PowerUp p2 = new PowerUp(0,0,PowerUpType.SNAIL);
+        player1.addPowerUp(p2);
         this.players.add(player1);
         this.players.add(player2);
     }
