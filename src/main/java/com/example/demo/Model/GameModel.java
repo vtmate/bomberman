@@ -68,6 +68,9 @@ public class GameModel {
         Player player2 = new Player(440,360);
         player1.addBomb();
         player2.addBomb();
+        player2.addBomb();
+        player2.addBomb();
+        player2.addBomb();
 
         //powerUp-ok kipróbálása:
         //PowerUp p = new PowerUp(0,0,PowerUpType.ROLLERSKATE);
@@ -129,13 +132,20 @@ public class GameModel {
         if (checkForWall(bombY, bombX, bombX+40)){
             System.out.println("Jobbra fal volt, nem történik semmi");
         } else {
+            boolean iterate = true;
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX+40, bombY);
             int playerDeath = checkForPlayer(bombY, bombX, bombX+40, true);
             if (playerDeath >= 0){
                 //valamelyik játékos meghalt
                 System.out.println(playerDeath + ". játékos meghalt");
-            } /*szörny és doboz check*/ else {
+                iterate = false;
+            }
+            if (checkForMonster(bombY, bombX, bombX+40)){
+                System.out.println("az egyik szörny meghalt");
+                iterate = false;
+            }
+            if (iterate){
                 System.out.println("Nem volt ott semmi");
                 if(iteration < radius-1){
                     iteration++;
@@ -231,8 +241,18 @@ public class GameModel {
     }
 
     private boolean checkForWall(double same, double smaller, double bigger){
-        for(Wall wall : this.walls){
+        for(Wall wall : walls){
             if(same == wall.y && isBetween(wall.x, smaller, bigger)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkForMonster(double same, double smaller, double bigger){
+        for(Monster monster : monsters){
+            if(same == monster.y && isBetween(monster.x, smaller, bigger)){
+                monsters.remove(monster);
                 return true;
             }
         }

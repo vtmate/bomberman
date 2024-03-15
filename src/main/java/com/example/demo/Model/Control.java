@@ -55,10 +55,10 @@ public class Control {
                     }
                     if(monsterIntersectsEntity(monster, monster.direction)) {
                         switch(monster.direction){
-                            case "UP" -> monster.y -= 1;
-                            case "DOWN" -> monster.y += 1;
-                            case "LEFT" -> monster.x -= 1;
-                            case "RIGHT" -> monster.x += 1;
+                            case "UP" -> monster.y -= .1;
+                            case "DOWN" -> monster.y += .1;
+                            case "LEFT" -> monster.x -= .1;
+                            case "RIGHT" -> monster.x += .1;
                         }
                     }
                     else {
