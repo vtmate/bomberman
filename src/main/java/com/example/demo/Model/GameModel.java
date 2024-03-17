@@ -1,6 +1,12 @@
 package com.example.demo.Model;
 
+import com.example.demo.Controller.InGameController;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,12 +19,12 @@ public class GameModel {
     private ArrayList<Box> boxes;
     private ArrayList<PowerUp> powerUps;
     private Timer timer;
+
     //private boolean tovabb; //ehelyett majd a hatótávot kell csekkolni
     //private int toUp, toRight, toDown, toLeft;
 
 
     public GameModel() {
-
         this.walls = new ArrayList<>();
         this.players = new ArrayList<>();
         this.bombs = new ArrayList<>();
@@ -118,7 +124,7 @@ public class GameModel {
     }
 
     private boolean isPlayerOnBomb(double bombX, double bombY){
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < players.size(); i++) {
             double x = this.players.get(i).x;
             double y = this.players.get(i).y;
             if(bombX == x && bombY == y){
@@ -220,7 +226,7 @@ public class GameModel {
             public void run() {
                 GameModel.this.explosions.remove(explosion);
             }
-        }, 200);
+        }, 500);
     }
 
     private int checkForPlayer(double same, double smaller, double bigger, boolean isHorizontal){
@@ -262,7 +268,7 @@ public class GameModel {
     public void checkImmadiateBombs(){
         //valahogy meg lehet azt csinálni, hogy csak akkor kerüljön ez bele a gameloopba, ha az ????????????????????
         //adott játékos felveszi a powerupot?
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             if(player.hasPowerUp(PowerUpType.IMMADIATEBOMB)){
                 if(player.getCountOfBombs() > 0){

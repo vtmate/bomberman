@@ -17,7 +17,14 @@ public class Control {
     }
 
     public void moveCharacter(String direction, int playerId){
-        Player player = gm.players.get(playerId);
+        Player player;
+        try {
+            player = gm.players.get(playerId);
+        }
+        catch(Exception e) {
+            return;
+        }
+
         if(playerIntersectsEntity(player, direction)){
             //ha van adott powerupja emberünknek, akkor ez így fusson le
             if(player.hasPowerUp(PowerUpType.SNAIL)){ //ez mondjuk lehetne osztályszintű metódusa a player-nek
@@ -48,17 +55,17 @@ public class Control {
     public void moveMonster(Monster monster) {
         System.out.println("run");
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(0.01), e -> {
+                new KeyFrame(Duration.seconds(0.05), e -> {
                     if (monster.x % 40 == 0 && monster.y % 40 == 0) {
                         Random rand = new Random();
                         if (rand.nextInt(5) == 2) changeDirection(monster, monster.direction);
                     }
                     if(monsterIntersectsEntity(monster, monster.direction)) {
                         switch(monster.direction){
-                            case "UP" -> monster.y -= .1;
-                            case "DOWN" -> monster.y += .1;
-                            case "LEFT" -> monster.x -= .1;
-                            case "RIGHT" -> monster.x += .1;
+                            case "UP" -> monster.y -= 1;
+                            case "DOWN" -> monster.y += 1;
+                            case "LEFT" -> monster.x -= 1;
+                            case "RIGHT" -> monster.x += 1;
                         }
                     }
                     else {
@@ -178,6 +185,7 @@ public class Control {
         if (checkEntitiesIntersectionM(x, y, gm.walls, direction)) return false;
         if (checkEntitiesIntersection(x, y, gm.monsters, direction)) return false;
         if (checkEntitiesIntersectionM(x, y, gm.bombs, direction)) return false;
+        checkPlayer(x, y);
         return true;
     }
 
@@ -197,6 +205,14 @@ public class Control {
             }
         }
         return false;
+    }
+
+    private void checkPlayer(double x, double y) {
+        for (int i = 0; i < gm.players.size(); i++) {
+            if (checkInteraction(x, y, gm.players.get(i).x, gm.players.get(i).y)) {
+                gm.players.remove(gm.players.get(i));
+            }
+        }
     }
 
 }
