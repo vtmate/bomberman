@@ -85,12 +85,14 @@ public class GameModel {
 
     public void placeBomb(Player player) {
         Bomb bomb;
+        double x = Math.round(player.x / 40) * 40;
+        double y = Math.round(player.y / 40) * 40;
         if(player.hasPowerUp(PowerUpType.BIGGERRADIUS)){
-            bomb = new Bomb(player.x, player.y, 3);
+            bomb = new Bomb(x, y, 3);
         } else if(player.hasPowerUp(PowerUpType.SMALLERRADIUS)){
-            bomb = new Bomb(player.x, player.y, 1);
+            bomb = new Bomb(x, y, 1);
         } else {
-            bomb = new Bomb(player.x, player.y, 2);
+            bomb = new Bomb(x, y, 2);
         }
         this.bombs.add(bomb);
         timer.schedule(new TimerTask() {
