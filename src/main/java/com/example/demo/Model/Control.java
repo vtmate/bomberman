@@ -92,28 +92,20 @@ public class Control {
     private boolean checkEntitiesIntersection(double x, double y, ArrayList<? extends Entity> entities, String direction) {
         for (Entity entity : entities) {
             if (Objects.equals(direction, "DOWN")) {
-                if (checkInteraction(x, y+SIZE, entity.x, entity.y)) return true;
+                if (gm.checkInteraction(x, y+SIZE, entity.x, entity.y)) return true;
             }
             if (Objects.equals(direction, "UP")) {
-                if (checkInteraction(x, y-SIZE, entity.x, entity.y)) return true;
+                if (gm.checkInteraction(x, y-SIZE, entity.x, entity.y)) return true;
             }
             if (Objects.equals(direction, "LEFT")) {
-                if (checkInteraction(x-SIZE, y, entity.x, entity.y)) return true;
+                if (gm.checkInteraction(x-SIZE, y, entity.x, entity.y)) return true;
             }
             if (Objects.equals(direction, "RIGHT")) {
-                if (checkInteraction(x+SIZE, y, entity.x, entity.y)) return true;
+                if (gm.checkInteraction(x+SIZE, y, entity.x, entity.y)) return true;
             }
         }
         return false;
     }
-
-    private boolean checkInteraction(double x1, double y1, double x2, double y2) {
-        if (x1 + SIZE - 1 < x2 || x2 + SIZE - 1 < x1 || y1 + SIZE - 1 < y2 || y2 + SIZE - 1 < y1) {
-            return false;
-        }
-        return true;
-    }
-
 
     private void move(int x, int y, int player, int iteration) {
         if (player == 0){
@@ -184,16 +176,16 @@ public class Control {
     private boolean checkEntitiesIntersectionM(double x, double y, ArrayList<? extends Entity> entities, String direction) {
         for (Entity entity : entities) {
             if (Objects.equals(direction, "DOWN")) {
-                if (checkInteraction(x, y+1, entity.x, entity.y)) return true;
+                if (gm.checkInteraction(x, y+1, entity.x, entity.y)) return true;
             }
             if (Objects.equals(direction, "UP")) {
-                if (checkInteraction(x, y-1, entity.x, entity.y)) return true;
+                if (gm.checkInteraction(x, y-1, entity.x, entity.y)) return true;
             }
             if (Objects.equals(direction, "LEFT")) {
-                if (checkInteraction(x-1, y, entity.x, entity.y)) return true;
+                if (gm.checkInteraction(x-1, y, entity.x, entity.y)) return true;
             }
             if (Objects.equals(direction, "RIGHT")) {
-                if (checkInteraction(x+1, y, entity.x, entity.y)) return true;
+                if (gm.checkInteraction(x+1, y, entity.x, entity.y)) return true;
             }
         }
         return false;
