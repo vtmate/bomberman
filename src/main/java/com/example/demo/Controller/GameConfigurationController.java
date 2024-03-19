@@ -65,6 +65,7 @@ public class GameConfigurationController {
             ((DropShadow) mapImage2.getEffect()).setColor(Color.WHITE);
             ((DropShadow) mapImage1.getEffect()).setColor(Color.WHITE);
         });
+        gc.map = map;
     }
 
     @FXML

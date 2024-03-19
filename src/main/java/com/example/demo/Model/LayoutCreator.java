@@ -2,10 +2,10 @@ package com.example.demo.Model;
 
 public class LayoutCreator {
     private final GameModel gm;
-    private final int layoutId;
-    public LayoutCreator(GameModel gm, int layoutId){
+    private final String map;
+    public LayoutCreator(GameModel gm, String map){
         this.gm = gm;
-        this.layoutId = layoutId;
+        this.map = map;
         //layoutId alapján hozzuk létre a különböző pályákat
 
         createBorder();

@@ -25,14 +25,14 @@ public class GameModel {
     //private int toUp, toRight, toDown, toLeft;
 
 
-    public GameModel() {
+    public GameModel(String map) {
         this.walls = new ArrayList<>();
         this.players = new ArrayList<>();
         this.bombs = new ArrayList<>();
         this.explosions = new ArrayList<>();
         this.monsters = new ArrayList<>();
         //majd itt kellene megcsinálni az elégazást, hogy melyik pálya legyen meghívva
-        this.layoutCreator = new LayoutCreator(this, 0);
+        this.layoutCreator = new LayoutCreator(this, map);
             //példányosítással le is futnak az inicializáló függvények
         printEntity(this.players);
 

@@ -24,15 +24,16 @@ public class InGameController {
     private Pane gamePane;
     private GameModel gm;
     private GameController gc;
+    private String map;
 
-
-    public InGameController(GameController gc) {
+    public InGameController(GameController gc, String map) {
         this.gc = gc;
+        this.map = map;
     }
 
     public void initialize() {
 
-        this.gm = new GameModel();
+        this.gm = new GameModel(map);
         System.out.println("gamemodel created");
 
         Control control = new Control(this.gm);
