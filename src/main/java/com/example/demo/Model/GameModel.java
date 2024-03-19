@@ -19,6 +19,7 @@ public class GameModel {
     private ArrayList<Box> boxes;
     private ArrayList<PowerUp> powerUps;
     private Timer timer;
+    private LayoutCreator layoutCreator;
 
     //private boolean tovabb; //ehelyett majd a hatótávot kell csekkolni
     //private int toUp, toRight, toDown, toLeft;
@@ -30,63 +31,14 @@ public class GameModel {
         this.bombs = new ArrayList<>();
         this.explosions = new ArrayList<>();
         this.monsters = new ArrayList<>();
-        createBorder();
-        setUpPlayers();
-        createMonsters();
+        //majd itt kellene megcsinálni az elégazást, hogy melyik pálya legyen meghívva
+        this.layoutCreator = new LayoutCreator(this, 0);
+            //példányosítással le is futnak az inicializáló függvények
         printEntity(this.players);
 
         timer = new Timer();
 
         System.out.println("Created GameModel");
-    }
-
-    public void createBorder() {
-        for (int i = 0; i < 13; i++) {
-            for (int j = 0; j < 11; j++) {
-                if ( i == 0 || i == 12) {
-                    Wall wall = new Wall(i*40, j*40);
-                    this.walls.add(wall);
-                } else {
-                    if ( j == 0 || j == 10) {
-                        Wall wall = new Wall(i*40, j*40);
-                        this.walls.add(wall);
-                    }
-                    else {
-                        if ( i % 2 == 0 && j % 2 == 0) {
-                            Wall wall = new Wall(i*40, j*40);
-                            this.walls.add(wall);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void createMonsters() {
-        Monster monster = new Monster(40*4, 40*1);
-        monsters.add(monster);
-        monster = new Monster(40*7, 40*4);
-        monsters.add(monster);
-    }
-
-    private void setUpPlayers() {
-        Player player1 = new Player(40,40, 0);
-        Player player2 = new Player(440,360, 1);
-        player1.addBomb();
-        player2.addBomb();
-        player2.addBomb();
-        player2.addBomb();
-        player2.addBomb();
-
-        //powerUp-ok kipróbálása:
-        //PowerUp p = new PowerUp(0,0,PowerUpType.ROLLERSKATE);
-        //PowerUp p2 = new PowerUp(0,0,PowerUpType.SNAIL);
-        //player1.addPowerUp(p2);
-        //player2.addPowerUp(new PowerUp(0,0, PowerUpType.SMALLERRADIUS));
-        //player2.addPowerUp(new PowerUp(0,0, PowerUpType.IMMADIATEBOMB));
-
-        this.players.add(player1);
-        this.players.add(player2);
     }
 
     public void placeBomb(Player player) {
