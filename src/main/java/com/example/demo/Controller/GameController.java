@@ -13,6 +13,8 @@ public class GameController {
     Stage stage;
     FXMLLoader fxmlLoader;
     String map;
+    protected String playerName1;
+    protected String playerName2;
 
     public GameController(Stage stage) throws IOException {
         this.stage = stage;
@@ -26,7 +28,7 @@ public class GameController {
             case "mainPage" -> this.fxmlLoader.setController(new MainPageController(this));
             case "gameConfiguration" -> this.fxmlLoader.setController(new GameConfigurationController(this));
             case "description" -> this.fxmlLoader.setController(new MainPageController(this));
-            case "inGame" -> this.fxmlLoader.setController(new InGameController(this, map));
+            case "inGame" -> this.fxmlLoader.setController(new InGameController(this, playerName1, playerName2, map));
         }
 
         Parent root = this.fxmlLoader.load();
