@@ -11,6 +11,7 @@ public class Control {
     private final int SIZE = 40;
     private boolean isMoving0 = false;
     private boolean isMoving1 = false;
+    private Timeline monsterTimeline;
     GameModel gm;
     public Control(GameModel gm) {
         this.gm = gm;
@@ -55,29 +56,7 @@ public class Control {
     }
 
     public void moveMonster(Monster monster) {
-        System.out.println("run");
-        Timeline timeline = new Timeline(
-                new KeyFrame(Duration.seconds(0.05), e -> {
-                    if (monster.x % 40 == 0 && monster.y % 40 == 0) {
-                        Random rand = new Random();
-                        if (rand.nextInt(5) == 2) changeDirection(monster, monster.direction);
-                    }
-                    if(monsterIntersectsEntity(monster, monster.direction)) {
-                        switch(monster.direction){
-                            case "UP" -> monster.y -= 1;
-                            case "DOWN" -> monster.y += 1;
-                            case "LEFT" -> monster.x -= 1;
-                            case "RIGHT" -> monster.x += 1;
-                        }
-                    }
-                    else {
-                        changeDirection(monster, monster.direction);
-                    }
-
-                })
-        );
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+        monster.moveMonster(this);
     }
 
     public void placeBomb(int playerId) {
@@ -161,7 +140,7 @@ public class Control {
         timer.scheduleAtFixedRate(task, 0, 10);
     }
 
-    private void changeDirection(Monster monster, String direction) {
+    public void changeDirection(Monster monster, String direction) {
         ArrayList<String> directions = new ArrayList<>(Arrays.asList("UP", "DOWN", "LEFT", "RIGHT"));
         String newDirection = direction;
         Random rand = new Random();
@@ -174,7 +153,7 @@ public class Control {
         monster.direction = newDirection;
     }
 
-    private boolean monsterIntersectsEntity(Monster monster, String direction){
+    public boolean monsterIntersectsEntity(Monster monster, String direction){
         double x = monster.x;
         double y = monster.y;
         if (checkEntitiesIntersectionM(x, y, gm.walls, direction)) return false;
