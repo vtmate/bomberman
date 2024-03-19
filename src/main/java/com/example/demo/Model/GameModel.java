@@ -234,6 +234,8 @@ public class GameModel {
         for(Monster monster : monsters){
             if(checkInteraction(monster.x, monster.y, expX, expY)){
                 monsters.remove(monster);
+                monster.stop();
+                monster = null;
                 return true;
             }
         }
