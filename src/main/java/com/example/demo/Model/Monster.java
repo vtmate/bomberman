@@ -17,7 +17,6 @@ public class Monster extends Entity{
         System.out.println("run");
         monsterTimeline = new Timeline(
                 new KeyFrame(Duration.seconds(0.05), e -> {
-                    System.out.println(this.x);
                     if (this.x % 40 == 0 && this.y % 40 == 0) {
                         Random rand = new Random();
                         if (rand.nextInt(5) == 2) control.changeDirection(this, this.direction);

@@ -51,21 +51,22 @@ public class GameConfigurationController {
             ((DropShadow) mapImage1.getEffect()).setColor(Color.YELLOW);
             ((DropShadow) mapImage2.getEffect()).setColor(Color.WHITE);
             ((DropShadow) mapImage3.getEffect()).setColor(Color.WHITE);
-
+            gc.map = map;
         });
         mapImage2.setOnMouseClicked(event ->  {
             map = "Pokol";
             ((DropShadow) mapImage2.getEffect()).setColor(Color.YELLOW);
             ((DropShadow) mapImage1.getEffect()).setColor(Color.WHITE);
             ((DropShadow) mapImage3.getEffect()).setColor(Color.WHITE);
+            gc.map = map;
         });
         mapImage3.setOnMouseClicked(event ->  {
             map = "Vadnyugat";
             ((DropShadow) mapImage3.getEffect()).setColor(Color.YELLOW);
             ((DropShadow) mapImage2.getEffect()).setColor(Color.WHITE);
             ((DropShadow) mapImage1.getEffect()).setColor(Color.WHITE);
+            gc.map = map;
         });
-        gc.map = map;
     }
 
     @FXML

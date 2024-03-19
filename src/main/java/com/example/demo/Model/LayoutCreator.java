@@ -6,34 +6,62 @@ public class LayoutCreator {
     public LayoutCreator(GameModel gm, String map){
         this.gm = gm;
         this.map = map;
-        //layoutId alapján hozzuk létre a különböző pályákat
+        System.out.println("map: " + map);
 
-        createBorder();
+        createWalls();
         setUpPlayers();
         createMonsters();
     }
 
-    private void createBorder() {
-        for (int i = 0; i < 13; i++) {
-            for (int j = 0; j < 11; j++) {
-                if ( i == 0 || i == 12) {
-                    Wall wall = new Wall(i*40, j*40);
-                    gm.walls.add(wall);
-                } else {
-                    if ( j == 0 || j == 10) {
-                        Wall wall = new Wall(i*40, j*40);
-                        gm.walls.add(wall);
-                    }
-                    else {
-                        if ( i % 2 == 0 && j % 2 == 0) {
-                            Wall wall = new Wall(i*40, j*40);
-                            gm.walls.add(wall);
-                        }
-                    }
-                }
+    private void createWalls() {
+
+        for (int i = 0; i < 13; i++) { //felső és alsó sor
+            gm.walls.add(new Wall(i*40, 0));
+            gm.walls.add(new Wall(i*40,40*10));
+        }
+        for (int i = 1; i < 11; i++) { //bal és jobb oszlop
+            gm.walls.add(new Wall(0, i*40));
+            gm.walls.add(new Wall(12*40,i*40));
+        }
+
+        switch(map){
+            case "Dzsungel":
+                createDzsungel();
+                break;
+            case "Pokol":
+                createPokol();
+                break;
+            default:
+                createVadnyugat();
+        }
+    }
+
+    private void createDzsungel(){
+        for (int i = 2; i < 11; i+=2) {
+            for (int j = 2; j < 9; j+=2) {
+                gm.walls.add(new Wall(i*40, j*40));
             }
         }
     }
+    private void createPokol(){
+        for (int i = 2; i < 11; i+=2) {
+            gm.walls.add(new Wall(i*40, 2*40));
+            gm.walls.add(new Wall(i*40, 3*40));
+            gm.walls.add(new Wall(i*40, 7*40));
+            gm.walls.add(new Wall(i*40, 8*40));
+        }
+        for (int i = 1; i < 12; i+=2) {
+            gm.walls.add(new Wall(i*40, 5*40));
+        }
+    }
+    private void createVadnyugat(){
+        for (int i = 1; i < 9; i++) {
+            gm.walls.add(new Wall(3*40, i*40));
+            gm.walls.add(new Wall(9*40, (i+1) *40));
+        }
+
+    }
+
     private void setUpPlayers() {
         Player player1 = new Player(40,40, 0);
         Player player2 = new Player(440,360, 1);
