@@ -68,7 +68,7 @@
                      <font>
                         <Font name="Arial Black" size="24.0" />
                      </font></Label>
-                  <ImageView fitHeight="201.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <ImageView fx:id="mapImage1" fitHeight="201.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <image>
                         <Image url="@../../../bg.jpg" />
                      </image>
@@ -80,7 +80,7 @@
                         </DropShadow>
                      </effect>
                   </ImageView>
-                  <ImageView fitHeight="201.0" fitWidth="200.0" layoutX="62.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                  <ImageView fx:id="mapImage2" fitHeight="201.0" fitWidth="200.0" layoutX="62.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                      <image>
                         <Image url="@../../../bg.jpg" />
                      </image>
@@ -92,7 +92,7 @@
                         </DropShadow>
                      </effect>
                   </ImageView>
-                  <ImageView fitHeight="201.0" fitWidth="200.0" layoutX="462.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+                  <ImageView fx:id="mapImage3" fitHeight="201.0" fitWidth="200.0" layoutX="462.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER">
                      <image>
                         <Image url="@../../../bg.jpg" />
                      </image>
@@ -117,12 +117,12 @@
                 <RowConstraints maxHeight="155.0" minHeight="10.0" prefHeight="141.00000190734863" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField prefHeight="23.0" prefWidth="350.0" GridPane.rowIndex="1">
+                  <TextField fx:id="playerNameInput1" prefHeight="23.0" prefWidth="350.0" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="50.0" right="50.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="playerNameInput2" prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="50.0" right="50.0" />
                      </GridPane.margin>

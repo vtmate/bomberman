@@ -23,7 +23,7 @@ public class GameController {
 
         switch (name) {
             case "mainPage" -> this.fxmlLoader.setController(new MainPageController(this));
-            case "gameConfiguration" -> this.fxmlLoader.setController(new MainPageController(this));
+            case "gameConfiguration" -> this.fxmlLoader.setController(new GameConfigurationController(this));
             case "description" -> this.fxmlLoader.setController(new MainPageController(this));
             case "inGame" -> this.fxmlLoader.setController(new InGameController(this));
         }

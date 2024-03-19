@@ -42,12 +42,6 @@ public class MainPageController {
     }
 
     @FXML
-    protected void goToInGame() throws IOException {
-        System.out.println("Játszma");
-        this.gc.changeScene("inGame");
-    }
-
-    @FXML
     protected void exitGame() throws IOException {
         exit();
     }
