@@ -18,12 +18,14 @@ public class Control {
 
     public void moveCharacter(String direction, int playerId){
         Player player;
-        try {
-            player = gm.players.get(playerId);
+        if (gm.getPlayer(playerId) != null) {
+            player = gm.getPlayer(playerId);
         }
-        catch(Exception e) {
+        else {
             return;
         }
+
+
 
         if(playerIntersectsEntity(player, direction)){
             //ha van adott powerupja emberünknek, akkor ez így fusson le
@@ -79,7 +81,7 @@ public class Control {
     }
 
     public void placeBomb(int playerId) {
-        Player player = gm.players.get(playerId);
+        Player player = gm.getPlayer(playerId);
         if (player.getCountOfBombs() > 0) {
             gm.placeBomb(player);
             player.removeBomb();
@@ -114,8 +116,8 @@ public class Control {
         return false;
     }
 
-    private void move(int x, int y, int player, int iteration) {
-        if (player == 0){
+    private void move(int x, int y, int playerId, int iteration) {
+        if (playerId == 0){
             if (isMoving0) {
                 return;
             }
@@ -128,10 +130,10 @@ public class Control {
             isMoving1 = true;
 
         }
-        moveMove(x, y, player, iteration);
+        moveMove(x, y, playerId, iteration);
     }
 
-    private void moveMove(int x, int y, int player, int iteration) {
+    private void moveMove(int x, int y, int playerId, int iteration) {
         Timer timer = new Timer();
 
         TimerTask task = new TimerTask() {
@@ -139,13 +141,14 @@ public class Control {
 
             @Override
             public void run() {
-                gm.players.get(player).x += x;
-                gm.players.get(player).y += y;
+                if (gm.getPlayer(playerId) == null) return;
+                gm.getPlayer(playerId).x += x;
+                gm.getPlayer(playerId).y += y;
 
                 count++;
 
                 if (count == iteration) {
-                    if (player == 0) {
+                    if (playerId == 0) {
                         isMoving0 = false;
                     }
                     else {

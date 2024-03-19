@@ -70,8 +70,8 @@ public class GameModel {
     }
 
     private void setUpPlayers() {
-        Player player1 = new Player(40,40);
-        Player player2 = new Player(440,360);
+        Player player1 = new Player(40,40, 0);
+        Player player2 = new Player(440,360, 1);
         player1.addBomb();
         player2.addBomb();
         player2.addBomb();
@@ -253,7 +253,7 @@ public class GameModel {
     }
 
     private int checkForPlayer(double same, double smaller, double bigger, boolean isHorizontal){
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < players.size(); i++) {
             double x = this.players.get(i).x;
             double y = this.players.get(i).y;
             if(isHorizontal){
@@ -318,5 +318,12 @@ public class GameModel {
             return false;
         }
         return true;
+    }
+
+    public Player getPlayer(int playerId) {
+        for (Player player : players) {
+            if (player.id == playerId) return player;
+        }
+        return null;
     }
 }

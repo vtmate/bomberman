@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 public class Player extends Entity{
     private String name;
+    public int id;
     private int countOfBombs;
     private final ArrayList<PowerUp> powerUps;
-    public Player(double x, double y) {
+    public Player(double x, double y, int id) {
         super(x, y);
+        this.id = id;
         this.powerUps = new ArrayList<PowerUp>();
     }
     public int getCountOfBombs() {
