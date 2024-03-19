@@ -16,7 +16,7 @@ public class GameModel {
     public ArrayList<Monster> monsters;
     public ArrayList<Bomb> bombs;
     public ArrayList<Explosion> explosions;
-    private ArrayList<Box> boxes;
+    public ArrayList<Box> boxes;
     private ArrayList<PowerUp> powerUps;
     private Timer timer;
     private LayoutCreator layoutCreator;
@@ -31,6 +31,7 @@ public class GameModel {
         this.bombs = new ArrayList<>();
         this.explosions = new ArrayList<>();
         this.monsters = new ArrayList<>();
+        this.boxes = new ArrayList<>();
         //majd itt kellene megcsinálni az elégazást, hogy melyik pálya legyen meghívva
         this.layoutCreator = new LayoutCreator(this, map);
             //példányosítással le is futnak az inicializáló függvények

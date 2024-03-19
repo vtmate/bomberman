@@ -11,6 +11,11 @@ public class LayoutCreator {
         createWalls();
         setUpPlayers();
         createMonsters();
+        createBoxes();
+    }
+
+    private void createBoxes(){
+        gm.boxes.add(new Box(6*40, 5*40));
     }
 
     private void createWalls() {

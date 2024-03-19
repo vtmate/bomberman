@@ -77,9 +77,6 @@ public class InGameController {
             }
         });
 
-        /*createWalls(gm.walls);
-        createPlayers(gm.players);*/
-
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0.033), e -> {
                     refresh();
@@ -103,10 +100,8 @@ public class InGameController {
         };
         timer.start();
 
-
         control.moveMonster(gm.monsters.getFirst());
         control.moveMonster(gm.monsters.get(1));
-
     }
 
     @FXML //ezt egyenlőre nem használjuk, majd arra kell, hogy a játékból vissza tudjunk menni a főoldalra (esc)
@@ -123,9 +118,22 @@ public class InGameController {
         createPlayers(gm.players);
         createMonsters(gm.monsters);
         createExplosion(gm.explosions);
+        createBoxes(gm.boxes);
         gm.checkImmadiateBombs();
     }
 
+    private void createBoxes(ArrayList<Box> boxes){
+        int size = 40;
+        for (Box box : boxes) {
+            Rectangle r = new Rectangle();
+            r.setX(box.x);
+            r.setY(box.y);
+            r.setFill(Color.SADDLEBROWN);
+            r.setWidth(size);
+            r.setHeight(size);
+            this.gamePane.getChildren().add(r);
+        }
+    }
     public void createWalls(ArrayList<Wall> walls) {
         int size = 40;
         for (Wall wall : walls) {
