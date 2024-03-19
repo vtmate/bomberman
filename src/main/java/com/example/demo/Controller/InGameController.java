@@ -2,12 +2,14 @@ package com.example.demo.Controller;
 
 import com.example.demo.BombermanApplication;
 import com.example.demo.Model.*;
+import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -22,17 +24,31 @@ public class InGameController {
     private final int HEIGHT = 600;
     @FXML
     private Pane gamePane;
+    @FXML
+    private Label playerNameLabel1;
+    @FXML
+    private Label playerNameLabel2;
+    @FXML
+    private Label timerLabel;
     private GameModel gm;
     private GameController gc;
     private String map;
 
-    public InGameController(GameController gc, String map) {
+    private String playerName1;
+    private String playerName2;
+    private long startTime;
+
+    public InGameController(GameController gc, String playerName1, String playerName2, String map) {
         this.gc = gc;
+        this.playerName1 = playerName1;
+        System.out.println("Játékosnév: " + playerName1);
+        this.playerName2 = playerName2;
         this.map = map;
     }
 
     public void initialize() {
-
+        this.playerNameLabel1.setText(playerName1);
+        this.playerNameLabel2.setText(playerName2);
         this.gm = new GameModel(map);
         System.out.println("gamemodel created");
 
@@ -71,6 +87,22 @@ public class InGameController {
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+
+        startTime = System.currentTimeMillis();
+
+        // Időzítő létrehozása és indítása
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                long seconds = elapsedTime / 1000;
+                long minutes = seconds / 60;
+                seconds = seconds % 60;
+                timerLabel.setText("Idő: " + String.format("%d:%02d", minutes, seconds));
+            }
+        };
+        timer.start();
+
 
         control.moveMonster(gm.monsters.getFirst());
         control.moveMonster(gm.monsters.get(1));

@@ -95,6 +95,7 @@ public class GameConfigurationController {
             playerName1 = "1. játékos";
         }
         System.out.println("\u001B[33m1. játéko neve: " + playerName1 + "\u001B[37m");
+        gc.playerName1 = playerName1;
 
         if (!Objects.equals(playerNameInput2.getText(), "")) {
             playerName2 = playerNameInput2.getText();
@@ -103,8 +104,10 @@ public class GameConfigurationController {
             playerName2 = "2. játékos";
         }
         System.out.println("\u001B[33m2. játéko neve: " + playerName2 + "\u001B[37m");
+        gc.playerName2 = playerName2;
 
         return true;
 
     }
+
 }

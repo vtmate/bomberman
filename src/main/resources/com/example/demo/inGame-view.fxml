@@ -23,9 +23,9 @@
                 <RowConstraints maxHeight="22.0" minHeight="9.0" prefHeight="9.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Játékos 1" />
-                  <Label layoutX="10.0" layoutY="13.0" text="Játékos 2" GridPane.columnIndex="1" />
-                  <Label text="Idő: Timer" GridPane.columnIndex="2" />
+                  <Label fx:id="playerNameLabel1" text="Játékos 1" />
+                  <Label fx:id="playerNameLabel2" layoutX="10.0" layoutY="13.0" text="Játékos 2" GridPane.columnIndex="1" />
+                  <Label fx:id="timerLabel" text="Idő: Timer" GridPane.columnIndex="2" />
                </children>
             </GridPane>
          </children></VBox>
