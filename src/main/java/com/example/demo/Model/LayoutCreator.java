@@ -1,5 +1,7 @@
 package com.example.demo.Model;
 
+import java.util.Random;
+
 public class LayoutCreator {
     private final GameModel gm;
     private final String map;
@@ -12,10 +14,45 @@ public class LayoutCreator {
         setUpPlayers();
         createMonsters();
         createBoxes();
+        createPowerUps();
+    }
+
+    private void createPowerUps(){
+        System.out.println("createpowerups");
+        int counter = 0;
+        int numOfPowerUps = 4;
+        while(counter < numOfPowerUps){
+
+            boolean exists = false;
+            Random random = new Random();
+            int index = random.nextInt(gm.boxes.size());
+            double x = gm.boxes.get(index).x;
+            double y = gm.boxes.get(index).y;
+
+            for(PowerUp powerUp : gm.powerUps){
+                if(x == powerUp.x && y == powerUp.y){
+                    exists = true; //ha már az adott doboz alatt van powerUp
+                }
+            }
+
+            if(!exists){
+                gm.powerUps.add(new PowerUp(x, y, PowerUpType.SMALLERRADIUS));
+                counter++;
+            }
+        }
     }
 
     private void createBoxes(){
-        gm.boxes.add(new Box(6*40, 5*40));
+        switch(map){
+            case "Dzsungel":
+                for (int i = 1; i <= 11; i++) {
+                    gm.boxes.add(new Box(i*40, 5*40));
+                }
+                break;
+            case "Pokol":
+                break;
+            default:
+        }
     }
 
     private void createWalls() {

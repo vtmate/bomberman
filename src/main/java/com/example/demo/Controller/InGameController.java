@@ -33,7 +33,6 @@ public class InGameController {
     private GameModel gm;
     private GameController gc;
     private String map;
-
     private String playerName1;
     private String playerName2;
     private long startTime;
@@ -118,8 +117,22 @@ public class InGameController {
         createPlayers(gm.players);
         createMonsters(gm.monsters);
         createExplosion(gm.explosions);
+        createPowerUps(gm.powerUps);
         createBoxes(gm.boxes);
         gm.checkImmadiateBombs();
+    }
+
+    private void createPowerUps(ArrayList<PowerUp> powerUps){
+        int size = 40;
+        for (PowerUp powerUp : powerUps) {
+            Rectangle r = new Rectangle();
+            r.setX(powerUp.x);
+            r.setY(powerUp.y);
+            r.setFill(Color.AQUA);
+            r.setWidth(size);
+            r.setHeight(size);
+            this.gamePane.getChildren().add(r);
+        }
     }
 
     private void createBoxes(ArrayList<Box> boxes){

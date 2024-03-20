@@ -160,6 +160,7 @@ public class Control {
         if (checkEntitiesIntersectionM(x, y, gm.walls, direction)) return false;
         if (checkEntitiesIntersection(x, y, gm.monsters, direction)) return false;
         if (checkEntitiesIntersectionM(x, y, gm.bombs, direction)) return false;
+        if (checkEntitiesIntersectionM(x, y, gm.boxes, direction)) return false;
         checkPlayer(x, y);
         return true;
     }
