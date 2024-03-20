@@ -17,6 +17,7 @@ public class Player extends Entity{
     }
     public void addBomb() { countOfBombs++; }
     public void removeBomb() {countOfBombs--; }
+    public void setBombs(int count) {countOfBombs = count;}
     public ArrayList<PowerUp> getPowerUps(){
         return powerUps;
     }

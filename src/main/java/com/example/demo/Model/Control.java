@@ -28,10 +28,10 @@ public class Control {
 
         if(playerIntersectsEntity(player, direction)){
             switch(direction){
-                case "UP" -> checkForPowerUp(player.x, player.y-40, player);
-                case "DOWN" -> checkForPowerUp(player.x, player.y+40, player);
-                case "LEFT" -> checkForPowerUp(player.x-40, player.y, player);
-                case "RIGHT" -> checkForPowerUp(player.x+40, player.y, player);
+                case "UP" -> PowerUp.checkForPowerUp(player.x, player.y-40, player, gm);
+                case "DOWN" -> PowerUp.checkForPowerUp(player.x, player.y+40, player, gm);
+                case "LEFT" -> PowerUp.checkForPowerUp(player.x-40, player.y, player, gm);
+                case "RIGHT" -> PowerUp.checkForPowerUp(player.x+40, player.y, player, gm);
             }
             //ha van adott powerupja emberünknek, akkor ez így fusson le
             if(player.hasPowerUp(PowerUpType.SNAIL)){ //ez mondjuk lehetne osztályszintű metódusa a player-nek
@@ -55,17 +55,6 @@ public class Control {
                     case "LEFT" -> move(-4, 0, playerId, 10);
                     case "RIGHT" -> move(4, 0, playerId, 10);
                 }
-            }
-        }
-    }
-
-    private void checkForPowerUp(double x, double y, Player player){
-        for(PowerUp powerUp : gm.powerUps){
-            if (gm.checkInteraction(x, y, powerUp.x, powerUp.y )){
-                System.out.println(powerUp.getPowerUpType());
-                player.addPowerUp(powerUp);
-                gm.powerUps.remove(powerUp);
-                return;
             }
         }
     }
