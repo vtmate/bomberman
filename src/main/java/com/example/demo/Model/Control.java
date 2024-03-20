@@ -74,6 +74,7 @@ public class Control {
         if (checkEntitiesIntersection(x, y, gm.walls, direction)) return false;
         if (checkEntitiesIntersection(x, y, gm.players, direction)) return false;
         if (checkEntitiesIntersection(x, y, gm.bombs, direction)) return false;
+        if (checkEntitiesIntersection(x, y, gm.boxes, direction)) return false;
         return true;
     }
 

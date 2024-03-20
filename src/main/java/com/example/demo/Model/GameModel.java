@@ -90,9 +90,10 @@ public class GameModel {
         return false;
     }
     private void rightExplosion(double bombX, double bombY, int radius, int iteration){
-        if (checkForWall(bombY, bombX, bombX+40)){
-            //System.out.println("Jobbra fal volt, nem történik semmi");
+        if (checkForWall(bombY, bombX, bombX+40, true)){
+            System.out.println("Jobbra fal volt, nem történik semmi");
         } else {
+            System.out.println("Jobbra nem volt fal");
             boolean iterate = true;
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX+40, bombY);
@@ -100,6 +101,9 @@ public class GameModel {
             if (playerDeath >= 0){
                 //valamelyik játékos meghalt
                 System.out.println(playerDeath + ". játékos meghalt");
+                iterate = false;
+            }
+            if(checkForBox(bombX+40, bombY)){
                 iterate = false;
             }
             if (checkForMonster(bombX+40, bombY)){
@@ -116,9 +120,10 @@ public class GameModel {
         }
     }
     private void leftExplosion(double bombX, double bombY, int radius, int iteration){
-        if (checkForWall(bombY, bombX-40, bombX)){
-            //System.out.println("Balra fal volt, nem történik semmi");
+        if (checkForWall(bombY, bombX-40, bombX, true)){
+            System.out.println("Balra fal volt, nem történik semmi");
         } else {
+            System.out.println("Balra nem volt fal");
             boolean iterate = true;
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX-40, bombY);
@@ -126,6 +131,9 @@ public class GameModel {
             if (playerDeath >= 0){
                 //valamelyik játékos meghalt
                 System.out.println(playerDeath + ". játékos meghalt");
+                iterate = false;
+            }
+            if(checkForBox(bombX-40, bombY)){
                 iterate = false;
             }
             if (checkForMonster(bombX-40, bombY)){
@@ -142,9 +150,10 @@ public class GameModel {
         }
     }
     private void upExplosion(double bombX, double bombY, int radius, int iteration){
-        if (checkForWall(bombX, bombY-40, bombY)){
+        if (checkForWall(bombX, bombY-40, bombY, false)){
             System.out.println("Felfelé fal volt, nem történik semmi");
         } else {
+            System.out.println("Felfelé nem volt fal");
             boolean iterate = true;
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX, bombY-40);
@@ -152,6 +161,9 @@ public class GameModel {
             if (playerDeath >= 0){
                 //valamelyik játékos meghalt
                 System.out.println(playerDeath + ". játékos meghalt");
+                iterate = false;
+            }
+            if(checkForBox(bombX, bombY-40)){
                 iterate = false;
             }
             if (checkForMonster(bombX, bombY-40)){
@@ -168,9 +180,13 @@ public class GameModel {
         }
     }
     private void downExplosion(double bombX, double bombY, int radius, int iteration){
-        if (checkForWall(bombX, bombY, bombY+40)){
-            //System.out.println("Felfelé fal volt, nem történik semmi");
+        if (checkForWall(bombX, bombY, bombY+40, false)){
+            System.out.println("Lefelé fal volt, nem történik semmi");
         } else {
+            System.out.println("Lefelé nem volt fal:");
+            System.out.println("bombX= " + bombX);
+            System.out.println("bombY= " + bombY);
+            System.out.println("bombY + 40= " + (bombY + 40));
             boolean iterate = true;
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX, bombY+40);
@@ -178,6 +194,9 @@ public class GameModel {
             if (playerDeath >= 0){
                 //valamelyik játékos meghalt
                 System.out.println(playerDeath + ". játékos meghalt");
+                iterate = false;
+            }
+            if(checkForBox(bombX, bombY+40)){
                 iterate = false;
             }
             if (checkForMonster(bombX, bombY+40)){
@@ -222,11 +241,26 @@ public class GameModel {
         return -1; //egyik játékos sem halt meg
     }
 
-    private boolean checkForWall(double same, double smaller, double bigger){
+    private boolean checkForWall(double same, double smaller, double bigger, boolean horizontal){
         for(Wall wall : walls){
-            if(same == wall.y && isBetween(wall.x, smaller, bigger)){
-                return true;
+//            System.out.println(same + " = " + wall.y + " and " + smaller + "<" + wall.x + "<" + bigger);
+            if(horizontal){
+                if(same == wall.y && isBetween(wall.x, smaller, bigger)){
+                    return true;
+                }
+            } else {
+                if(same == wall.x && isBetween(wall.y, smaller, bigger)){
+                    return true;
+                }
             }
+
+//            if(checkInteraction(wall.x, wall.y, same, smaller)){
+////                monsters.remove(monster);
+////                monster.stop();
+////                monster = null;
+//                return true;
+//            }
+
         }
         return false;
     }
@@ -242,6 +276,18 @@ public class GameModel {
         }
         return false;
     }
+
+    private boolean checkForBox(double expX, double expY){
+        for(Box box : boxes){
+            if(checkInteraction(box.x, box.y, expX, expY)){
+                boxes.remove(box);
+                //box = null;
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     public void checkImmadiateBombs(){
         //valahogy meg lehet azt csinálni, hogy csak akkor kerüljön ez bele a gameloopba, ha az ????????????????????

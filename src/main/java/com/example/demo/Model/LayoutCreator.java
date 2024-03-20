@@ -72,9 +72,6 @@ public class LayoutCreator {
         Player player2 = new Player(440,360, 1);
         player1.addBomb();
         player2.addBomb();
-        player2.addBomb();
-        player2.addBomb();
-        player2.addBomb();
 
         //powerUp-ok kipróbálása:
         //PowerUp p = new PowerUp(0,0,PowerUpType.ROLLERSKATE);
