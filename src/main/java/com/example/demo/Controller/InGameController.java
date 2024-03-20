@@ -14,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -24,6 +25,10 @@ public class InGameController {
     private final int HEIGHT = 600;
     @FXML
     private Pane gamePane;
+    @FXML
+    private Pane leftPane;
+    @FXML
+    private Pane rightPane;
     @FXML
     private Label playerNameLabel1;
     @FXML
@@ -46,12 +51,22 @@ public class InGameController {
     }
 
     public void initialize() {
+
+        Font adumuFont = Font.loadFont(getClass().getResourceAsStream("/Adumu.ttf"), 20);
+        playerNameLabel1.setFont(adumuFont);
+        playerNameLabel2.setFont(adumuFont);
+        timerLabel.setFont(adumuFont);
+
         this.playerNameLabel1.setText(playerName1);
         this.playerNameLabel2.setText(playerName2);
         this.gm = new GameModel(map);
         System.out.println("gamemodel created");
 
         Control control = new Control(this.gm);
+
+        gamePane.setPrefSize(520, 440);
+        leftPane.setPrefSize(190, 440);
+        rightPane.setPrefSize(190, 440);
 
         gamePane.sceneProperty().addListener((observable, oldScene, newScene) -> {
             if (newScene != null) {

@@ -2,11 +2,17 @@ package com.example.demo.Controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.event.EventHandler;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,10 +26,22 @@ public class GameConfigurationController {
 
     @FXML
     TextField playerNameInput2;
+    @FXML
+    Label playerNameLabel1;
+
+    @FXML
+    Label playerNameLabel2;
 
     @FXML
     ImageView mapImage1, mapImage2, mapImage3;
-
+    @FXML
+    Label mapLabelJungle, mapLabelHell, mapLabelWestend;
+    @FXML
+    BorderPane borderPane;
+    @FXML
+    Button startButton;
+    @FXML
+    Label title;
     private String playerName1;
     private String playerName2;
 
@@ -35,6 +53,18 @@ public class GameConfigurationController {
 
     }
     public void initialize() {
+        startButton.setDisable(true);
+        Font adumuFont = Font.loadFont(getClass().getResourceAsStream("/Adumu.ttf"), 30);
+        System.out.println("Font: " + adumuFont);
+        mapLabelJungle.setTextFill(Color.WHITE);
+        mapLabelJungle.setFont(adumuFont);
+        mapLabelHell.setFont(adumuFont);
+        mapLabelWestend.setFont(adumuFont);
+        title.setFont(adumuFont);
+        Font adumuFontForPlayerNameLabel = Font.loadFont(getClass().getResourceAsStream("/Adumu.ttf"), 20);
+        playerNameLabel1.setFont(adumuFontForPlayerNameLabel);
+        playerNameLabel2.setFont(adumuFontForPlayerNameLabel);
+
         playerNameInput1.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 System.out.println(playerNameInput1.getText());
@@ -48,24 +78,33 @@ public class GameConfigurationController {
         });
         mapImage1.setOnMouseClicked(event ->  {
             map = "Dzsungel";
+            startButton.setDisable(false);
             ((DropShadow) mapImage1.getEffect()).setColor(Color.YELLOW);
             ((DropShadow) mapImage2.getEffect()).setColor(Color.WHITE);
             ((DropShadow) mapImage3.getEffect()).setColor(Color.WHITE);
             gc.map = map;
+            borderPane.setBackground(new Background(new BackgroundImage(new Image("jungle.png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                    new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true))));
         });
         mapImage2.setOnMouseClicked(event ->  {
             map = "Pokol";
+            startButton.setDisable(false);
             ((DropShadow) mapImage2.getEffect()).setColor(Color.YELLOW);
             ((DropShadow) mapImage1.getEffect()).setColor(Color.WHITE);
             ((DropShadow) mapImage3.getEffect()).setColor(Color.WHITE);
             gc.map = map;
+            borderPane.setBackground(new Background(new BackgroundImage(new Image("lava.png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                    new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true))));
         });
         mapImage3.setOnMouseClicked(event ->  {
             map = "Vadnyugat";
+            startButton.setDisable(false);
             ((DropShadow) mapImage3.getEffect()).setColor(Color.YELLOW);
             ((DropShadow) mapImage2.getEffect()).setColor(Color.WHITE);
             ((DropShadow) mapImage1.getEffect()).setColor(Color.WHITE);
             gc.map = map;
+            borderPane.setBackground(new Background(new BackgroundImage(new Image("bg.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                    new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true))));
         });
     }
 
@@ -110,5 +149,4 @@ public class GameConfigurationController {
         return true;
 
     }
-
 }

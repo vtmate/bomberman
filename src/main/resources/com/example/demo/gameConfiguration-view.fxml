@@ -8,7 +8,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-image: url('bg.jpg'); -fx-background-position: center; -fx-background-repeat: no-repeat; -fx-background-size: contain;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-image: url('bg.jpg'); -fx-background-position: center; -fx-background-repeat: no-repeat; -fx-background-size: contain;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <VBox alignment="TOP_CENTER" prefHeight="62.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
@@ -17,7 +17,14 @@
                   <Image url="@../../../title.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" prefHeight="30.0" prefWidth="222.0" text="Játék konfigurálása" />
+            <Label fx:id="title" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="222.0" text="Játék konfigurálása">
+               <effect>
+                  <DropShadow height="10.0" radius="4.5" spread="1.0" width="10.0">
+                     <color>
+                        <Color red="1.0" green="1.0" blue="1.0" />
+                     </color>
+                  </DropShadow>
+               </effect></Label>
          </children>
       </VBox>
    </top>
@@ -35,7 +42,7 @@
                <effect>
                   <DropShadow height="5.0" radius="2.0" spread="1.0" width="5.0" />
                </effect></Button>
-            <Button mnemonicParsing="false" onAction="#goToInGame" style="-fx-font-size: 20px;" styleClass="btn" stylesheets="@mainpage.css" text="START" translateX="-30.0" GridPane.columnIndex="1">
+            <Button fx:id="startButton" mnemonicParsing="false" onAction="#goToInGame" style="-fx-font-size: 20px;" styleClass="btn" stylesheets="@mainpage.css" text="START" translateX="-30.0" GridPane.columnIndex="1">
                <effect>
                   <DropShadow height="5.0" radius="2.0" spread="1.0" width="5.0" />
                </effect></Button>
@@ -56,21 +63,30 @@
                 <RowConstraints maxHeight="40.0" minHeight="0.0" prefHeight="40.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label alignment="CENTER" prefHeight="36.0" prefWidth="172.0" text="Dzsungel" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                  <Label fx:id="mapLabelJungle" alignment="CENTER" contentDisplay="CENTER" prefHeight="36.0" prefWidth="172.0" text="Dzsungel" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Arial Black" size="24.0" />
-                     </font></Label>
-                  <Label text="Pokol" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     </font>
+                     <effect>
+                        <DropShadow height="10.0" radius="4.5" spread="1.0" width="10.0" />
+                     </effect></Label>
+                  <Label fx:id="mapLabelHell" text="Pokol" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <font>
                         <Font name="Arial Black" size="24.0" />
-                     </font></Label>
-                  <Label text="Vadnyugat" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                     </font>
+                     <effect>
+                        <DropShadow height="10.0" radius="4.5" spread="1.0" width="10.0" />
+                     </effect></Label>
+                  <Label fx:id="mapLabelWestend" text="Vadnyugat" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <font>
                         <Font name="Arial Black" size="24.0" />
-                     </font></Label>
+                     </font>
+                     <effect>
+                        <DropShadow height="10.0" radius="4.5" spread="1.0" width="10.0" />
+                     </effect></Label>
                   <ImageView fx:id="mapImage1" fitHeight="201.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <image>
-                        <Image url="@../../../bg.jpg" />
+                        <Image url="@../../../jungle.png" />
                      </image>
                      <effect>
                         <DropShadow blurType="TWO_PASS_BOX" height="20.0" radius="9.5" spread="1.0" width="20.0">
@@ -82,7 +98,7 @@
                   </ImageView>
                   <ImageView fx:id="mapImage2" fitHeight="201.0" fitWidth="200.0" layoutX="62.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                      <image>
-                        <Image url="@../../../bg.jpg" />
+                        <Image url="@../../../lava.png" />
                      </image>
                      <effect>
                         <DropShadow blurType="TWO_PASS_BOX" height="20.0" radius="9.5" spread="1.0" width="20.0">
@@ -112,23 +128,37 @@
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="34.99999809265137" minHeight="10.0" prefHeight="28.999998092651367" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="155.0" minHeight="10.0" prefHeight="141.00000190734863" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="36.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="54.0" minHeight="9.0" prefHeight="48.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="155.0" minHeight="10.0" prefHeight="118.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField fx:id="playerNameInput1" prefHeight="23.0" prefWidth="350.0" GridPane.rowIndex="1">
+                  <TextField fx:id="playerNameInput1" prefHeight="30.0" prefWidth="200.0" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="50.0" right="50.0" />
                      </GridPane.margin>
                   </TextField>
-                  <TextField fx:id="playerNameInput2" prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="playerNameInput2" prefHeight="30.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="50.0" right="50.0" />
                      </GridPane.margin>
                   </TextField>
-                  <Label text="Játékos 1" GridPane.halignment="CENTER" />
-                  <Label text="Játékos 2" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Label fx:id="playerNameLabel1" text="Játékos 1" GridPane.halignment="CENTER">
+                     <effect>
+                        <DropShadow height="10.0" radius="4.5" spread="1.0" width="10.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </DropShadow>
+                     </effect></Label>
+                  <Label fx:id="playerNameLabel2" text="Játékos 2" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                     <effect>
+                        <DropShadow height="10.0" radius="4.5" spread="1.0" width="10.0">
+                           <color>
+                              <Color red="1.0" green="1.0" blue="1.0" />
+                           </color>
+                        </DropShadow>
+                     </effect></Label>
                   <ImageView fitHeight="133.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <image>
                         <Image url="@../../../keyboard.png" />
