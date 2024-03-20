@@ -92,9 +92,9 @@ public class GameModel {
     }
     private void rightExplosion(double bombX, double bombY, int radius, int iteration){
         if (checkForWall(bombY, bombX, bombX+40, true)){
-            System.out.println("Jobbra fal volt, nem történik semmi");
+            //System.out.println("Jobbra fal volt, nem történik semmi");
         } else {
-            System.out.println("Jobbra nem volt fal");
+            //System.out.println("Jobbra nem volt fal");
             boolean iterate = true;
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX+40, bombY);
@@ -122,9 +122,9 @@ public class GameModel {
     }
     private void leftExplosion(double bombX, double bombY, int radius, int iteration){
         if (checkForWall(bombY, bombX-40, bombX, true)){
-            System.out.println("Balra fal volt, nem történik semmi");
+            //System.out.println("Balra fal volt, nem történik semmi");
         } else {
-            System.out.println("Balra nem volt fal");
+            //System.out.println("Balra nem volt fal");
             boolean iterate = true;
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX-40, bombY);
@@ -152,9 +152,9 @@ public class GameModel {
     }
     private void upExplosion(double bombX, double bombY, int radius, int iteration){
         if (checkForWall(bombX, bombY-40, bombY, false)){
-            System.out.println("Felfelé fal volt, nem történik semmi");
+            //System.out.println("Felfelé fal volt, nem történik semmi");
         } else {
-            System.out.println("Felfelé nem volt fal");
+            //System.out.println("Felfelé nem volt fal");
             boolean iterate = true;
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX, bombY-40);
@@ -182,12 +182,9 @@ public class GameModel {
     }
     private void downExplosion(double bombX, double bombY, int radius, int iteration){
         if (checkForWall(bombX, bombY, bombY+40, false)){
-            System.out.println("Lefelé fal volt, nem történik semmi");
+            //.out.println("Lefelé fal volt, nem történik semmi");
         } else {
-            System.out.println("Lefelé nem volt fal:");
-            System.out.println("bombX= " + bombX);
-            System.out.println("bombY= " + bombY);
-            System.out.println("bombY + 40= " + (bombY + 40));
+            //System.out.println("Lefelé nem volt fal:");
             boolean iterate = true;
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX, bombY+40);

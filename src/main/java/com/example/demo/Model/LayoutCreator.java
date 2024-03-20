@@ -22,9 +22,10 @@ public class LayoutCreator {
         int counter = 0;
         int numOfPowerUps = 4;
         while(counter < numOfPowerUps){
-
             boolean exists = false;
             Random random = new Random();
+
+            //random doboz kiválasztása
             int index = random.nextInt(gm.boxes.size());
             double x = gm.boxes.get(index).x;
             double y = gm.boxes.get(index).y;
@@ -34,9 +35,11 @@ public class LayoutCreator {
                     exists = true; //ha már az adott doboz alatt van powerUp
                 }
             }
-
             if(!exists){
-                gm.powerUps.add(new PowerUp(x, y, PowerUpType.SMALLERRADIUS));
+                //random powerUp kiválasztása
+                int typeIndex = random.nextInt(PowerUpType.values().length);
+                PowerUpType type = PowerUpType.values()[typeIndex];
+                gm.powerUps.add(new PowerUp(x, y, type));
                 counter++;
             }
         }
