@@ -53,8 +53,18 @@ public class LayoutCreator {
                 }
                 break;
             case "Pokol":
+                for (int i = 3; i < 11; i+=2) {
+                    gm.boxes.add(new Box(i*40, 2*40));
+                    gm.boxes.add(new Box(i*40, 3*40));
+                    gm.boxes.add(new Box(i*40, 7*40));
+                    gm.boxes.add(new Box(i*40, 8*40));
+                }
                 break;
             default:
+                for (int i = 1; i < 9; i++) {
+                    gm.boxes.add(new Box(5*40, (i+1)*40));
+                    gm.boxes.add(new Box(7*40, i *40));
+                }
         }
     }
 
