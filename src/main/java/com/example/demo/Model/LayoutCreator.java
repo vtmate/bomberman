@@ -43,6 +43,10 @@ public class LayoutCreator {
                 counter++;
             }
         }
+
+        //teszt powerup
+        gm.powerUps.add(new PowerUp(9*40, 9*40, PowerUpType.NOBOMBS));
+        gm.powerUps.add(new PowerUp(10*40, 9*40, PowerUpType.MOREBOMBS));
     }
 
     private void createBoxes(){

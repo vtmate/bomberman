@@ -24,6 +24,7 @@ public class Player extends Entity{
     public void addPowerUp(PowerUp powerUp){
         powerUps.add(powerUp);
     }
+    public void removePowerUp(PowerUp powerUp){ powerUps.remove(powerUp); }
     public boolean hasPowerUp(PowerUpType powerUpType){
         for (PowerUp playerPowerUp : getPowerUps()) {
             if (playerPowerUp.getPowerUpType() == powerUpType){
