@@ -93,7 +93,7 @@ public class GameConfigurationController {
             ((DropShadow) mapImage1.getEffect()).setColor(Color.WHITE);
             ((DropShadow) mapImage3.getEffect()).setColor(Color.WHITE);
             gc.map = map;
-            borderPane.setBackground(new Background(new BackgroundImage(new Image("lava.png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+            borderPane.setBackground(new Background(new BackgroundImage(new Image("lava-cave.png"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                     new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true))));
         });
         mapImage3.setOnMouseClicked(event ->  {

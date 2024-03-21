@@ -98,7 +98,7 @@
                   </ImageView>
                   <ImageView fx:id="mapImage2" fitHeight="201.0" fitWidth="200.0" layoutX="62.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                      <image>
-                        <Image url="@../../../lava.png" />
+                        <Image url="@../../../lava-cave.png" />
                      </image>
                      <effect>
                         <DropShadow blurType="TWO_PASS_BOX" height="20.0" radius="9.5" spread="1.0" width="20.0">
