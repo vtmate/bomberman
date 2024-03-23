@@ -30,6 +30,7 @@ public class GameController {
             case "description" -> this.fxmlLoader.setController(new MainPageController(this));
             case "inGame" -> this.fxmlLoader.setController(new InGameController(this, playerName1, playerName2, map));
         }
+        System.out.println(map);
 
         Parent root = this.fxmlLoader.load();
         Scene scene = new Scene(root, 900, 600);

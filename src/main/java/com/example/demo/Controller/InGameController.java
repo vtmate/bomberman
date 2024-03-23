@@ -1,5 +1,6 @@
 package com.example.demo.Controller;
 
+
 import com.example.demo.BombermanApplication;
 import com.example.demo.Model.*;
 import javafx.animation.AnimationTimer;
@@ -8,14 +9,20 @@ import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
+import java.util.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,11 +42,17 @@ public class InGameController {
     private Label playerNameLabel2;
     @FXML
     private Label timerLabel;
+    @FXML
+    private HBox playerPowerUps1, playerPowerUps2;
+    @FXML
+    private VBox header;
+    @FXML
+    private BorderPane borderPane;
     private GameModel gm;
-    private GameController gc;
-    private String map;
-    private String playerName1;
-    private String playerName2;
+    private final GameController gc;
+    private final String map;
+    private final String playerName1;
+    private final String playerName2;
     private long startTime;
 
     public InGameController(GameController gc, String playerName1, String playerName2, String map) {
@@ -56,6 +69,18 @@ public class InGameController {
         playerNameLabel1.setFont(adumuFont);
         playerNameLabel2.setFont(adumuFont);
         timerLabel.setFont(adumuFont);
+
+        //header.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        header.setBackground(new Background(new BackgroundImage(new Image("brickwall.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, false))));
+
+        borderPane.setBackground(new Background(new BackgroundImage(new Image("bg.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, true))));
+
+        playerPowerUps1.setSpacing(10);
+        playerPowerUps2.setSpacing(10);
+
 
         this.playerNameLabel1.setText(playerName1);
         this.playerNameLabel2.setText(playerName2);
@@ -135,6 +160,8 @@ public class InGameController {
         createPowerUps(gm.powerUps);
         createBoxes(gm.boxes);
         gm.checkImmadiateBombs();
+        checkPlayerPowerUp(gm.getPlayer(0));
+        checkPlayerPowerUp(gm.getPlayer(1));
     }
 
     private void createPowerUps(ArrayList<PowerUp> powerUps){
@@ -225,4 +252,73 @@ public class InGameController {
             this.gamePane.getChildren().add(r);
         }
     }
+
+    private void checkPlayerPowerUp(Player player) {
+
+        if (Objects.isNull(player) || player.getPowerUps().isEmpty()) return;
+
+        ArrayList<PowerUp> powerUps = player.getPowerUps();
+
+        if (player.id == 0) {
+            playerPowerUps1.getChildren().clear();
+        }
+        else {
+            playerPowerUps2.getChildren().clear();
+        }
+        for (int i = 0; i < powerUps.size(); i++) {
+            PowerUp pu = powerUps.get(i);
+            Image img = new Image(getPowerUpImage(pu.getPowerUpType()));
+            ImageView iw = new ImageView(img);
+            iw.setFitWidth(25);
+            iw.setFitHeight(25);
+
+            StackPane panePowerUp = new StackPane();
+
+            panePowerUp.setPrefSize(35, 35);
+
+
+            //panePowerUp.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+
+            Rectangle rect = new Rectangle(35, 35);
+            rect.setFill(Color.WHITE);
+            rect.setArcWidth(50.0);
+            rect.setArcHeight(50.0);
+
+            DropShadow dropShadow = new DropShadow();
+            dropShadow.setOffsetX(2.0f);
+            dropShadow.setOffsetY(2.0f);
+            dropShadow.setColor(Color.rgb(50, 50, 50, .588));
+            rect.setEffect(dropShadow);
+
+            panePowerUp.getChildren().add(rect);
+            panePowerUp.getChildren().add(iw);
+
+            StackPane.setAlignment(rect, Pos.CENTER);
+            StackPane.setAlignment(iw, Pos.CENTER);
+            if (player.id != 0) {
+                playerPowerUps2.getChildren().add(panePowerUp);
+            }
+            else {
+                playerPowerUps1.getChildren().add(panePowerUp);
+            }
+        }
+    }
+
+    private String getPowerUpImage(PowerUpType pt) {
+        return switch (pt) {
+            case PowerUpType.GATE -> "gatePowerUp.png";
+            case PowerUpType.MOREBOMBS -> "morebombsPowerUp.png";
+            case PowerUpType.BIGGERRADIUS -> "morebombsPowerUp.png";
+            case PowerUpType.SNAIL -> "snailPowerUp.png";
+            case PowerUpType.SMALLERRADIUS -> "morebombsPowerUp.png";
+            case PowerUpType.NOBOMBS -> "morebombsPowerUp.png";
+            case PowerUpType.IMMADIATEBOMB -> "morebombsPowerUp.png";
+            case PowerUpType.DETONATOR -> "morebombsPowerUp.png";
+            case PowerUpType.ROLLERSKATE -> "rollerskateskaterPowerUp.png";
+            case PowerUpType.SHIELD -> "shieldPowerUp.png";
+            case PowerUpType.GHOST -> "ghostPowerUp.png";
+        };
+    }
+
+
 }

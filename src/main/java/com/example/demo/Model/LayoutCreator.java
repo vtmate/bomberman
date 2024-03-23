@@ -43,6 +43,9 @@ public class LayoutCreator {
                 counter++;
             }
         }
+
+        gm.powerUps.add(new PowerUp(9*40, 9*40, PowerUpType.GATE));
+        gm.powerUps.add(new PowerUp(8*40, 9*40, PowerUpType.GHOST));
     }
 
     private void createBoxes(){
