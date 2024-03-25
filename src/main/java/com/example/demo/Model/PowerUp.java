@@ -25,25 +25,50 @@ public class PowerUp extends Entity{
                 player.addPowerUp(powerUp);
                 gm.powerUps.remove(powerUp);
 
-                if(powerUp.powerUpType == PowerUpType.MOREBOMBS){
-                    if(player.getCountOfBombs() <= 3){ //maximum három bombája lehet a játékosnak
-                        player.addBomb();
-                    }
-                }
-
-                if(powerUp.powerUpType == PowerUpType.NOBOMBS){
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            System.out.println("powerup kiszedve");
-                            player.removePowerUp(powerUp);
-                        }
-                    }, milliSeconds);
+                switch (powerUp.powerUpType){
+                    case PowerUpType.MOREBOMBS:
+                        isMoreBombs(player);
+                    case PowerUpType.NOBOMBS:
+                        isNoBombs(player, powerUp);
+                    case PowerUpType.BIGGERRADIUS:
+                        isBiggerRadius(player, powerUp);
+                    case PowerUpType.SMALLERRADIUS:
+                        isSmallerRadius(player, powerUp);
                 }
                 return;
             }
         }
     }
 
-
+    private static void isSmallerRadius(Player player, PowerUp powerUp) {
+        player.removePowerUpByType(PowerUpType.BIGGERRADIUS);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                player.removePowerUp(powerUp);
+            }
+        }, milliSeconds);
+    }
+    private static void isBiggerRadius(Player player, PowerUp powerUp) {
+        player.removePowerUpByType(PowerUpType.SMALLERRADIUS);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                player.removePowerUp(powerUp);
+            }
+        }, milliSeconds);
+    }
+    private static void isNoBombs(Player player, PowerUp powerUp) {
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                player.removePowerUp(powerUp);
+            }
+        }, milliSeconds);
+    }
+    private static void isMoreBombs(Player player){
+        if(player.getCountOfBombs() <= 3){ //maximum három bombája lehet a játékosnak
+            player.addBomb();
+        }
+    }
 }
