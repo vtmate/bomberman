@@ -67,7 +67,6 @@ public class Control {
         Player player = gm.getPlayer(playerId);
         if (player.getCountOfBombs() > 0) {
             gm.placeBomb(player);
-            player.removeBomb();
         }
         System.out.println("Bomba lehelyezése");
     }

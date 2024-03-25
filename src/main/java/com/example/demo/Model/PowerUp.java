@@ -26,26 +26,16 @@ public class PowerUp extends Entity{
                 gm.powerUps.remove(powerUp);
 
                 if(powerUp.powerUpType == PowerUpType.MOREBOMBS){
-                    player.addBomb();
-                    timer.schedule(new TimerTask() {
-                        @Override
-
-                        public void run() {
-                            if(player.getCountOfBombs()>0){
-                                player.removeBomb();
-                            }
-                            player.removePowerUp(powerUp);
-                        }
-                    }, milliSeconds);
+                    if(player.getCountOfBombs() <= 3){ //maximum három bombája lehet a játékosnak
+                        player.addBomb();
+                    }
                 }
 
                 if(powerUp.powerUpType == PowerUpType.NOBOMBS){
-                    player.setBombs(0);
                     timer.schedule(new TimerTask() {
                         @Override
-
                         public void run() {
-                            player.addBomb();
+                            System.out.println("powerup kiszedve");
                             player.removePowerUp(powerUp);
                         }
                     }, milliSeconds);

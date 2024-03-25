@@ -44,26 +44,33 @@ public class GameModel {
     }
 
     public void placeBomb(Player player) {
-        Bomb bomb;
-        double x = Math.round(player.x / 40) * 40;
-        double y = Math.round(player.y / 40) * 40;
-        if(player.hasPowerUp(PowerUpType.BIGGERRADIUS)){
-            bomb = new Bomb(x, y, 3);
-        } else if(player.hasPowerUp(PowerUpType.SMALLERRADIUS)){
-            bomb = new Bomb(x, y, 1);
-        } else {
-            bomb = new Bomb(x, y, 2);
+
+        for (PowerUp powerUp : player.getPowerUps()){
+            System.out.println("power: " + powerUp.getPowerUpType());
         }
-        this.bombs.add(bomb);
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                explosion(bomb.x, bomb.y, bomb.getRadius());
-                player.addBomb();
-                GameModel.this.bombs.remove(bomb);
-                //bomb = null; //állítólag így már nem hivatkozik rá semmi, ezért törölve lesz
+        if(!player.hasPowerUp(PowerUpType.NOBOMBS)) {
+            player.removeBomb();
+            Bomb bomb;
+            double x = Math.round(player.x / 40) * 40;
+            double y = Math.round(player.y / 40) * 40;
+            if (player.hasPowerUp(PowerUpType.BIGGERRADIUS)) {
+                bomb = new Bomb(x, y, 3);
+            } else if (player.hasPowerUp(PowerUpType.SMALLERRADIUS)) {
+                bomb = new Bomb(x, y, 1);
+            } else {
+                bomb = new Bomb(x, y, 2);
             }
-        }, 2000);
+            this.bombs.add(bomb);
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    explosion(bomb.x, bomb.y, bomb.getRadius());
+                    player.addBomb();
+                    GameModel.this.bombs.remove(bomb);
+                    //bomb = null; //állítólag így már nem hivatkozik rá semmi, ezért törölve lesz
+                }
+            }, 2000);
+        }
     }
 
     private void explosion(double bombX, double bombY, int radius){
