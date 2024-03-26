@@ -6,12 +6,14 @@ import com.example.demo.Model.*;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -21,6 +23,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import java.util.*;
 
@@ -54,6 +59,8 @@ public class InGameController {
     private final String playerName1;
     private final String playerName2;
     private long startTime;
+    private int pauseStageCount = 0;
+    private Timeline timeline;
 
     public InGameController(GameController gc, String playerName1, String playerName2, String map) {
         this.gc = gc;
@@ -109,6 +116,7 @@ public class InGameController {
                             case RIGHT -> control.moveCharacter("RIGHT", 1);
                             case Q -> control.placeBomb(0);
                             case CONTROL -> control.placeBomb(1);
+                            case ESCAPE -> pause();
                         }
                         refresh();
                     }
@@ -116,7 +124,7 @@ public class InGameController {
             }
         });
 
-        Timeline timeline = new Timeline(
+        timeline = new Timeline(
                 new KeyFrame(Duration.seconds(0.033), e -> {
                     refresh();
                 })
@@ -320,5 +328,43 @@ public class InGameController {
         };
     }
 
+    private void pause() {
+        if (pauseStageCount != 0) return;
+        pauseStageCount++;
+        //timeline.pause();
 
+
+        Stage pauseStage = new Stage();
+        pauseStage.setResizable(false);
+        pauseStage.setTitle("Bomberman - Szünet");
+        pauseStage.setHeight(200);
+        pauseStage.setWidth(300);
+
+
+        Button backToGame = new Button();
+        backToGame.setText("Folytatás");
+
+        Button mainMenu = new Button();
+        mainMenu.setText("Főmenü");
+
+        Pane pane = new Pane();
+        HBox hbox = new HBox();
+        hbox.getChildren().addAll(backToGame, mainMenu);
+
+
+        backToGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                pauseStageCount--;
+                //timeline.play();
+                pauseStage.close();
+
+            }
+        });
+        Scene scene = new Scene(hbox, 300, 200);
+        pauseStage.setScene(scene);
+        pauseStage.initModality(Modality.WINDOW_MODAL); // Set modality
+        pauseStage.initOwner(gc.stage);
+        pauseStage.show();
+    }
 }
