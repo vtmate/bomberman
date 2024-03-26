@@ -250,20 +250,28 @@ public class InGameController {
 
     public void createExplosion(ArrayList<Explosion> explosions){
         int size = 40;
-        for (Explosion explosion : explosions) {
+        for (int i = 0; i < explosions.size(); i++) {
             Rectangle r = new Rectangle();
             r.setFill(Color.YELLOW);
-            r.setX(explosion.x);
-            r.setY(explosion.y);
+            r.setX(explosions.get(i).x);
+            r.setY(explosions.get(i).y);
             r.setWidth(size);
             r.setHeight(size);
             this.gamePane.getChildren().add(r);
         }
+//        for (Explosion explosion : explosions) {
+//            Rectangle r = new Rectangle();
+//            r.setFill(Color.YELLOW);
+//            r.setX(explosion.x);
+//            r.setY(explosion.y);
+//            r.setWidth(size);
+//            r.setHeight(size);
+//        }
     }
 
     private void checkPlayerPowerUp(Player player) {
 
-        if (Objects.isNull(player) || player.getPowerUps().isEmpty()) return;
+        if (Objects.isNull(player)) return;
 
         ArrayList<PowerUp> powerUps = player.getPowerUps();
 

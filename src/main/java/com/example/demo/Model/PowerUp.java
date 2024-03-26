@@ -28,16 +28,22 @@ public class PowerUp extends Entity{
                 switch (powerUp.powerUpType){
                     case PowerUpType.MOREBOMBS:
                         isMoreBombs(player);
+                    break;
                     case PowerUpType.NOBOMBS:
                         isNoBombs(player, powerUp);
+                    break;
                     case PowerUpType.BIGGERRADIUS:
                         isBiggerRadius(player, powerUp);
+                    break;
                     case PowerUpType.SMALLERRADIUS:
                         isSmallerRadius(player, powerUp);
+                    break;
                     case PowerUpType.ROLLERSKATE:
                         isRollerskate(player, powerUp);
+                    break;
                     case PowerUpType.SNAIL:
                         isSnail(player, powerUp);
+                    break;
                 }
                 return;
             }
