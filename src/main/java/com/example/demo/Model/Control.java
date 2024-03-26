@@ -43,10 +43,10 @@ public class Control {
                 }
             } else if(player.hasPowerUp(PowerUpType.ROLLERSKATE)){
                 switch(direction){
-                    case "UP" -> move(0, -8, playerId, 5);
-                    case "DOWN" -> move(0, 8, playerId, 5);
-                    case "LEFT" -> move(-8, 0, playerId, 5);
-                    case "RIGHT" -> move(8, 0, playerId, 5);
+                    case "UP" -> move(0, -20, playerId, 2);
+                    case "DOWN" -> move(0, 20, playerId, 2);
+                    case "LEFT" -> move(-20, 0, playerId, 2);
+                    case "RIGHT" -> move(20, 0, playerId, 2);
                 }
             } else {
                 switch(direction){

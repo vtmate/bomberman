@@ -91,7 +91,7 @@ public class GameModel {
             double x = this.players.get(i).x;
             double y = this.players.get(i).y;
             if(bombX == x && bombY == y){
-                System.out.println(i + ". játékos meghalt");
+                playerDeath(i);
                 return true;
             }
         }
@@ -108,7 +108,6 @@ public class GameModel {
             int playerDeath = checkForPlayer(bombY, bombX, bombX+40, true);
             if (playerDeath >= 0){
                 //valamelyik játékos meghalt
-                System.out.println(playerDeath + ". játékos meghalt");
                 iterate = false;
             }
             if(checkForBox(bombX+40, bombY)){
@@ -138,7 +137,6 @@ public class GameModel {
             int playerDeath = checkForPlayer(bombY, bombX-40, bombX, true);
             if (playerDeath >= 0){
                 //valamelyik játékos meghalt
-                System.out.println(playerDeath + ". játékos meghalt");
                 iterate = false;
             }
             if(checkForBox(bombX-40, bombY)){
@@ -168,7 +166,6 @@ public class GameModel {
             int playerDeath = checkForPlayer(bombX, bombY-40, bombY, false);
             if (playerDeath >= 0){
                 //valamelyik játékos meghalt
-                System.out.println(playerDeath + ". játékos meghalt");
                 iterate = false;
             }
             if(checkForBox(bombX, bombY-40)){
@@ -198,7 +195,6 @@ public class GameModel {
             int playerDeath = checkForPlayer(bombX, bombY, bombY+40, false);
             if (playerDeath >= 0){
                 //valamelyik játékos meghalt
-                System.out.println(playerDeath + ". játékos meghalt");
                 iterate = false;
             }
             if(checkForBox(bombX, bombY+40)){
@@ -229,16 +225,22 @@ public class GameModel {
         }, 500);
     }
 
+    private void playerDeath(int index){
+        System.out.println(index + ". játékos meghalttt");
+    }
+
     private int checkForPlayer(double same, double smaller, double bigger, boolean isHorizontal){
         for (int i = 0; i < players.size(); i++) {
             double x = this.players.get(i).x;
             double y = this.players.get(i).y;
             if(isHorizontal){
                 if(same == y && isBetween(x, smaller, bigger)){
+                    playerDeath(i);
                     return i;
                 }
             } else {
                 if(same == x && isBetween(y, smaller, bigger)){
+                    playerDeath(i);
                     return i;
                 }
             }
@@ -258,14 +260,6 @@ public class GameModel {
                     return true;
                 }
             }
-
-//            if(checkInteraction(wall.x, wall.y, same, smaller)){
-////                monsters.remove(monster);
-////                monster.stop();
-////                monster = null;
-//                return true;
-//            }
-
         }
         return false;
     }
@@ -302,7 +296,6 @@ public class GameModel {
             if(player.hasPowerUp(PowerUpType.IMMADIATEBOMB)){
                 if(player.getCountOfBombs() > 0){
                     placeBomb(player);
-                    player.removeBomb();
                 }
             }
         }

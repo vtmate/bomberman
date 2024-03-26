@@ -34,12 +34,34 @@ public class PowerUp extends Entity{
                         isBiggerRadius(player, powerUp);
                     case PowerUpType.SMALLERRADIUS:
                         isSmallerRadius(player, powerUp);
+                    case PowerUpType.ROLLERSKATE:
+                        isRollerskate(player, powerUp);
+                    case PowerUpType.SNAIL:
+                        isSnail(player, powerUp);
                 }
                 return;
             }
         }
     }
 
+    private static void isSnail(Player player, PowerUp powerUp) {
+        player.removePowerUpByType(PowerUpType.ROLLERSKATE);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                player.removePowerUp(powerUp);
+            }
+        }, milliSeconds);
+    }
+    private static void isRollerskate(Player player, PowerUp powerUp) {
+        player.removePowerUpByType(PowerUpType.SNAIL);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                player.removePowerUp(powerUp);
+            }
+        }, milliSeconds);
+    }
     private static void isSmallerRadius(Player player, PowerUp powerUp) {
         player.removePowerUpByType(PowerUpType.BIGGERRADIUS);
         timer.schedule(new TimerTask() {
