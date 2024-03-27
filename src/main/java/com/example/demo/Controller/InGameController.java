@@ -340,6 +340,7 @@ public class InGameController {
         if (pauseStageCount != 0) return;
         pauseStageCount++;
         //timeline.pause();
+        stopTimers();
 
 
         Stage pauseStage = new Stage();
@@ -352,27 +353,89 @@ public class InGameController {
         Button backToGame = new Button();
         backToGame.setText("Folytatás");
 
-        Button mainMenu = new Button();
-        mainMenu.setText("Főmenü");
+        Button newGame = new Button();
+        newGame.setText("Új játék");
+
+        Button exitGame = new Button();
+        exitGame.setText("Játék bezárása");
 
         Pane pane = new Pane();
         HBox hbox = new HBox();
-        hbox.getChildren().addAll(backToGame, mainMenu);
+        hbox.getChildren().addAll(backToGame, newGame, exitGame);
 
 
         backToGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                startTimers();
                 pauseStageCount--;
-                //timeline.play();
                 pauseStage.close();
 
             }
         });
+        pauseStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent we) {
+                startTimers();
+                pauseStageCount--;
+                pauseStage.close();
+            }
+        });
+
+        newGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                pauseStage.close();
+                try {
+                    gc.changeScene("gameConfiguration");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        });
+        exitGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                gc.stage.close();
+                System.exit(0);
+            }
+        });
+
+
         Scene scene = new Scene(hbox, 300, 200);
         pauseStage.setScene(scene);
         pauseStage.initModality(Modality.WINDOW_MODAL); // Set modality
         pauseStage.initOwner(gc.stage);
         pauseStage.show();
+    }
+
+    private void stopTimers() {
+        for (int i = 0; i < gm.players.size(); i++) {
+            gm.players.get(i).pause();
+        }
+        for (int i = 0; i < gm.monsters.size(); i++) {
+            gm.monsters.get(i).pause();
+        }
+        for (int i = 0; i < gm.bombs.size(); i++) {
+            gm.bombs.get(i).pause();
+        }
+        for (int i = 0; i < gm.explosions.size(); i++) {
+            gm.explosions.get(i).pause();
+        }
+    }
+
+    private void startTimers() {
+        for (int i = 0; i < gm.monsters.size(); i++) {
+            gm.monsters.get(i).resume();
+        }
+        for (int i = 0; i < gm.players.size(); i++) {
+            gm.players.get(i).resume();
+        }
+        for (int i = 0; i < gm.bombs.size(); i++) {
+            gm.bombs.get(i).resume();
+        }
+        for (int i = 0; i < gm.explosions.size(); i++) {
+            gm.explosions.get(i).resume();
+        }
     }
 }

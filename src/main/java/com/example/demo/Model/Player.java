@@ -1,16 +1,24 @@
 package com.example.demo.Model;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.util.Duration;
+
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 public class Player extends Entity{
     private String name;
+    private int count = 0;
     public int id;
     private int countOfBombs;
+    private boolean taskActive = false;
     private final ArrayList<PowerUp> powerUps;
     public boolean isMoving;
-    private Timer timer; //timecontrol
+    public Timeline timeline; //timecontrol
     public Player(double x, double y, int id) {
         super(x, y);
         this.id = id;
@@ -46,24 +54,46 @@ public class Player extends Entity{
     }
 
     public void moveMove(int moveX, int moveY, int iteration) {
-        timer = new Timer();
+        timeline = new Timeline();
 
-        TimerTask task = new TimerTask() {
-            int count = 0;
+
+        timeline.stop(); // Leállítjuk a timeline-ot, ha éppen fut
+
+        timeline.getKeyFrames().clear(); // Töröljük az eseményeket a timeline-ból
+
+        count = 0;
+
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>() {
+
 
             @Override
-            public void run() {
+            public void handle(ActionEvent event) {
+
                 x += moveX;
                 y += moveY;
-
                 count++;
+                System.out.println(count);
 
                 if (count == iteration) {
-                    timer.cancel();
+                    timeline.stop(); // Ha elértük a maximális iterációt, leállítjuk a timeline-ot
                     isMoving = false;
+                    timeline = null;
                 }
             }
-        };
-        timer.scheduleAtFixedRate(task, 0, 10);
+        }));
+
+        timeline.setCycleCount(Animation.INDEFINITE); // A timeline egy végtelen ciklusban fog futni
+        timeline.play(); // Elindítjuk a timeline-ot
+        isMoving = true;
+    }
+
+    public void pause() {
+        if (timeline == null) return;
+        timeline.pause();
+    }
+
+    public void resume() {
+        if (timeline == null) return;
+        timeline.play();
     }
 }

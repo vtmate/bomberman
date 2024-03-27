@@ -41,4 +41,11 @@ public class Monster extends Entity{
     public void stop(){
         monsterTimeline.stop();
     }
+    public void pause() {
+        monsterTimeline.pause();
+    }
+    public void resume() {
+        monsterTimeline.play();
+        System.out.println("Folytatás");
+    }
 }

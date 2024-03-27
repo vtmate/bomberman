@@ -1,14 +1,6 @@
 package com.example.demo.Model;
 
-import com.example.demo.Controller.InGameController;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
-
 import java.util.ArrayList;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class GameModel {
     public ArrayList<Wall> walls;
@@ -18,7 +10,6 @@ public class GameModel {
     public ArrayList<Explosion> explosions;
     public ArrayList<Box> boxes;
     public ArrayList<PowerUp> powerUps;
-    private Timer timer;
     private LayoutCreator layoutCreator;
 
     //private boolean tovabb; //ehelyett majd a hatótávot kell csekkolni
@@ -38,8 +29,6 @@ public class GameModel {
             //példányosítással le is futnak az inicializáló függvények
         printEntity(this.players);
 
-        timer = new Timer();
-
         System.out.println("Created GameModel");
     }
 
@@ -48,6 +37,7 @@ public class GameModel {
         for (PowerUp powerUp : player.getPowerUps()){
             System.out.println("power: " + powerUp.getPowerUpType());
         }
+
         if(!player.hasPowerUp(PowerUpType.NOBOMBS)) {
             player.removeBomb();
             Bomb bomb;
@@ -60,20 +50,13 @@ public class GameModel {
             } else {
                 bomb = new Bomb(x, y, 2);
             }
+
             this.bombs.add(bomb);
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    explosion(bomb.x, bomb.y, bomb.getRadius());
-                    player.addBomb();
-                    GameModel.this.bombs.remove(bomb);
-                    //bomb = null; //állítólag így már nem hivatkozik rá semmi, ezért törölve lesz
-                }
-            }, 2000);
+            bomb.removeBomb(this, player, 2000); // TEST
         }
     }
 
-    private void explosion(double bombX, double bombY, int radius){
+    public void explosion(double bombX, double bombY, int radius){
         int toUp = 0;
         int toRight = 0;
         int toDown = 0;
@@ -217,12 +200,7 @@ public class GameModel {
     private void drawExposion(double x, double y){
         Explosion explosion = new Explosion(x, y);
         this.explosions.add(explosion);
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                GameModel.this.explosions.remove(explosion);
-            }
-        }, 500);
+        explosion.removeExplosion(this, 500);
     }
 
     private void playerDeath(int index){
@@ -325,4 +303,6 @@ public class GameModel {
         }
         return null;
     }
+
+
 }

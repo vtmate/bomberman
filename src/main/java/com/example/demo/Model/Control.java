@@ -9,9 +9,6 @@ import java.util.*;
 
 public class Control {
     private final int SIZE = 40;
-    private boolean isMoving0 = false;
-    private boolean isMoving1 = false;
-    private Timeline monsterTimeline;
     GameModel gm;
     public Control(GameModel gm) {
         this.gm = gm;
