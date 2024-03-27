@@ -158,7 +158,7 @@ public class Control {
     private void checkPlayer(double x, double y) {
         for (int i = 0; i < gm.players.size(); i++) {
             if (gm.checkInteraction(x, y, gm.players.get(i).x, gm.players.get(i).y)) {
-                gm.players.remove(gm.players.get(i));
+                gm.playerDeath(gm.players.get(i));
             }
         }
     }

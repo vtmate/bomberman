@@ -46,7 +46,7 @@ public class InGameController {
     @FXML
     private Label playerNameLabel2;
     @FXML
-    private Label timerLabel;
+    public Label timerLabel;
     @FXML
     private HBox playerPowerUps1, playerPowerUps2;
     @FXML
@@ -54,7 +54,7 @@ public class InGameController {
     @FXML
     private BorderPane borderPane;
     private GameModel gm;
-    private final GameController gc;
+    public final GameController gc;
     private final String map;
     private final String playerName1;
     private final String playerName2;
@@ -65,12 +65,15 @@ public class InGameController {
     public InGameController(GameController gc, String playerName1, String playerName2, String map) {
         this.gc = gc;
         this.playerName1 = playerName1;
+
         System.out.println("Játékosnév: " + playerName1);
         this.playerName2 = playerName2;
         this.map = map;
+
     }
 
     public void initialize() {
+
 
         Font adumuFont = Font.loadFont(getClass().getResourceAsStream("/Adumu.ttf"), 20);
         playerNameLabel1.setFont(adumuFont);
@@ -91,7 +94,11 @@ public class InGameController {
 
         this.playerNameLabel1.setText(playerName1);
         this.playerNameLabel2.setText(playerName2);
-        this.gm = new GameModel(map);
+        this.gm = new GameModel(map, this);
+
+        gm.players.getFirst().name = this.playerName1;
+        gm.players.getLast().name = this.playerName2;
+
         System.out.println("gamemodel created");
 
         Control control = new Control(this.gm);
@@ -149,13 +156,6 @@ public class InGameController {
 
         control.moveMonster(gm.monsters.getFirst());
         control.moveMonster(gm.monsters.get(1));
-    }
-
-    @FXML //ezt egyenlőre nem használjuk, majd arra kell, hogy a játékból vissza tudjunk menni a főoldalra (esc)
-    protected void goToMainPage() throws IOException {
-        System.out.println("Főoldal");
-        FXMLLoader fxmlMain = new FXMLLoader(BombermanApplication.class.getResource("mainPage-view.fxml"));
-        Scene scene = new Scene(fxmlMain.load(), WIDTH, HEIGHT);
     }
 
     public void refresh() {
@@ -340,7 +340,7 @@ public class InGameController {
         if (pauseStageCount != 0) return;
         pauseStageCount++;
         //timeline.pause();
-        stopTimers();
+        gm.stopTimers();
 
 
         Stage pauseStage = new Stage();
@@ -367,7 +367,7 @@ public class InGameController {
         backToGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                startTimers();
+                gm.startTimers();
                 pauseStageCount--;
                 pauseStage.close();
 
@@ -375,7 +375,7 @@ public class InGameController {
         });
         pauseStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent we) {
-                startTimers();
+                gm.startTimers();
                 pauseStageCount--;
                 pauseStage.close();
             }
@@ -409,33 +409,5 @@ public class InGameController {
         pauseStage.show();
     }
 
-    private void stopTimers() {
-        for (int i = 0; i < gm.players.size(); i++) {
-            gm.players.get(i).pause();
-        }
-        for (int i = 0; i < gm.monsters.size(); i++) {
-            gm.monsters.get(i).pause();
-        }
-        for (int i = 0; i < gm.bombs.size(); i++) {
-            gm.bombs.get(i).pause();
-        }
-        for (int i = 0; i < gm.explosions.size(); i++) {
-            gm.explosions.get(i).pause();
-        }
-    }
 
-    private void startTimers() {
-        for (int i = 0; i < gm.monsters.size(); i++) {
-            gm.monsters.get(i).resume();
-        }
-        for (int i = 0; i < gm.players.size(); i++) {
-            gm.players.get(i).resume();
-        }
-        for (int i = 0; i < gm.bombs.size(); i++) {
-            gm.bombs.get(i).resume();
-        }
-        for (int i = 0; i < gm.explosions.size(); i++) {
-            gm.explosions.get(i).resume();
-        }
-    }
 }

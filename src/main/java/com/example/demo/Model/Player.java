@@ -11,11 +11,10 @@ import java.util.ArrayList;
 
 
 public class Player extends Entity{
-    private String name;
+    public String name;
     private int count = 0;
     public int id;
     private int countOfBombs;
-    private boolean taskActive = false;
     private final ArrayList<PowerUp> powerUps;
     public boolean isMoving;
     public Timeline timeline; //timecontrol
@@ -72,7 +71,6 @@ public class Player extends Entity{
                 x += moveX;
                 y += moveY;
                 count++;
-                System.out.println(count);
 
                 if (count == iteration) {
                     timeline.stop(); // Ha elértük a maximális iterációt, leállítjuk a timeline-ot

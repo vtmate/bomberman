@@ -1,5 +1,18 @@
 package com.example.demo.Model;
 
+import com.example.demo.Controller.InGameController;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+
 import java.util.ArrayList;
 
 public class GameModel {
@@ -10,13 +23,16 @@ public class GameModel {
     public ArrayList<Explosion> explosions;
     public ArrayList<Box> boxes;
     public ArrayList<PowerUp> powerUps;
+    public Timeline lastPlayerTimeline;
     private LayoutCreator layoutCreator;
+    public InGameController igc;
 
     //private boolean tovabb; //ehelyett majd a hatótávot kell csekkolni
     //private int toUp, toRight, toDown, toLeft;
 
 
-    public GameModel(String map) {
+    public GameModel(String map, InGameController igc) {
+        this.igc = igc;
         this.walls = new ArrayList<>();
         this.players = new ArrayList<>();
         this.bombs = new ArrayList<>();
@@ -74,7 +90,7 @@ public class GameModel {
             double x = this.players.get(i).x;
             double y = this.players.get(i).y;
             if(bombX == x && bombY == y){
-                playerDeath(i);
+                playerDeath(players.get(i));
                 return true;
             }
         }
@@ -203,8 +219,33 @@ public class GameModel {
         explosion.removeExplosion(this, 500);
     }
 
-    private void playerDeath(int index){
-        System.out.println(index + ". játékos meghalttt");
+    public void playerDeath(Player player){
+        System.out.println(player.id + ". játékos meghalt");
+        this.players.remove(player);
+        if (this.players.size() == 1) {
+            System.out.println("Már csak egy játékosmaradt");
+            lastPlayerTimeline = new Timeline();
+            igc.timerLabel.setTextFill(Color.RED);
+            lastPlayerTimeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+
+                int second = 0;
+                @Override
+                public void handle(ActionEvent event) {
+                    second++;
+
+
+                    if (second == 5) {
+                        lastPlayerTimeline.stop(); // Ha elértük a maximális iterációt, leállítjuk a timeline-ot
+                        lastPlayerTimeline = null;
+                        stopTimers();
+                        new WinStage(GameModel.this);
+                    }
+                }
+            }));
+
+            lastPlayerTimeline.setCycleCount(5); // A timeline egy végtelen ciklusban fog futni
+            lastPlayerTimeline.play();
+        }
     }
 
     private int checkForPlayer(double same, double smaller, double bigger, boolean isHorizontal){
@@ -213,12 +254,12 @@ public class GameModel {
             double y = this.players.get(i).y;
             if(isHorizontal){
                 if(same == y && isBetween(x, smaller, bigger)){
-                    playerDeath(i);
+                    playerDeath(this.players.get(i));
                     return i;
                 }
             } else {
                 if(same == x && isBetween(y, smaller, bigger)){
-                    playerDeath(i);
+                    playerDeath(this.players.get(i));
                     return i;
                 }
             }
@@ -304,5 +345,34 @@ public class GameModel {
         return null;
     }
 
+    public void stopTimers() {
+        for (int i = 0; i < players.size(); i++) {
+            players.get(i).pause();
+        }
+        for (int i = 0; i < monsters.size(); i++) {
+            monsters.get(i).pause();
+        }
+        for (int i = 0; i < bombs.size(); i++) {
+            bombs.get(i).pause();
+        }
+        for (int i = 0; i < explosions.size(); i++) {
+            explosions.get(i).pause();
+        }
+    }
+
+    public void startTimers() {
+        for (int i = 0; i < monsters.size(); i++) {
+            monsters.get(i).resume();
+        }
+        for (int i = 0; i < players.size(); i++) {
+            players.get(i).resume();
+        }
+        for (int i = 0; i < bombs.size(); i++) {
+            bombs.get(i).resume();
+        }
+        for (int i = 0; i < explosions.size(); i++) {
+            explosions.get(i).resume();
+        }
+    }
 
 }
