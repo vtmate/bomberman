@@ -1,12 +1,16 @@
 package com.example.demo.Model;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Player extends Entity{
     private String name;
     public int id;
     private int countOfBombs;
     private final ArrayList<PowerUp> powerUps;
+    public boolean isMoving;
+    private Timer timer; //timecontrol
     public Player(double x, double y, int id) {
         super(x, y);
         this.id = id;
@@ -39,5 +43,27 @@ public class Player extends Entity{
             }
         }
         return false;
+    }
+
+    public void moveMove(int moveX, int moveY, int iteration) {
+        timer = new Timer();
+
+        TimerTask task = new TimerTask() {
+            int count = 0;
+
+            @Override
+            public void run() {
+                x += moveX;
+                y += moveY;
+
+                count++;
+
+                if (count == iteration) {
+                    timer.cancel();
+                    isMoving = false;
+                }
+            }
+        };
+        timer.scheduleAtFixedRate(task, 0, 10);
     }
 }

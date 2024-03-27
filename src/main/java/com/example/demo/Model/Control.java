@@ -101,47 +101,19 @@ public class Control {
 
     private void move(int x, int y, int playerId, int iteration) {
         if (playerId == 0){
-            if (isMoving0) {
+            if (gm.getPlayer(0).isMoving) {
                 return;
             }
-            isMoving0 = true;
+            gm.getPlayer(0).isMoving = true;
+            gm.getPlayer(0).moveMove(x, y, iteration);
         }
         else {
-            if (isMoving1) {
+            if (gm.getPlayer(1).isMoving) {
                 return;
             }
-            isMoving1 = true;
-
+            gm.getPlayer(1).isMoving = true;
+            gm.getPlayer(1).moveMove(x, y, iteration);
         }
-        moveMove(x, y, playerId, iteration);
-    }
-
-    private void moveMove(int x, int y, int playerId, int iteration) {
-        Timer timer = new Timer();
-
-        TimerTask task = new TimerTask() {
-            int count = 0;
-
-            @Override
-            public void run() {
-                if (gm.getPlayer(playerId) == null) return;
-                gm.getPlayer(playerId).x += x;
-                gm.getPlayer(playerId).y += y;
-
-                count++;
-
-                if (count == iteration) {
-                    if (playerId == 0) {
-                        isMoving0 = false;
-                    }
-                    else {
-                        isMoving1 = false;
-                    }
-                    timer.cancel();
-                }
-            }
-        };
-        timer.scheduleAtFixedRate(task, 0, 10);
     }
 
     public void changeDirection(Monster monster, String direction) {
