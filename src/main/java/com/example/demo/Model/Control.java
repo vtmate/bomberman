@@ -70,8 +70,10 @@ public class Control {
 
     public void placeGate(int playerId){
         Player player = gm.getPlayer(playerId);
-        if (player.getCountOfGates() > 0) {
-            gm.placeGate(player);
+        if(player != null){
+            if (player.getCountOfGates() > 0) {
+                gm.placeGate(player);
+            }
         }
         System.out.println("GATE lehelyezése by: " + playerId);
     }
@@ -83,6 +85,7 @@ public class Control {
         if (checkEntitiesIntersection(x, y, gm.players, direction)) return false;
         if (checkEntitiesIntersection(x, y, gm.bombs, direction)) return false;
         if (checkEntitiesIntersection(x, y, gm.boxes, direction)) return false;
+        if (checkEntitiesIntersection(x, y, gm.gates, direction)) return false;
         return true;
     }
 
@@ -141,6 +144,7 @@ public class Control {
         if (checkEntitiesIntersection(x, y, gm.monsters, direction)) return false;
         if (checkEntitiesIntersectionM(x, y, gm.bombs, direction)) return false;
         if (checkEntitiesIntersectionM(x, y, gm.boxes, direction)) return false;
+        if (checkEntitiesIntersectionM(x, y, gm.gates, direction)) return false;
         checkPlayer(x, y);
         return true;
     }

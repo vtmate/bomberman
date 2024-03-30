@@ -104,6 +104,7 @@ public class GameModel {
                 return true;
             }
         }
+        checkForGate(bombX, bombY);
         return false;
     }
     private void rightExplosion(double bombX, double bombY, int radius, int iteration){

@@ -163,8 +163,8 @@ public class InGameController {
     public void refresh() {
         gamePane.getChildren().removeIf(node -> node instanceof Rectangle);
         createWalls(gm.walls);
-        createBombs(gm.bombs);
         createGates(gm.gates);
+        createBombs(gm.bombs);
         createPlayers(gm.players);
         createMonsters(gm.monsters);
         createExplosion(gm.explosions);
