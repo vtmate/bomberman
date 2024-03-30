@@ -15,7 +15,9 @@ public class Player extends Entity{
     private int count = 0;
     public int id;
     private int countOfBombs;
+    private int countOfGates;
     private final ArrayList<PowerUp> powerUps;
+
     public boolean isMoving;
     public Timeline timeline; //timecontrol
     public Player(double x, double y, int id) {
@@ -29,6 +31,8 @@ public class Player extends Entity{
     public void addBomb() { countOfBombs++; }
     public void removeBomb() {countOfBombs--; }
     public void setBombs(int count) {countOfBombs = count;}
+    public void setCountOfGates(int count) {countOfGates = count;}
+    public int getCountOfGates() {return countOfGates;}
     public ArrayList<PowerUp> getPowerUps(){
         return powerUps;
     }

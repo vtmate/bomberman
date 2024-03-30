@@ -68,6 +68,14 @@ public class Control {
         System.out.println("Bomba lehelyezése");
     }
 
+    public void placeGate(int playerId){
+        Player player = gm.getPlayer(playerId);
+        if (player.getCountOfBombs() > 0) {
+            gm.placeGate(player);
+        }
+        System.out.println("GATE lehelyezése by: " + playerId);
+    }
+
     private boolean playerIntersectsEntity(Player player, String direction){
         double x = player.x;
         double y = player.y;

@@ -20,6 +20,7 @@ public class GameModel {
     public ArrayList<Player> players;
     public ArrayList<Monster> monsters;
     public ArrayList<Bomb> bombs;
+    public ArrayList<Gate> gates;
     public ArrayList<Explosion> explosions;
     public ArrayList<Box> boxes;
     public ArrayList<PowerUp> powerUps;
@@ -39,6 +40,7 @@ public class GameModel {
         this.explosions = new ArrayList<>();
         this.monsters = new ArrayList<>();
         this.boxes = new ArrayList<>();
+        this.gates = new ArrayList<>();
         this.powerUps = new ArrayList<>();
         //majd itt kellene megcsinálni az elégazást, hogy melyik pálya legyen meghívva
         this.layoutCreator = new LayoutCreator(this, map);
@@ -70,6 +72,13 @@ public class GameModel {
             this.bombs.add(bomb);
             bomb.removeBomb(this, player, 2000); // TEST
         }
+    }
+
+    public void placeGate(Player player){
+        double x = Math.round(player.x / 40) * 40;
+        double y = Math.round(player.y / 40) * 40;
+
+        this.gates.add(new Gate(x,y));
     }
 
     public void explosion(double bombX, double bombY, int radius){

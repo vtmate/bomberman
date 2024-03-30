@@ -123,6 +123,8 @@ public class InGameController {
                             case RIGHT -> control.moveCharacter("RIGHT", 1);
                             case Q -> control.placeBomb(0);
                             case CONTROL -> control.placeBomb(1);
+                            case E -> control.placeGate(0);
+                            case SPACE -> control.placeGate(1);
                             case ESCAPE -> pause();
                         }
                         refresh();
@@ -162,6 +164,7 @@ public class InGameController {
         gamePane.getChildren().removeIf(node -> node instanceof Rectangle);
         createWalls(gm.walls);
         createBombs(gm.bombs);
+        createGates(gm.gates);
         createPlayers(gm.players);
         createMonsters(gm.monsters);
         createExplosion(gm.explosions);
@@ -192,6 +195,18 @@ public class InGameController {
             r.setX(box.x);
             r.setY(box.y);
             r.setFill(Color.SADDLEBROWN);
+            r.setWidth(size);
+            r.setHeight(size);
+            this.gamePane.getChildren().add(r);
+        }
+    }
+    private void createGates(ArrayList<Gate> gates){
+        int size = 40;
+        for (Gate gate : gates) {
+            Rectangle r = new Rectangle();
+            r.setX(gate.x);
+            r.setY(gate.y);
+            r.setFill(Color.LIGHTYELLOW);
             r.setWidth(size);
             r.setHeight(size);
             this.gamePane.getChildren().add(r);
