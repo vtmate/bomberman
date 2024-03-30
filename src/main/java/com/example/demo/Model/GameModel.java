@@ -79,7 +79,7 @@ public class GameModel {
 
         double x = Math.round(player.x / 40) * 40;
         double y = Math.round(player.y / 40) * 40;
-        this.gates.add(new Gate(x,y));
+        this.gates.add(new Gate(x,y, player));
     }
 
     public void explosion(double bombX, double bombY, int radius){
@@ -122,6 +122,9 @@ public class GameModel {
             if(checkForBox(bombX+40, bombY)){
                 iterate = false;
             }
+            if(checkForGate(bombX+40, bombY)){
+                iterate = false;
+            }
             if (checkForMonster(bombX+40, bombY)){
                 //System.out.println("az egyik szörny meghalt");
                 iterate = false;
@@ -149,6 +152,9 @@ public class GameModel {
                 iterate = false;
             }
             if(checkForBox(bombX-40, bombY)){
+                iterate = false;
+            }
+            if(checkForGate(bombX-40, bombY)){
                 iterate = false;
             }
             if (checkForMonster(bombX-40, bombY)){
@@ -180,6 +186,9 @@ public class GameModel {
             if(checkForBox(bombX, bombY-40)){
                 iterate = false;
             }
+            if(checkForGate(bombX, bombY-40)){
+                iterate = false;
+            }
             if (checkForMonster(bombX, bombY-40)){
                 //System.out.println("az egyik szörny meghalt");
                 iterate = false;
@@ -207,6 +216,9 @@ public class GameModel {
                 iterate = false;
             }
             if(checkForBox(bombX, bombY+40)){
+                iterate = false;
+            }
+            if(checkForGate(bombX, bombY+40)){
                 iterate = false;
             }
             if (checkForMonster(bombX, bombY+40)){
@@ -310,6 +322,16 @@ public class GameModel {
             if(checkInteraction(box.x, box.y, expX, expY)){
                 boxes.remove(box);
                 //box = null;
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean checkForGate(double expX, double expY){
+        for(Gate gate : gates){
+            if(checkInteraction(gate.x, gate.y, expX, expY)){
+                gates.remove(gate);
+                gate.owner.setCountOfGates(gate.owner.getCountOfGates()+1);
                 return true;
             }
         }

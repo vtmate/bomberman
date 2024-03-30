@@ -97,15 +97,7 @@ public class PowerUp extends Entity{
         }, milliSeconds);
     }
     private static void isGate(Player player, PowerUp powerUp){
-        player.setCountOfGates(3);
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                player.setCountOfGates(0);
-                player.removePowerUp(powerUp);
-            }
-        }, milliSeconds);
-
+        player.setCountOfGates(player.getCountOfGates()+3);
     }
     private static void isMoreBombs(Player player){
         if(player.getCountOfBombs() <= 3){ //maximum három bombája lehet a játékosnak
