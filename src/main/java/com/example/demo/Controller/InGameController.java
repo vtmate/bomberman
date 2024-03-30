@@ -60,7 +60,8 @@ public class InGameController {
     private final String playerName2;
     private long startTime;
     private int pauseStageCount = 0;
-    private Timeline timeline;
+    public Timeline timeline;
+    public Timeline timer;
 
     public InGameController(GameController gc, String playerName1, String playerName2, String map) {
         this.gc = gc;
@@ -127,7 +128,6 @@ public class InGameController {
                             case SPACE -> control.placeGate(1);
                             case ESCAPE -> pause();
                         }
-                        refresh();
                     }
                 });
             }
@@ -144,7 +144,17 @@ public class InGameController {
         startTime = System.currentTimeMillis();
 
         // Időzítő létrehozása és indítása
-        AnimationTimer timer = new AnimationTimer() {
+
+        timer = new Timeline(
+                new KeyFrame(Duration.seconds(1), e -> {
+                    long elapsedTime = System.currentTimeMillis() - startTime;
+                    long seconds = elapsedTime / 1000;
+                    long minutes = seconds / 60;
+                    seconds = seconds % 60;
+                    timerLabel.setText("Idő: " + String.format("%02d:%02d", minutes, seconds));
+                })
+        );
+/*        timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 long elapsedTime = System.currentTimeMillis() - startTime;
@@ -153,8 +163,9 @@ public class InGameController {
                 seconds = seconds % 60;
                 timerLabel.setText("Idő: " + String.format("%d:%02d", minutes, seconds));
             }
-        };
-        timer.start();
+        };*/
+        timer.setCycleCount(Timeline.INDEFINITE);
+        timer.play();
 
         control.moveMonster(gm.monsters.getFirst());
         control.moveMonster(gm.monsters.get(1));
