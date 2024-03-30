@@ -358,6 +358,8 @@ public class GameModel {
         for (int i = 0; i < explosions.size(); i++) {
             explosions.get(i).pause();
         }
+        igc.timeline.pause();
+
     }
 
     public void startTimers() {
@@ -373,6 +375,7 @@ public class GameModel {
         for (int i = 0; i < explosions.size(); i++) {
             explosions.get(i).resume();
         }
+        igc.timeline.play();
     }
 
 }

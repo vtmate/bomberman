@@ -26,7 +26,7 @@
               </rowConstraints>
                <children>
                   <!--<Label fx:id="playerNameLabel1" text="Játékos 1" />-->
-                  <Label fx:id="timerLabel" alignment="CENTER" text="Idő: Timer" textAlignment="CENTER" GridPane.columnIndex="1" />
+                  <Label fx:id="timerLabel" alignment="CENTER" text="Idő: 00:00" textAlignment="CENTER" GridPane.columnIndex="1" />
                    <!--<Label fx:id="playerNameLabel2" layoutX="10.0" layoutY="13.0" text="Játékos 2" GridPane.columnIndex="2" />-->
                   <GridPane maxWidth="300.0" minWidth="300.0" prefHeight="74.0" prefWidth="300.0">
                     <columnConstraints>
