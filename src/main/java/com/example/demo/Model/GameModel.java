@@ -28,6 +28,8 @@ public class GameModel {
     private LayoutCreator layoutCreator;
     public InGameController igc;
 
+    private int narrowing_cnt = 0;
+
     //private boolean tovabb; //ehelyett majd a hatótávot kell csekkolni
     //private int toUp, toRight, toDown, toLeft;
 
@@ -48,6 +50,7 @@ public class GameModel {
         printEntity(this.players);
 
         System.out.println("Created GameModel");
+
     }
 
     public void placeBomb(Player player) {
@@ -405,6 +408,35 @@ public class GameModel {
         }
         for (int i = 0; i < explosions.size(); i++) {
             explosions.get(i).resume();
+        }
+    }
+
+    public boolean checkPosForWall(double expX, double expY) {
+        for(Wall wall : walls){
+            if(checkInteraction(wall.x, wall.y, expX, expY)){
+                walls.remove(wall);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void narrowing() {
+        ++narrowing_cnt;
+        for (int i = narrowing_cnt; i < (11 - narrowing_cnt - 1); i++) { // sorok
+            for (int j = narrowing_cnt; j < (13 - narrowing_cnt - 1); i++) { // oszlopok
+                if (checkForBox(i*40, j*40)) { // box van ott
+                    this.walls.add(new Wall(i*40, j*40));
+                } else if (checkForMonster(i*40, j*40)) { // monster van ott
+                    this.walls.add(new Wall(i*40, j*40));
+                } else if (checkPosForWall(i*40, j*40)) { // fal van ott
+                    this.walls.add(new Wall(i*40, j*40));
+                } else { // nincs ott semmi
+                    this.walls.add(new Wall(i*40, j*40));
+                }
+
+                // lehet ott játékos is, és akkor ő meghal...
+            }
         }
     }
 
