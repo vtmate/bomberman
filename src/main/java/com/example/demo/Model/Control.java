@@ -70,7 +70,7 @@ public class Control {
 
     public void placeGate(int playerId){
         Player player = gm.getPlayer(playerId);
-        if (player.getCountOfBombs() > 0) {
+        if (player.getCountOfGates() > 0) {
             gm.placeGate(player);
         }
         System.out.println("GATE lehelyezése by: " + playerId);

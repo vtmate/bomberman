@@ -75,9 +75,10 @@ public class GameModel {
     }
 
     public void placeGate(Player player){
+        player.setCountOfGates(player.getCountOfGates()-1);
+
         double x = Math.round(player.x / 40) * 40;
         double y = Math.round(player.y / 40) * 40;
-
         this.gates.add(new Gate(x,y));
     }
 
