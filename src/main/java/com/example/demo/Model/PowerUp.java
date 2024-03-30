@@ -44,6 +44,8 @@ public class PowerUp extends Entity{
                     case PowerUpType.SNAIL:
                         isSnail(player, powerUp);
                     break;
+                    case PowerUpType.GATE:
+                        isGate(player, powerUp);
                 }
                 return;
             }
@@ -93,6 +95,9 @@ public class PowerUp extends Entity{
                 player.removePowerUp(powerUp);
             }
         }, milliSeconds);
+    }
+    private static void isGate(Player player, PowerUp powerUp){
+        player.setCountOfGates(player.getCountOfGates()+3);
     }
     private static void isMoreBombs(Player player){
         if(player.getCountOfBombs() <= 3){ //maximum három bombája lehet a játékosnak

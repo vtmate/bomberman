@@ -20,6 +20,7 @@ public class GameModel {
     public ArrayList<Player> players;
     public ArrayList<Monster> monsters;
     public ArrayList<Bomb> bombs;
+    public ArrayList<Gate> gates;
     public ArrayList<Explosion> explosions;
     public ArrayList<Box> boxes;
     public ArrayList<PowerUp> powerUps;
@@ -39,6 +40,7 @@ public class GameModel {
         this.explosions = new ArrayList<>();
         this.monsters = new ArrayList<>();
         this.boxes = new ArrayList<>();
+        this.gates = new ArrayList<>();
         this.powerUps = new ArrayList<>();
         //majd itt kellene megcsinálni az elégazást, hogy melyik pálya legyen meghívva
         this.layoutCreator = new LayoutCreator(this, map);
@@ -72,6 +74,14 @@ public class GameModel {
         }
     }
 
+    public void placeGate(Player player){
+        player.setCountOfGates(player.getCountOfGates()-1);
+
+        double x = Math.round(player.x / 40) * 40;
+        double y = Math.round(player.y / 40) * 40;
+        this.gates.add(new Gate(x,y, player));
+    }
+
     public void explosion(double bombX, double bombY, int radius){
         int toUp = 0;
         int toRight = 0;
@@ -94,6 +104,7 @@ public class GameModel {
                 return true;
             }
         }
+        checkForGate(bombX, bombY);
         return false;
     }
     private void rightExplosion(double bombX, double bombY, int radius, int iteration){
@@ -110,6 +121,9 @@ public class GameModel {
                 iterate = false;
             }
             if(checkForBox(bombX+40, bombY)){
+                iterate = false;
+            }
+            if(checkForGate(bombX+40, bombY)){
                 iterate = false;
             }
             if (checkForMonster(bombX+40, bombY)){
@@ -141,6 +155,9 @@ public class GameModel {
             if(checkForBox(bombX-40, bombY)){
                 iterate = false;
             }
+            if(checkForGate(bombX-40, bombY)){
+                iterate = false;
+            }
             if (checkForMonster(bombX-40, bombY)){
                 //System.out.println("az egyik szörny meghalt");
                 iterate = false;
@@ -170,6 +187,9 @@ public class GameModel {
             if(checkForBox(bombX, bombY-40)){
                 iterate = false;
             }
+            if(checkForGate(bombX, bombY-40)){
+                iterate = false;
+            }
             if (checkForMonster(bombX, bombY-40)){
                 //System.out.println("az egyik szörny meghalt");
                 iterate = false;
@@ -197,6 +217,9 @@ public class GameModel {
                 iterate = false;
             }
             if(checkForBox(bombX, bombY+40)){
+                iterate = false;
+            }
+            if(checkForGate(bombX, bombY+40)){
                 iterate = false;
             }
             if (checkForMonster(bombX, bombY+40)){
@@ -300,6 +323,16 @@ public class GameModel {
             if(checkInteraction(box.x, box.y, expX, expY)){
                 boxes.remove(box);
                 //box = null;
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean checkForGate(double expX, double expY){
+        for(Gate gate : gates){
+            if(checkInteraction(gate.x, gate.y, expX, expY)){
+                gates.remove(gate);
+                gate.owner.setCountOfGates(gate.owner.getCountOfGates()+1);
                 return true;
             }
         }
