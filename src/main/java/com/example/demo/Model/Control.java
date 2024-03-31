@@ -62,10 +62,7 @@ public class Control {
 
     public void placeBomb(int playerId) {
         Player player = gm.getPlayer(playerId);
-        if (player.getCountOfBombs() > 0) {
-            gm.placeBomb(player);
-        }
-        System.out.println("Bomba lehelyezése");
+        gm.placeBomb(player);
     }
 
     public void placeGate(int playerId){

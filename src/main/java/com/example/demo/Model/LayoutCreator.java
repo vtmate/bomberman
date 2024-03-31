@@ -47,7 +47,7 @@ public class LayoutCreator {
         //teszt powerup
         gm.powerUps.add(new PowerUp(8*40, 9*40, PowerUpType.IMMADIATEBOMB));
         gm.powerUps.add(new PowerUp(9*40, 9*40, PowerUpType.GATE));
-        gm.powerUps.add(new PowerUp(10*40, 9*40, PowerUpType.GATE));
+        gm.powerUps.add(new PowerUp(10*40, 9*40, PowerUpType.DETONATOR));
     }
 
     private void createBoxes(){

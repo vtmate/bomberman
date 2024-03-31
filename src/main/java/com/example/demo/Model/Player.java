@@ -16,6 +16,7 @@ public class Player extends Entity{
     public int id;
     private int countOfBombs;
     private int countOfGates = 0;
+    public ArrayList<Bomb> placedDetonators;
     private final ArrayList<PowerUp> powerUps;
     public boolean isMoving;
     public Timeline timeline; //timecontrol
@@ -23,6 +24,7 @@ public class Player extends Entity{
         super(x, y);
         this.id = id;
         this.powerUps = new ArrayList<PowerUp>();
+        this.placedDetonators = new ArrayList<>();
     }
     public int getCountOfBombs() {
         return countOfBombs;
@@ -53,6 +55,16 @@ public class Player extends Entity{
             }
         }
         return false;
+    }
+    public int numOfAllBombs(){ //a countOfBombs-ba nem szeretnék belenyúlni, de az folyamatosan változik
+                                //detonarorhoz szükségem van az össz bombaszámra
+        int count = 1;
+        for (PowerUp playerPowerUp : getPowerUps()) {
+            if (playerPowerUp.getPowerUpType() == PowerUpType.MOREBOMBS){
+                count++;
+            }
+        }
+        return count;
     }
 
     public void moveMove(int moveX, int moveY, int iteration) {

@@ -60,20 +60,35 @@ public class GameModel {
         }
 
         if(!player.hasPowerUp(PowerUpType.NOBOMBS)) {
-            player.removeBomb();
-            Bomb bomb;
-            double x = Math.round(player.x / 40) * 40;
-            double y = Math.round(player.y / 40) * 40;
-            if (player.hasPowerUp(PowerUpType.BIGGERRADIUS)) {
-                bomb = new Bomb(x, y, 3);
-            } else if (player.hasPowerUp(PowerUpType.SMALLERRADIUS)) {
-                bomb = new Bomb(x, y, 1);
-            } else {
-                bomb = new Bomb(x, y, 2);
-            }
+            if(player.hasPowerUp(PowerUpType.DETONATOR)){
+                if(player.placedDetonators.size() == player.numOfAllBombs()){
+                    //vagy ha az összes bombáját detonátor felszedése után helyezte le
+                    System.out.println("összes bomba felrobbantása");
+                    //összes bomba visszaadása
+                } else if(player.getCountOfBombs() > 0){
+                    //van még lehelyhető bombája
+                    player.removeBomb();
+                    double x = Math.round(player.x / 40) * 40;
+                    double y = Math.round(player.y / 40) * 40;
+                    player.placedDetonators.add(new Bomb(x,y,2));
+                    System.out.println("bomba lehelyzése");
+                }
+            } else if (player.getCountOfBombs() > 0){
+                player.removeBomb();
+                Bomb bomb;
+                double x = Math.round(player.x / 40) * 40;
+                double y = Math.round(player.y / 40) * 40;
+                if (player.hasPowerUp(PowerUpType.BIGGERRADIUS)) {
+                    bomb = new Bomb(x, y, 3);
+                } else if (player.hasPowerUp(PowerUpType.SMALLERRADIUS)) {
+                    bomb = new Bomb(x, y, 1);
+                } else {
+                    bomb = new Bomb(x, y, 2);
+                }
 
-            this.bombs.add(bomb);
-            bomb.removeBomb(this, player, 2000); // TEST
+                this.bombs.add(bomb);
+                bomb.removeBomb(this, player, 2000); // TEST
+            }
         }
     }
 
