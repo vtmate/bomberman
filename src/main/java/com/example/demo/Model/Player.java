@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class Player extends Entity{
@@ -42,11 +43,14 @@ public class Player extends Entity{
     }
     public void removePowerUp(PowerUp powerUp){ powerUps.remove(powerUp); }
     public void removePowerUpByType(PowerUpType type){
-        for(PowerUp powerUp: powerUps) {
+        Iterator<PowerUp> iterator = powerUps.iterator();
+        while (iterator.hasNext()) {
+            PowerUp powerUp = iterator.next();
             if (powerUp.getPowerUpType() == type) {
-                powerUps.remove(powerUp);
+                iterator.remove(); // Use the iterator's remove() method to safely remove the element
             }
         }
+
     }
     public boolean hasPowerUp(PowerUpType powerUpType){
         for (PowerUp playerPowerUp : getPowerUps()) {

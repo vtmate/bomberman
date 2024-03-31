@@ -20,7 +20,7 @@ public class Bomb extends Entity{
 
         timeline.getKeyFrames().clear(); // Töröljük az eseményeket a timeline-ból
 
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(2000), new EventHandler<ActionEvent>() {
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 gm.explosion(x, y, getRadius());

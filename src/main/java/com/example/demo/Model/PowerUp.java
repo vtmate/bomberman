@@ -45,7 +45,13 @@ public class PowerUp extends Entity{
                         isSnail(player, powerUp);
                     break;
                     case PowerUpType.GATE:
-                        isGate(player, powerUp);
+                        isGate(player);
+                    case PowerUpType.IMMADIATEBOMB:
+                        isImmadiate(player, powerUp);
+                    break;
+                    case PowerUpType.DETONATOR:
+                        isDetonator(player);
+                    break;
                 }
                 return;
             }
@@ -96,8 +102,24 @@ public class PowerUp extends Entity{
             }
         }, milliSeconds);
     }
-    private static void isGate(Player player, PowerUp powerUp){
+    private static void isImmadiate(Player player, PowerUp powerUp) {
+        if(player.hasPowerUp(PowerUpType.DETONATOR)){
+            player.removePowerUpByType(PowerUpType.DETONATOR);
+        }
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                player.removePowerUp(powerUp);
+            }
+        }, milliSeconds);
+    }
+    private static void isGate(Player player){
         player.setCountOfGates(player.getCountOfGates()+3);
+    }
+    private static void isDetonator(Player player){
+        if(player.hasPowerUp(PowerUpType.IMMADIATEBOMB)){
+            player.removePowerUpByType(PowerUpType.IMMADIATEBOMB);
+        }
     }
     private static void isMoreBombs(Player player){
         if(player.getCountOfBombs() <= 3){ //maximum három bombája lehet a játékosnak
