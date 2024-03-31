@@ -52,6 +52,9 @@ public class PowerUp extends Entity{
                     case PowerUpType.DETONATOR:
                         isDetonator(player);
                     break;
+                    case PowerUpType.SHIELD:
+                        isShield(player, powerUp);
+                    break;
                 }
                 return;
             }
@@ -95,6 +98,14 @@ public class PowerUp extends Entity{
         }, milliSeconds);
     }
     private static void isNoBombs(Player player, PowerUp powerUp) {
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                player.removePowerUp(powerUp);
+            }
+        }, milliSeconds);
+    }
+    private static void isShield(Player player, PowerUp powerUp) {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {

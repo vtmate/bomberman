@@ -279,31 +279,33 @@ public class GameModel {
     }
 
     public void playerDeath(Player player){
-        System.out.println(player.id + ". játékos meghalt");
-        this.players.remove(player);
-        if (this.players.size() == 1) {
-            System.out.println("Már csak egy játékosmaradt");
-            lastPlayerTimeline = new Timeline();
-            igc.timerLabel.setTextFill(Color.RED);
-            lastPlayerTimeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+        if(!player.hasPowerUp(PowerUpType.SHIELD)){
+            System.out.println(player.id + ". játékos meghalt");
+            this.players.remove(player);
+            if (this.players.size() == 1) {
+                System.out.println("Már csak egy játékosmaradt");
+                lastPlayerTimeline = new Timeline();
+                igc.timerLabel.setTextFill(Color.RED);
+                lastPlayerTimeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
 
-                int second = 0;
-                @Override
-                public void handle(ActionEvent event) {
-                    second++;
+                    int second = 0;
+                    @Override
+                    public void handle(ActionEvent event) {
+                        second++;
 
 
-                    if (second == 5) {
-                        lastPlayerTimeline.stop(); // Ha elértük a maximális iterációt, leállítjuk a timeline-ot
-                        lastPlayerTimeline = null;
-                        stopTimers();
-                        new WinStage(GameModel.this);
+                        if (second == 5) {
+                            lastPlayerTimeline.stop(); // Ha elértük a maximális iterációt, leállítjuk a timeline-ot
+                            lastPlayerTimeline = null;
+                            stopTimers();
+                            new WinStage(GameModel.this);
+                        }
                     }
-                }
-            }));
+                }));
 
-            lastPlayerTimeline.setCycleCount(5); // A timeline egy végtelen ciklusban fog futni
-            lastPlayerTimeline.play();
+                lastPlayerTimeline.setCycleCount(5); // A timeline egy végtelen ciklusban fog futni
+                lastPlayerTimeline.play();
+            }
         }
     }
 
