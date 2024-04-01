@@ -45,11 +45,6 @@ public class LayoutCreator {
         }
 
         //teszt powerup
-        gm.powerUps.add(new PowerUp(2*40, 9*40, PowerUpType.MOREBOMBS));
-        gm.powerUps.add(new PowerUp(4*40, 9*40, PowerUpType.BIGGERRADIUS));
-        gm.powerUps.add(new PowerUp(5*40, 9*40, PowerUpType.SNAIL));
-        gm.powerUps.add(new PowerUp(6*40, 9*40, PowerUpType.SMALLERRADIUS));
-        gm.powerUps.add(new PowerUp(7*40, 9*40, PowerUpType.NOBOMBS));
         gm.powerUps.add(new PowerUp(8*40, 9*40, PowerUpType.IMMADIATEBOMB));
         gm.powerUps.add(new PowerUp(9*40, 9*40, PowerUpType.DETONATOR));
         gm.powerUps.add(new PowerUp(10*40, 9*40, PowerUpType.ROLLERSKATE));

@@ -365,7 +365,7 @@ public class InGameController {
             case PowerUpType.BIGGERRADIUS -> "biggerRadius.png";
             case PowerUpType.SNAIL -> "snailPowerUp.png";
             case PowerUpType.SMALLERRADIUS -> "smallerRadius.png";
-            case PowerUpType.NOBOMBS -> "noBombs.png";
+            case PowerUpType.NOBOMBS -> "noBombs (1).png";
             case PowerUpType.IMMADIATEBOMB -> "immadiate.png";
             case PowerUpType.DETONATOR -> "detonator.png";
             case PowerUpType.ROLLERSKATE -> "rollerskateskaterPowerUp.png";
