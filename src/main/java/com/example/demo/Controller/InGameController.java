@@ -362,12 +362,12 @@ public class InGameController {
         return switch (pt) {
             case PowerUpType.GATE -> "gatePowerUp.png";
             case PowerUpType.MOREBOMBS -> "morebombsPowerUp.png";
-            case PowerUpType.BIGGERRADIUS -> "morebombsPowerUp.png";
+            case PowerUpType.BIGGERRADIUS -> "biggerRadius.png";
             case PowerUpType.SNAIL -> "snailPowerUp.png";
-            case PowerUpType.SMALLERRADIUS -> "morebombsPowerUp.png";
-            case PowerUpType.NOBOMBS -> "morebombsPowerUp.png";
-            case PowerUpType.IMMADIATEBOMB -> "morebombsPowerUp.png";
-            case PowerUpType.DETONATOR -> "morebombsPowerUp.png";
+            case PowerUpType.SMALLERRADIUS -> "smallerRadius.png";
+            case PowerUpType.NOBOMBS -> "noBombs.png";
+            case PowerUpType.IMMADIATEBOMB -> "immadiate.png";
+            case PowerUpType.DETONATOR -> "detonator.png";
             case PowerUpType.ROLLERSKATE -> "rollerskateskaterPowerUp.png";
             case PowerUpType.SHIELD -> "shieldPowerUp.png";
             case PowerUpType.GHOST -> "ghostPowerUp.png";
