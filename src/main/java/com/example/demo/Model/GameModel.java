@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class GameModel {
     public ArrayList<Wall> walls;
+    public ArrayList<EdgeWall> edgeWalls;
     public ArrayList<Player> players;
     public ArrayList<Monster> monsters;
     public ArrayList<Bomb> bombs;
@@ -37,6 +38,7 @@ public class GameModel {
     public GameModel(String map, InGameController igc) {
         this.igc = igc;
         this.walls = new ArrayList<>();
+        this.edgeWalls = new ArrayList<>();
         this.players = new ArrayList<>();
         this.bombs = new ArrayList<>();
         this.explosions = new ArrayList<>();
@@ -330,13 +332,23 @@ public class GameModel {
 
     private boolean checkForWall(double same, double smaller, double bigger, boolean horizontal){
         for(Wall wall : walls){
-//            System.out.println(same + " = " + wall.y + " and " + smaller + "<" + wall.x + "<" + bigger);
             if(horizontal){
                 if(same == wall.y && isBetween(wall.x, smaller, bigger)){
                     return true;
                 }
             } else {
                 if(same == wall.x && isBetween(wall.y, smaller, bigger)){
+                    return true;
+                }
+            }
+        }
+        for(EdgeWall edgeWall : edgeWalls){
+            if(horizontal){
+                if(same == edgeWall.y && isBetween(edgeWall.x, smaller, bigger)){
+                    return true;
+                }
+            } else {
+                if(same == edgeWall.x && isBetween(edgeWall.y, smaller, bigger)){
                     return true;
                 }
             }
@@ -464,13 +476,13 @@ public class GameModel {
         for (int i = narrowing_cnt; i < (11 - narrowing_cnt - 1); i++) { // sorok
             for (int j = narrowing_cnt; j < (13 - narrowing_cnt - 1); i++) { // oszlopok
                 if (checkForBox(i*40, j*40)) { // box van ott
-                    this.walls.add(new Wall(i*40, j*40));
+                    this.edgeWalls.add(new EdgeWall(i*40, j*40));
                 } else if (checkForMonster(i*40, j*40)) { // monster van ott
-                    this.walls.add(new Wall(i*40, j*40));
+                    this.edgeWalls.add(new EdgeWall(i*40, j*40));
                 } else if (checkPosForWall(i*40, j*40)) { // fal van ott
-                    this.walls.add(new Wall(i*40, j*40));
+                    this.edgeWalls.add(new EdgeWall(i*40, j*40));
                 } else { // nincs ott semmi
-                    this.walls.add(new Wall(i*40, j*40));
+                    this.edgeWalls.add(new EdgeWall(i*40, j*40));
                 }
 
                 // lehet ott játékos is, és akkor ő meghal...

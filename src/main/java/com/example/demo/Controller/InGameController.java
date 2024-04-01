@@ -174,13 +174,14 @@ public class InGameController {
     public void refresh() {
         gamePane.getChildren().removeIf(node -> node instanceof Rectangle);
         createWalls(gm.walls);
+        createEdgeWalls(gm.edgeWalls);
         createGates(gm.gates);
         createBombs(gm.bombs);
-        createPlayers(gm.players);
         createMonsters(gm.monsters);
         createExplosion(gm.explosions);
         createPowerUps(gm.powerUps);
         createBoxes(gm.boxes);
+        createPlayers(gm.players);
         gm.checkImmadiateBombs();
         checkPlayerPowerUp(gm.getPlayer(0));
         checkPlayerPowerUp(gm.getPlayer(1));
@@ -229,6 +230,17 @@ public class InGameController {
             Rectangle r = new Rectangle();
             r.setX(wall.x);
             r.setY(wall.y);
+            r.setWidth(size);
+            r.setHeight(size);
+            this.gamePane.getChildren().add(r);
+        }
+    }
+    public void createEdgeWalls(ArrayList<EdgeWall> edgeWalls) {
+        int size = 40;
+        for (EdgeWall edgeWall : edgeWalls) {
+            Rectangle r = new Rectangle();
+            r.setX(edgeWall.x);
+            r.setY(edgeWall.y);
             r.setWidth(size);
             r.setHeight(size);
             this.gamePane.getChildren().add(r);

@@ -47,7 +47,7 @@ public class LayoutCreator {
         //teszt powerup
         gm.powerUps.add(new PowerUp(8*40, 9*40, PowerUpType.IMMADIATEBOMB));
         gm.powerUps.add(new PowerUp(9*40, 9*40, PowerUpType.MOREBOMBS));
-        gm.powerUps.add(new PowerUp(10*40, 9*40, PowerUpType.SHIELD));
+        gm.powerUps.add(new PowerUp(10*40, 9*40, PowerUpType.GHOST));
     }
 
     private void createBoxes(){
@@ -76,12 +76,12 @@ public class LayoutCreator {
     private void createWalls() {
 
         for (int i = 0; i < 13; i++) { //felső és alsó sor
-            gm.walls.add(new Wall(i*40, 0));
-            gm.walls.add(new Wall(i*40,40*10));
+            gm.edgeWalls.add(new EdgeWall(i*40, 0));
+            gm.edgeWalls.add(new EdgeWall(i*40,40*10));
         }
         for (int i = 1; i < 11; i++) { //bal és jobb oszlop
-            gm.walls.add(new Wall(0, i*40));
-            gm.walls.add(new Wall(12*40,i*40));
+            gm.edgeWalls.add(new EdgeWall(0, i*40));
+            gm.edgeWalls.add(new EdgeWall(12*40,i*40));
         }
 
         switch(map){

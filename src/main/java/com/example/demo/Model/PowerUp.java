@@ -19,7 +19,7 @@ public class PowerUp extends Entity{
     public static void checkForPowerUp(double x, double y, Player player, GameModel gm){
         //ez minden egyes lépésnél lefut
         for(PowerUp powerUp : gm.powerUps){
-            if (gm.checkInteraction(x, y, powerUp.x, powerUp.y )){
+            if (gm.checkInteraction(x, y, powerUp.x, powerUp.y) && !Box.hasBoxOnTop(gm.boxes, powerUp.x, powerUp.y)){
                 //ez csak akkor, ha felszedtünk egy powerUp-ot
                 System.out.println(powerUp.getPowerUpType());
                 player.addPowerUp(powerUp);
@@ -54,6 +54,9 @@ public class PowerUp extends Entity{
                     break;
                     case PowerUpType.SHIELD:
                         isShield(player, powerUp);
+                    break;
+                    case PowerUpType.GHOST:
+                        isGhost(player, powerUp, gm);
                     break;
                 }
                 return;
@@ -131,6 +134,23 @@ public class PowerUp extends Entity{
         if(player.hasPowerUp(PowerUpType.IMMADIATEBOMB)){
             player.removePowerUpByType(PowerUpType.IMMADIATEBOMB);
         }
+    }
+    private static void isGhost(Player player, PowerUp powerUp, GameModel gm) {
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                player.removePowerUp(powerUp);
+                for(Wall wall : gm.walls){
+                    if(gm.checkInteraction(player.x, player.y, wall.x, wall.y)) gm.playerDeath(player);
+                }
+                for(EdgeWall edgeWall : gm.edgeWalls) {
+                    if (gm.checkInteraction(player.x, player.y, edgeWall.x, edgeWall.y)) gm.playerDeath(player);
+                }
+                for(Box box : gm.boxes){
+                    if(gm.checkInteraction(player.x, player.y, box.x, box.y)) gm.playerDeath(player);
+                }
+            }
+        }, milliSeconds);
     }
     private static void isMoreBombs(Player player){
         if(player.getCountOfBombs() <= 3){ //maximum három bombája lehet a játékosnak

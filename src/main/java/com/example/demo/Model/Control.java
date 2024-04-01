@@ -23,34 +23,36 @@ public class Control {
             return;
         }
 
-        if(playerIntersectsEntity(player, direction)){
-            switch(direction){
-                case "UP" -> PowerUp.checkForPowerUp(player.x, player.y-40, player, gm);
-                case "DOWN" -> PowerUp.checkForPowerUp(player.x, player.y+40, player, gm);
-                case "LEFT" -> PowerUp.checkForPowerUp(player.x-40, player.y, player, gm);
-                case "RIGHT" -> PowerUp.checkForPowerUp(player.x+40, player.y, player, gm);
-            }
-            //ha van adott powerupja emberünknek, akkor ez így fusson le
-            if(player.hasPowerUp(PowerUpType.SNAIL)){ //ez mondjuk lehetne osztályszintű metódusa a player-nek
+        if(!playerIntersectsEdge(player, direction)){
+            if(playerIntersectsEntity(player, direction) || player.hasPowerUp(PowerUpType.GHOST)){
                 switch(direction){
-                    case "UP" -> move(0, -1, playerId, 40);
-                    case "DOWN" -> move(0, 1, playerId, 40);
-                    case "LEFT" -> move(-1, 0, playerId, 40);
-                    case "RIGHT" -> move(1, 0, playerId, 40);
+                    case "UP" -> PowerUp.checkForPowerUp(player.x, player.y-40, player, gm);
+                    case "DOWN" -> PowerUp.checkForPowerUp(player.x, player.y+40, player, gm);
+                    case "LEFT" -> PowerUp.checkForPowerUp(player.x-40, player.y, player, gm);
+                    case "RIGHT" -> PowerUp.checkForPowerUp(player.x+40, player.y, player, gm);
                 }
-            } else if(player.hasPowerUp(PowerUpType.ROLLERSKATE)){
-                switch(direction){
-                    case "UP" -> move(0, -20, playerId, 2);
-                    case "DOWN" -> move(0, 20, playerId, 2);
-                    case "LEFT" -> move(-20, 0, playerId, 2);
-                    case "RIGHT" -> move(20, 0, playerId, 2);
-                }
-            } else {
-                switch(direction){
-                    case "UP" -> move(0, -4, playerId, 10);
-                    case "DOWN" -> move(0, 4, playerId, 10);
-                    case "LEFT" -> move(-4, 0, playerId, 10);
-                    case "RIGHT" -> move(4, 0, playerId, 10);
+                //ha van adott powerupja emberünknek, akkor ez így fusson le
+                if(player.hasPowerUp(PowerUpType.SNAIL)){ //ez mondjuk lehetne osztályszintű metódusa a player-nek
+                    switch(direction){
+                        case "UP" -> move(0, -1, playerId, 40);
+                        case "DOWN" -> move(0, 1, playerId, 40);
+                        case "LEFT" -> move(-1, 0, playerId, 40);
+                        case "RIGHT" -> move(1, 0, playerId, 40);
+                    }
+                } else if(player.hasPowerUp(PowerUpType.ROLLERSKATE)){
+                    switch(direction){
+                        case "UP" -> move(0, -20, playerId, 2);
+                        case "DOWN" -> move(0, 20, playerId, 2);
+                        case "LEFT" -> move(-20, 0, playerId, 2);
+                        case "RIGHT" -> move(20, 0, playerId, 2);
+                    }
+                } else {
+                    switch(direction){
+                        case "UP" -> move(0, -4, playerId, 10);
+                        case "DOWN" -> move(0, 4, playerId, 10);
+                        case "LEFT" -> move(-4, 0, playerId, 10);
+                        case "RIGHT" -> move(4, 0, playerId, 10);
+                    }
                 }
             }
         }
@@ -75,7 +77,7 @@ public class Control {
         System.out.println("GATE lehelyezése by: " + playerId);
     }
 
-    private boolean playerIntersectsEntity(Player player, String direction){
+    public boolean playerIntersectsEntity(Player player, String direction){
         double x = player.x;
         double y = player.y;
         if (checkEntitiesIntersection(x, y, gm.walls, direction)) return false;
@@ -84,6 +86,10 @@ public class Control {
         if (checkEntitiesIntersection(x, y, gm.boxes, direction)) return false;
         if (checkEntitiesIntersection(x, y, gm.gates, direction)) return false;
         return true;
+    }
+
+    private boolean playerIntersectsEdge(Player player, String direction){
+        return checkEntitiesIntersection(player.x, player.y, gm.edgeWalls, direction);
     }
 
     private boolean checkEntitiesIntersection(double x, double y, ArrayList<? extends Entity> entities, String direction) {
@@ -142,6 +148,7 @@ public class Control {
         if (checkEntitiesIntersectionM(x, y, gm.bombs, direction)) return false;
         if (checkEntitiesIntersectionM(x, y, gm.boxes, direction)) return false;
         if (checkEntitiesIntersectionM(x, y, gm.gates, direction)) return false;
+        if (checkEntitiesIntersectionM(x, y, gm.edgeWalls, direction)) return false;
         checkPlayer(x, y);
         return true;
     }
