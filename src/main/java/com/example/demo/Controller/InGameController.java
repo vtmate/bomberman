@@ -62,6 +62,14 @@ public class InGameController {
     private int pauseStageCount = 0;
     public Timeline timeline;
     public Timeline timer;
+    //képek
+    Image wallImage = new Image("wall1.png");
+    Image boxImage = new Image("box1.png");
+    Image player1Image = new Image("player1.png");
+    Image player2Image = new Image("player2.png");
+    Image powerUpImage = new Image("powerup.png");
+    Image explosionImage = new Image("exposion1.png");
+
 
     public InGameController(GameController gc, String playerName1, String playerName2, String map) {
         this.gc = gc;
@@ -224,17 +232,7 @@ public class InGameController {
             this.gamePane.getChildren().add(r);
         }
     }
-    public void createWalls(ArrayList<Wall> walls) {
-        int size = 40;
-        for (Wall wall : walls) {
-            Rectangle r = new Rectangle();
-            r.setX(wall.x);
-            r.setY(wall.y);
-            r.setWidth(size);
-            r.setHeight(size);
-            this.gamePane.getChildren().add(r);
-        }
-    }
+
     public void createEdgeWalls(ArrayList<EdgeWall> edgeWalls) {
         int size = 40;
         for (EdgeWall edgeWall : edgeWalls) {
@@ -297,15 +295,45 @@ public class InGameController {
             r.setHeight(size);
             this.gamePane.getChildren().add(r);
         }
-//        for (Explosion explosion : explosions) {
-//            Rectangle r = new Rectangle();
-//            r.setFill(Color.YELLOW);
-//            r.setX(explosion.x);
-//            r.setY(explosion.y);
-//            r.setWidth(size);
-//            r.setHeight(size);
-//        }
     }
+
+    private void createWalls(ArrayList<Wall> walls) {
+//        int size = 45;
+//        for (Wall wall : walls) {
+//            ImageView imageView = new ImageView(wallImage);
+//            imageView.setX(wall.x);
+//            imageView.setY(wall.y-10);
+//            imageView.setFitWidth(size);
+//            imageView.setFitHeight(size);
+//            this.gamePane.getChildren().add(imageView);
+//        }
+        createImageView(walls);
+    }
+
+    private void createImageView(ArrayList<? extends Entity> entities) {
+        int size = 45;
+        for (Entity entity : entities) {
+            ImageView imageView = new ImageView(wallImage);
+            imageView.setX(entity.x);
+            imageView.setY(entity.y - 10);
+            imageView.setFitWidth(size);
+            imageView.setFitHeight(size);
+            this.gamePane.getChildren().add(imageView);
+        }
+    }
+
+
+//    private void createImageView(ArrayList<Entity> entities){
+//        int size = 45;
+//        for(Entity entity : entities){
+//            ImageView imageView = new ImageView(wallImage);
+//            imageView.setX(entity.x);
+//            imageView.setY(entity.y-10);
+//            imageView.setFitWidth(size);
+//            imageView.setFitHeight(size);
+//            this.gamePane.getChildren().add(imageView);
+//        }
+//    }
 
     private void checkPlayerPowerUp(Player player) {
 
@@ -321,10 +349,6 @@ public class InGameController {
         }
         for (int i = 0; i < powerUps.size(); i++) {
             PowerUp pu = powerUps.get(i);
-            /*Image img = new Image(getPowerUpImage(pu.getPowerUpType()));
-            ImageView iw = new ImageView(img);
-            iw.setFitWidth(25);
-            iw.setFitHeight(25);*/
 
             StackPane panePowerUp = new StackPane();
 
