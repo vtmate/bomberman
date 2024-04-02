@@ -145,7 +145,7 @@ public class InGameController {
 
         // Időzítő létrehozása és indítása
 
-        timer = new Timeline(
+        Timeline timer = new Timeline(
                 new KeyFrame(Duration.seconds(1), e -> {
                     long elapsedTime = System.currentTimeMillis() - startTime;
                     long seconds = elapsedTime / 1000;
@@ -321,10 +321,10 @@ public class InGameController {
         }
         for (int i = 0; i < powerUps.size(); i++) {
             PowerUp pu = powerUps.get(i);
-            Image img = new Image(getPowerUpImage(pu.getPowerUpType()));
+            /*Image img = new Image(getPowerUpImage(pu.getPowerUpType()));
             ImageView iw = new ImageView(img);
             iw.setFitWidth(25);
-            iw.setFitHeight(25);
+            iw.setFitHeight(25);*/
 
             StackPane panePowerUp = new StackPane();
 
@@ -345,10 +345,10 @@ public class InGameController {
             rect.setEffect(dropShadow);
 
             panePowerUp.getChildren().add(rect);
-            panePowerUp.getChildren().add(iw);
+            panePowerUp.getChildren().add(powerUps.get(i).imageView);
 
             StackPane.setAlignment(rect, Pos.CENTER);
-            StackPane.setAlignment(iw, Pos.CENTER);
+            StackPane.setAlignment(powerUps.get(i).imageView, Pos.CENTER);
             if (player.id != 0) {
                 playerPowerUps2.getChildren().add(panePowerUp);
             }
@@ -356,22 +356,6 @@ public class InGameController {
                 playerPowerUps1.getChildren().add(panePowerUp);
             }
         }
-    }
-
-    private String getPowerUpImage(PowerUpType pt) {
-        return switch (pt) {
-            case PowerUpType.GATE -> "gatePowerUp.png";
-            case PowerUpType.MOREBOMBS -> "morebombsPowerUp.png";
-            case PowerUpType.BIGGERRADIUS -> "biggerRadius.png";
-            case PowerUpType.SNAIL -> "snailPowerUp.png";
-            case PowerUpType.SMALLERRADIUS -> "smallerRadius.png";
-            case PowerUpType.NOBOMBS -> "noBombs (1).png";
-            case PowerUpType.IMMADIATEBOMB -> "immadiate.png";
-            case PowerUpType.DETONATOR -> "detonator.png";
-            case PowerUpType.ROLLERSKATE -> "rollerskateskaterPowerUp.png";
-            case PowerUpType.SHIELD -> "shieldPowerUp.png";
-            case PowerUpType.GHOST -> "ghostPowerUp.png";
-        };
     }
 
     private void pause() {
