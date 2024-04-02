@@ -391,8 +391,6 @@ public class GameModel {
 
 
     public void checkImmadiateBombs(){
-        //valahogy meg lehet azt csinálni, hogy csak akkor kerüljön ez bele a gameloopba, ha az ????????????????????
-        //adott játékos felveszi a powerupot?
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             if(player.hasPowerUp(PowerUpType.IMMADIATEBOMB)){
