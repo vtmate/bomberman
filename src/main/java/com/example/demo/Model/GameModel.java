@@ -308,6 +308,13 @@ public class GameModel {
                 lastPlayerTimeline.setCycleCount(5); // A timeline egy végtelen ciklusban fog futni
                 lastPlayerTimeline.play();
             }
+
+            if (this.players.size() == 0) {
+                lastPlayerTimeline.stop();
+                lastPlayerTimeline = null;
+                stopTimers();
+                new WinStage(GameModel.this);
+            }
         }
     }
 
@@ -442,7 +449,7 @@ public class GameModel {
             explosions.get(i).pause();
         }
         igc.timeline.pause();
-
+        igc.timer.pause();
     }
 
     public void startTimers() {
@@ -459,6 +466,7 @@ public class GameModel {
             explosions.get(i).resume();
         }
         igc.timeline.play();
+        igc.timer.play();
     }
 
     public boolean checkPosForWall(double expX, double expY) {

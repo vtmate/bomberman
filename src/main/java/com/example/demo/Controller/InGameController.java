@@ -25,12 +25,15 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import java.util.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static javafx.scene.paint.Color.*;
 
 public class InGameController {
     private final int WIDTH = 900;
@@ -62,6 +65,7 @@ public class InGameController {
     private int pauseStageCount = 0;
     public Timeline timeline;
     public Timeline timer;
+    private int time;
 
     public InGameController(GameController gc, String playerName1, String playerName2, String map) {
         this.gc = gc;
@@ -144,15 +148,15 @@ public class InGameController {
         startTime = System.currentTimeMillis();
 
         // Időzítő létrehozása és indítása
-
-        Timeline timer = new Timeline(
-                new KeyFrame(Duration.seconds(1), e -> {
-                    long elapsedTime = System.currentTimeMillis() - startTime;
-                    long seconds = elapsedTime / 1000;
-                    long minutes = seconds / 60;
-                    seconds = seconds % 60;
-                    timerLabel.setText("Idő: " + String.format("%02d:%02d", minutes, seconds));
-                })
+        time = 0;
+        timer = new Timeline(
+            new KeyFrame(Duration.seconds(1), e -> {
+                time++;
+                long elapsedTime = System.currentTimeMillis() - startTime;
+                int seconds = time % 60;
+                int minutes = (int)Math.ceil(time / 60);
+                timerLabel.setText("Idő: " + String.format("%02d:%02d", minutes, seconds));
+            })
         );
 /*        timer = new AnimationTimer() {
             @Override
@@ -193,7 +197,7 @@ public class InGameController {
             Rectangle r = new Rectangle();
             r.setX(powerUp.x);
             r.setY(powerUp.y);
-            r.setFill(Color.AQUA);
+            r.setFill(AQUA);
             r.setWidth(size);
             r.setHeight(size);
             this.gamePane.getChildren().add(r);
@@ -206,7 +210,7 @@ public class InGameController {
             Rectangle r = new Rectangle();
             r.setX(box.x);
             r.setY(box.y);
-            r.setFill(Color.SADDLEBROWN);
+            r.setFill(SADDLEBROWN);
             r.setWidth(size);
             r.setHeight(size);
             this.gamePane.getChildren().add(r);
@@ -218,7 +222,7 @@ public class InGameController {
             Rectangle r = new Rectangle();
             r.setX(gate.x);
             r.setY(gate.y);
-            r.setFill(Color.LIGHTYELLOW);
+            r.setFill(LIGHTYELLOW);
             r.setWidth(size);
             r.setHeight(size);
             this.gamePane.getChildren().add(r);
@@ -253,7 +257,7 @@ public class InGameController {
             Rectangle r = new Rectangle();
             r.setX(player.x);
             r.setY(player.y);
-            r.setFill(Color.BLUEVIOLET);
+            r.setFill(BLUEVIOLET);
             r.setWidth(size);
             r.setHeight(size);
             this.gamePane.getChildren().add(r);
@@ -266,7 +270,7 @@ public class InGameController {
             Rectangle r = new Rectangle();
             r.setX(monster.x);
             r.setY(monster.y);
-            r.setFill(Color.FORESTGREEN);
+            r.setFill(FORESTGREEN);
             r.setWidth(size);
             r.setHeight(size);
             this.gamePane.getChildren().add(r);
@@ -277,7 +281,7 @@ public class InGameController {
         int size = 40;
         for (Bomb bomb : bombs) {
             Rectangle r = new Rectangle();
-            r.setFill(Color.ORANGE);
+            r.setFill(ORANGE);
             r.setX(bomb.x);
             r.setY(bomb.y);
             r.setWidth(size);
@@ -290,7 +294,7 @@ public class InGameController {
         int size = 40;
         for (int i = 0; i < explosions.size(); i++) {
             Rectangle r = new Rectangle();
-            r.setFill(Color.YELLOW);
+            r.setFill(YELLOW);
             r.setX(explosions.get(i).x);
             r.setY(explosions.get(i).y);
             r.setWidth(size);
@@ -334,14 +338,14 @@ public class InGameController {
             //panePowerUp.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
             Rectangle rect = new Rectangle(35, 35);
-            rect.setFill(Color.WHITE);
+            rect.setFill(WHITE);
             rect.setArcWidth(50.0);
             rect.setArcHeight(50.0);
 
             DropShadow dropShadow = new DropShadow();
             dropShadow.setOffsetX(2.0f);
             dropShadow.setOffsetY(2.0f);
-            dropShadow.setColor(Color.rgb(50, 50, 50, .588));
+            dropShadow.setColor(rgb(50, 50, 50, .588));
             rect.setEffect(dropShadow);
 
             panePowerUp.getChildren().add(rect);
@@ -368,22 +372,61 @@ public class InGameController {
         Stage pauseStage = new Stage();
         pauseStage.setResizable(false);
         pauseStage.setTitle("Bomberman - Szünet");
-        pauseStage.setHeight(200);
-        pauseStage.setWidth(300);
+        pauseStage.setHeight(300);
+        pauseStage.setWidth(400);
+        pauseStage.initStyle(StageStyle.UNDECORATED);
 
 
         Button backToGame = new Button();
         backToGame.setText("Folytatás");
 
+        backToGame.setPrefWidth(150);
+        backToGame.setPrefHeight(25);
+        backToGame.setStyle("-fx-font-size: 18px;" + "-fx-background-color: #C9C9C9;" + "-fx-font-weight: 900");
+        backToGame.setOnMouseEntered(e -> {
+            backToGame.setStyle("-fx-cursor: HAND;" + "-fx-font-size: 18px;" + "-fx-background-color: white;" + "-fx-font-weight: 900");
+        });
+        backToGame.setOnMouseExited(e -> {
+            backToGame.setStyle("-fx-font-size: 18px;" + "-fx-background-color: #C9C9C9;" + "-fx-font-weight: 900");
+        });
+
         Button newGame = new Button();
         newGame.setText("Új játék");
+
+        newGame.setPrefWidth(150);
+        newGame.setPrefHeight(25);
+        newGame.setStyle("-fx-font-size: 18px;" + "-fx-background-color: #C9C9C9;" + "-fx-font-weight: 900");
+        newGame.setOnMouseEntered(e -> {
+            newGame.setStyle("-fx-cursor: HAND;" + "-fx-font-size: 18px;" + "-fx-background-color: white;" + "-fx-font-weight: 900");
+        });
+        newGame.setOnMouseExited(e -> {
+            newGame.setStyle("-fx-font-size: 18px;" + "-fx-background-color: #C9C9C9;" + "-fx-font-weight: 900");
+        });
 
         Button exitGame = new Button();
         exitGame.setText("Játék bezárása");
 
+        exitGame.setPrefWidth(150);
+        exitGame.setPrefHeight(25);
+        exitGame.setStyle("-fx-font-size: 18px;" + "-fx-background-color: #C9C9C9;" + "-fx-font-weight: 900");
+        exitGame.setOnMouseEntered(e -> {
+            exitGame.setStyle("-fx-cursor: HAND;" + "-fx-font-size: 18px;" + "-fx-background-color: white;" + "-fx-font-weight: 900");
+        });
+        exitGame.setOnMouseExited(e -> {
+            exitGame.setStyle("-fx-font-size: 18px;" + "-fx-background-color: #C9C9C9;" + "-fx-font-weight: 900");
+        });
+
+        Label label = new Label("Szünet");
+        label.setTextFill(WHITE);
+        //label.setStyle("-fx-font-size: 30px;");
+        Font adumuFont = Font.loadFont(getClass().getResourceAsStream("/Adumu.ttf"), 30);
+        label.setFont(adumuFont);
+
         Pane pane = new Pane();
-        HBox hbox = new HBox();
-        hbox.getChildren().addAll(backToGame, newGame, exitGame);
+        VBox vbox = new VBox();
+        vbox.getChildren().addAll(label, backToGame, newGame, exitGame);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(20);
 
 
         backToGame.setOnAction(new EventHandler<ActionEvent>() {
@@ -424,7 +467,10 @@ public class InGameController {
         });
 
 
-        Scene scene = new Scene(hbox, 300, 200);
+        Scene scene = new Scene(vbox, 300, 300);
+        vbox.setStyle("-fx-border-color: white;" +
+                        "-fx-border-width: 5px;" +
+                "-fx-background-color: #161C1C;");
         pauseStage.setScene(scene);
         pauseStage.initModality(Modality.WINDOW_MODAL); // Set modality
         pauseStage.initOwner(gc.stage);
