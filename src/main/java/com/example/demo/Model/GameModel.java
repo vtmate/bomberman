@@ -473,19 +473,78 @@ public class GameModel {
 
     public void narrowing() {
         ++narrowing_cnt;
+        boolean found;
         for (int i = narrowing_cnt; i < (11 - narrowing_cnt - 1); i++) { // sorok
             for (int j = narrowing_cnt; j < (13 - narrowing_cnt - 1); i++) { // oszlopok
-                if (checkForBox(i*40, j*40)) { // box van ott
-                    this.edgeWalls.add(new EdgeWall(i*40, j*40));
-                } else if (checkForMonster(i*40, j*40)) { // monster van ott
-                    this.edgeWalls.add(new EdgeWall(i*40, j*40));
-                } else if (checkPosForWall(i*40, j*40)) { // fal van ott
-                    this.edgeWalls.add(new EdgeWall(i*40, j*40));
-                } else { // nincs ott semmi
-                    this.edgeWalls.add(new EdgeWall(i*40, j*40));
+                found = false;
+                for (Wall wall : walls) {
+                    if (checkInteraction(i, j, wall.x, wall.y)) {
+                        this.walls.remove(wall);
+                        this.edgeWalls.add(new EdgeWall(i, j));
+                        found = true;
+                    }
                 }
 
-                // lehet ott játékos is, és akkor ő meghal...
+                if (!found) {
+                    for (Player player : players) {
+                        if (checkInteraction(i, j, player.x, player.y)) {
+                            this.players.remove(player);
+                            this.edgeWalls.add(new EdgeWall(i, j));
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!found) {
+                    for (Monster monster : monsters) {
+                        if (checkInteraction(i, j, monster.x, monster.y)) {
+                            this.monsters.remove(monster);
+                            this.edgeWalls.add(new EdgeWall(i, j));
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!found) {
+                    for (Bomb bomb : bombs) {
+                        if (checkInteraction(i, j, bomb.x, bomb.y)) {
+                            this.bombs.remove(bomb);
+                            this.edgeWalls.add(new EdgeWall(i, j));
+                            found = true;
+                        }
+                    }
+                }
+
+                if (!found) {
+                    for (Box box : boxes) {
+                        if (checkInteraction(i, j, box.x, box.y)) {
+                            this.boxes.remove(box);
+                            this.edgeWalls.add(new EdgeWall(i, j));
+                            found = true;
+                        }
+                    }
+                }
+
+                if (!found) {
+                    for (PowerUp powerUp : powerUps) {
+                        if (checkInteraction(i, j, powerUp.x, powerUp.y)) {
+                            this.powerUps.remove(powerUp);
+                            this.edgeWalls.add(new EdgeWall(i, j));
+                            found = true;
+                        }
+                    }
+                }
+
+                if (!found) {
+                    for (Gate gate : gates) {
+                        if (checkInteraction(i, j, gate.x, gate.y)) {
+                            this.gates.remove(gate);
+                            this.edgeWalls.add(new EdgeWall(i, j));
+                        }
+                    }
+                }
             }
         }
     }
