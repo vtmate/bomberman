@@ -63,12 +63,15 @@ public class InGameController {
     public Timeline timeline;
     public Timeline timer;
     //képek
-    Image wallImage = new Image("wall1.png");
-    Image boxImage = new Image("box1.png");
-    Image player1Image = new Image("player1.png");
-    Image player2Image = new Image("player2.png");
-    Image powerUpImage = new Image("powerup.png");
-    Image explosionImage = new Image("exposion1.png");
+    Image wallImage;
+    Image boxImage;
+    Image player1Image;
+    Image player2Image;
+    Image powerUpImage;
+    Image explosionImage;
+    Image bombImage;
+    Image monsterImage;
+    Image gateImage;
 
 
     public InGameController(GameController gc, String playerName1, String playerName2, String map) {
@@ -83,6 +86,7 @@ public class InGameController {
 
     public void initialize() {
 
+        initImages();
 
         Font adumuFont = Font.loadFont(getClass().getResourceAsStream("/Adumu.ttf"), 20);
         playerNameLabel1.setFont(adumuFont);
@@ -181,159 +185,120 @@ public class InGameController {
 
     public void refresh() {
         gamePane.getChildren().removeIf(node -> node instanceof Rectangle);
-        createWalls(gm.walls);
-        createEdgeWalls(gm.edgeWalls);
-        createGates(gm.gates);
-        createBombs(gm.bombs);
-        createMonsters(gm.monsters);
-        createExplosion(gm.explosions);
-        createPowerUps(gm.powerUps);
-        createBoxes(gm.boxes);
-        createPlayers(gm.players);
+        gamePane.getChildren().removeIf(node -> node instanceof ImageView);
+        for (int i = 0; i < 11; i++) {
+            createWalls(gm.walls, i);
+            createEdgeWalls(gm.edgeWalls, i);
+            createGates(gm.gates, i);
+            createBombs(gm.bombs, i);
+            createPowerUps(gm.powerUps, i);
+            createBoxes(gm.boxes, i);
+            createMonsters(gm.monsters, i);
+            createPlayers(gm.players, i);
+            createExplosion(gm.explosions, i);
+        }
         gm.checkImmadiateBombs();
         checkPlayerPowerUp(gm.getPlayer(0));
         checkPlayerPowerUp(gm.getPlayer(1));
     }
 
-    private void createPowerUps(ArrayList<PowerUp> powerUps){
-        int size = 40;
-        for (PowerUp powerUp : powerUps) {
-            Rectangle r = new Rectangle();
-            r.setX(powerUp.x);
-            r.setY(powerUp.y);
-            r.setFill(Color.AQUA);
-            r.setWidth(size);
-            r.setHeight(size);
-            this.gamePane.getChildren().add(r);
+    private void initImages(){
+        switch (map){
+            case "Dzsungel":
+                wallImage = new Image("wall2.png");
+                boxImage = new Image("box2.png");
+                player1Image = new Image("player1.png");
+                player2Image = new Image("player2.png");
+                powerUpImage = new Image("powerUp1.png");
+                explosionImage = new Image("exposion1.png");
+                bombImage = new Image("bomb1.png");
+                monsterImage = new Image("monster2.png");
+                gateImage = new Image("gate2.png");
+            break;
+            case "Pokol":
+                wallImage = new Image("wall3.png");
+                boxImage = new Image("box3.png");
+                player1Image = new Image("player1.png");
+                player2Image = new Image("player2.png");
+                powerUpImage = new Image("powerUp1.png");
+                explosionImage = new Image("exposion1.png");
+                bombImage = new Image("bomb1.png");
+                monsterImage = new Image("monster3.png");
+                gateImage = new Image("gate3.png");
+            break;
+            default:
+                wallImage = new Image("wall1.png");
+                boxImage = new Image("box1.png");
+                player1Image = new Image("player1.png");
+                player2Image = new Image("player2.png");
+                powerUpImage = new Image("powerUp1.png");
+                explosionImage = new Image("exposion1.png");
+                bombImage = new Image("bomb1.png");
+                monsterImage = new Image("monsterr1.png");
+                gateImage = new Image("gate1.png");
+            break;
         }
     }
 
-    private void createBoxes(ArrayList<Box> boxes){
-        int size = 40;
-        for (Box box : boxes) {
-            Rectangle r = new Rectangle();
-            r.setX(box.x);
-            r.setY(box.y);
-            r.setFill(Color.SADDLEBROWN);
-            r.setWidth(size);
-            r.setHeight(size);
-            this.gamePane.getChildren().add(r);
+    private void createPowerUps(ArrayList<PowerUp> powerUps, int i){
+        createImageView(powerUps, powerUpImage, i);
+    }
+    private void createBoxes(ArrayList<Box> boxes, int i){
+        createImageView(boxes, boxImage, i);
+    }
+    private void createGates(ArrayList<Gate> gates, int i){
+        createImageView(gates, gateImage, i);
+    }
+    public void createEdgeWalls(ArrayList<EdgeWall> edgeWalls, int i) {
+        createImageView(edgeWalls, wallImage, i);
+    }
+    public void createPlayers(ArrayList<Player> players, int i) {
+        if(players.size() == 2){
+            createImageView(players.get(0), player1Image, i);
+            createImageView(players.get(1), player2Image, i);
+        } else if (players.size() == 1){
+            Image img = players.get(0).id == 0 ? player1Image : player2Image;
+            createImageView(players.get(0), img, i);
         }
     }
-    private void createGates(ArrayList<Gate> gates){
-        int size = 40;
-        for (Gate gate : gates) {
-            Rectangle r = new Rectangle();
-            r.setX(gate.x);
-            r.setY(gate.y);
-            r.setFill(Color.LIGHTYELLOW);
-            r.setWidth(size);
-            r.setHeight(size);
-            this.gamePane.getChildren().add(r);
-        }
+    public void createMonsters(ArrayList<Monster> monsters, int i) {
+        createImageView(monsters, monsterImage, i);
+    }
+    public void createBombs(ArrayList<Bomb> bombs, int i) {
+        createImageView(bombs, bombImage, i);
+    }
+    public void createExplosion(ArrayList<Explosion> explosions, int i){
+        createImageView(explosions, explosionImage, i);
+    }
+    private void createWalls(ArrayList<Wall> walls, int i) {
+        createImageView(walls, wallImage, i);
     }
 
-    public void createEdgeWalls(ArrayList<EdgeWall> edgeWalls) {
-        int size = 40;
-        for (EdgeWall edgeWall : edgeWalls) {
-            Rectangle r = new Rectangle();
-            r.setX(edgeWall.x);
-            r.setY(edgeWall.y);
-            r.setWidth(size);
-            r.setHeight(size);
-            this.gamePane.getChildren().add(r);
-        }
-    }
-    public void createPlayers(ArrayList<Player> players) {
-        int size = 40;
-
-        for (Player player : players) {
-            Rectangle r = new Rectangle();
-            r.setX(player.x);
-            r.setY(player.y);
-            r.setFill(Color.BLUEVIOLET);
-            r.setWidth(size);
-            r.setHeight(size);
-            this.gamePane.getChildren().add(r);
-        }
-    }
-
-    public void createMonsters(ArrayList<Monster> monsters) {
-        int size = 40;
-        for (Monster monster : monsters) {
-            Rectangle r = new Rectangle();
-            r.setX(monster.x);
-            r.setY(monster.y);
-            r.setFill(Color.FORESTGREEN);
-            r.setWidth(size);
-            r.setHeight(size);
-            this.gamePane.getChildren().add(r);
-        }
-    }
-
-    public void createBombs(ArrayList<Bomb> bombs) {
-        int size = 40;
-        for (Bomb bomb : bombs) {
-            Rectangle r = new Rectangle();
-            r.setFill(Color.ORANGE);
-            r.setX(bomb.x);
-            r.setY(bomb.y);
-            r.setWidth(size);
-            r.setHeight(size);
-            this.gamePane.getChildren().add(r);
-        }
-    }
-
-    public void createExplosion(ArrayList<Explosion> explosions){
-        int size = 40;
-        for (int i = 0; i < explosions.size(); i++) {
-            Rectangle r = new Rectangle();
-            r.setFill(Color.YELLOW);
-            r.setX(explosions.get(i).x);
-            r.setY(explosions.get(i).y);
-            r.setWidth(size);
-            r.setHeight(size);
-            this.gamePane.getChildren().add(r);
-        }
-    }
-
-    private void createWalls(ArrayList<Wall> walls) {
-//        int size = 45;
-//        for (Wall wall : walls) {
-//            ImageView imageView = new ImageView(wallImage);
-//            imageView.setX(wall.x);
-//            imageView.setY(wall.y-10);
-//            imageView.setFitWidth(size);
-//            imageView.setFitHeight(size);
-//            this.gamePane.getChildren().add(imageView);
-//        }
-        createImageView(walls);
-    }
-
-    private void createImageView(ArrayList<? extends Entity> entities) {
-        int size = 45;
+    private void createImageView(ArrayList<? extends Entity> entities, Image image, int i) {
+        int size = 60;
         for (Entity entity : entities) {
-            ImageView imageView = new ImageView(wallImage);
+            if(entity.y >= i*40 && entity.y < (i+1)*40){
+                ImageView imageView = new ImageView(image);
+                imageView.setX(entity.x);
+                imageView.setY(entity.y - 10);
+                imageView.setFitWidth(size);
+                imageView.setFitHeight(size);
+                this.gamePane.getChildren().add(imageView);
+            }
+        }
+    }
+    private void createImageView(Entity entity, Image image, int i) {
+        int size = 60;
+        if(entity.y >= i*40 && entity.y < (i+1)*40){
+            ImageView imageView = new ImageView(image);
             imageView.setX(entity.x);
             imageView.setY(entity.y - 10);
             imageView.setFitWidth(size);
             imageView.setFitHeight(size);
+            if(image == player2Image) imageView.setScaleX(-1);
             this.gamePane.getChildren().add(imageView);
         }
     }
-
-
-//    private void createImageView(ArrayList<Entity> entities){
-//        int size = 45;
-//        for(Entity entity : entities){
-//            ImageView imageView = new ImageView(wallImage);
-//            imageView.setX(entity.x);
-//            imageView.setY(entity.y-10);
-//            imageView.setFitWidth(size);
-//            imageView.setFitHeight(size);
-//            this.gamePane.getChildren().add(imageView);
-//        }
-//    }
 
     private void checkPlayerPowerUp(Player player) {
 
