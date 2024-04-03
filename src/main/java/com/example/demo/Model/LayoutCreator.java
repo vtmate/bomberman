@@ -77,7 +77,7 @@ public class LayoutCreator {
             gm.edgeWalls.add(new EdgeWall(i*40, 0));
             gm.edgeWalls.add(new EdgeWall(i*40,40*10));
         }
-        for (int i = 1; i < 11; i++) { //bal és jobb oszlop
+        for (int i = 1; i < 10; i++) { //bal és jobb oszlop
             gm.edgeWalls.add(new EdgeWall(0, i*40));
             gm.edgeWalls.add(new EdgeWall(12*40,i*40));
         }

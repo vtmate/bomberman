@@ -156,6 +156,7 @@ public class InGameController {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
+
         // Időzítő létrehozása és indítása
         time = 0;
         timer = new Timeline(
@@ -164,8 +165,10 @@ public class InGameController {
                 int seconds = time % 60;
                 int minutes = (int)Math.ceil(time / 60);
                 timerLabel.setText("Idő: " + String.format("%02d:%02d", minutes, seconds));
-                if (time % 2 == 0 && time != 0) {
-                    gm.narrowing();
+                if (time % 5 == 0 && time != 0) {
+                    System.out.println("szűkítés");
+//                    gm.narrowing();
+                    gm.battleRoyale();
                 }
             })
         );
@@ -191,7 +194,6 @@ public class InGameController {
         gamePane.getChildren().removeIf(node -> node instanceof ImageView);
         for (int i = 0; i < 11; i++) {
             createWalls(gm.walls, i);
-            createEdgeWalls(gm.edgeWalls, i);
             createGates(gm.gates, i);
             createBombs(gm.bombs, i);
             createPowerUps(gm.powerUps, i);
@@ -199,6 +201,7 @@ public class InGameController {
             createMonsters(gm.monsters, i);
             createPlayers(gm.players, i);
             createExplosion(gm.explosions, i);
+            createEdgeWalls(gm.edgeWalls, i);
         }
         gm.checkImmadiateBombs();
         checkPlayerPowerUp(gm.getPlayer(0));
@@ -278,7 +281,7 @@ public class InGameController {
     }
 
     private void createImageView(ArrayList<? extends Entity> entities, Image image, int i) {
-        int size = 60;
+        int size = 55;
         for (Entity entity : entities) {
             if(entity.y >= i*40 && entity.y < (i+1)*40){
                 ImageView imageView = new ImageView(image);

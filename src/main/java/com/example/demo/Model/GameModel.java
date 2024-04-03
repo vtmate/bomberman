@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GameModel {
     public ArrayList<Wall> walls;
@@ -657,4 +658,68 @@ public class GameModel {
         }
     }
 
+    public void battleRoyale(){
+        narrowing_cnt ++;
+        for (int i = 0 + narrowing_cnt; i < 13 - narrowing_cnt; i++) { //felső és alsó sor
+            edgeWalls.add(new EdgeWall(i*40, 0 + narrowing_cnt * 40));
+            edgeWalls.add(new EdgeWall(i*40,40*10 - narrowing_cnt * 40));
+            removeEntities(narrowing_cnt * 40, (12 - narrowing_cnt) * 40,
+                    narrowing_cnt * 40, 40*10 - narrowing_cnt * 40, true);
+        }
+        for (int i = 1 + narrowing_cnt; i < 10 - narrowing_cnt; i++) { //bal és jobb oszlop
+            edgeWalls.add(new EdgeWall(0 + narrowing_cnt * 40, i*40));
+            edgeWalls.add(new EdgeWall(12*40 - narrowing_cnt * 40,i*40));
+            removeEntities((1+narrowing_cnt)*40, (9-narrowing_cnt) * 40,
+                    narrowing_cnt * 40, 12*40 - narrowing_cnt * 40, false);
+        }
+    }
+
+    private void removeEntities(int from, int to, int same1, int same2, boolean isHorizontal){
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+            if(isHorizontal){
+                if (player.x >= from && player.x <= to &&
+                   ((player.y >= same1 && player.y < same1 + 40)||
+                    (player.y <= same2 && player.y > same2 - 40))){
+                    playerDeath(player);
+                }
+            } else {
+                if (player.y >= from && player.y <= to &&
+                   ((player.x >= same1 && player.x < same1 + 40)||
+                    (player.x <= same2 && player.x > same2 - 40))){
+                    playerDeath(player);
+                }
+            }
+        }
+
+        Iterator<Bomb> bombIterator = bombs.iterator();
+        removeEntity(bombIterator, from, to, same1, same2, isHorizontal);
+        Iterator<Box> boxIterator = boxes.iterator();
+        removeEntity(boxIterator, from, to, same1, same2, isHorizontal);
+        Iterator<Gate> gateIterator = gates.iterator();
+        removeEntity(gateIterator, from, to, same1, same2, isHorizontal);
+        Iterator<PowerUp> powerUpIterator = powerUps.iterator();
+        removeEntity(powerUpIterator, from, to, same1, same2, isHorizontal);
+        Iterator<Monster> monsterIterator = monsters.iterator();
+        removeEntity(monsterIterator, from, to, same1, same2, isHorizontal);
+    }
+
+    private <T extends Entity> void removeEntity(Iterator<T> iterator, int from, int to, int same1, int same2, boolean isHorizontal) {
+        while (iterator.hasNext()) {
+            T entity = iterator.next();
+            if(isHorizontal){
+                if (entity.x >= from && entity.x <= to &&
+                   ((entity.y >= same1 && entity.y < same1 + 40)||
+                    (entity.y <= same2 && entity.y > same2 - 40))){
+                    iterator.remove();
+                }
+            } else {
+                if(entity.y >= from && entity.y <= to &&
+                   ((entity.x >= same1 && entity.x < same1 + 40)||
+                   (entity.x <= same2 && entity.x > same2 - 40))){
+                    iterator.remove();
+                }
+            }
+        }
+    }
 }
