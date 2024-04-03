@@ -49,7 +49,7 @@ public class DescriptionController {
         title.setFont(adumuFont);
 
         VBox vbox = new VBox();
-        vbox.setPrefWidth(WIDTH);
+        vbox.setMaxWidth(WIDTH-15);
         vbox.setStyle("-fx-padding: 10 20 10 10; -fx-background-color: #161C1C;");
 
         Label desc1 = new Label();
