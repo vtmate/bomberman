@@ -2,15 +2,15 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-image: url('bg.jpg'); -fx-background-position: center; -fx-background-size: contain; -fx-background-repeat: no-repeat;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <VBox alignment="TOP_CENTER" prefHeight="183.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="135.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="98.0" fitWidth="207.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="50.0" fitWidth="207.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../title.png" />
                </image>
@@ -18,60 +18,32 @@
                   <Insets top="30.0" />
                </VBox.margin>
             </ImageView>
-            <Label text="Leírás" />
+            <Label fx:id="title" text="Leírás" textFill="WHITE">
+               <effect>
+                  <DropShadow height="10.0" radius="4.5" spread="1.0" width="10.0" />
+               </effect></Label>
          </children>
       </VBox>
    </top>
    <bottom>
-      <Button mnemonicParsing="false" onAction="#goToMainPage" text="Vissza a főmenübe" BorderPane.alignment="CENTER">
+      <Button mnemonicParsing="false" onAction="#goToMainPage" prefHeight="54.0" prefWidth="355.0" style="-fx-font-size: 22;" styleClass="btn" stylesheets="@mainpage.css" text="Vissza a főmenübe" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="30.0" top="30.0" />
          </BorderPane.margin>
       </Button>
    </bottom>
-   <center>
-      <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="282.0" BorderPane.alignment="CENTER">
-         <content>
-            <GridPane prefHeight="669.0" prefWidth="998.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="298.0" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="392.0" minHeight="10.0" prefHeight="237.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="232.0" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="175.0" minHeight="0.0" prefHeight="95.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label text="A játék rövid leírása">
-                     <font>
-                        <Font size="36.0" />
-                     </font>
-                  </Label>
-                  <Label prefHeight="263.0" prefWidth="998.0" text="A játék egy 2 dimenziós pályán játszódik, amely négyzet alakú mezőkből áll. A játékot 2 játékos játsza,akiknek 1-1 bomberman figurát irányítva céljuk, hogy egyedüliként maradjanak életben. A játékpályamezőin fal elemek, dobozok, szörnyek és maguk a játékosok figurái helyezkednek el. A játékosokbombákat lehelyezve felrobbanthatják a dobozokat, szörnyeket és a játékosokat (akár saját magukatis). Egy játékos veszt (és ezáltal ellenfele győz), ha felrobban, vagy ha egy szörny elkapja." wrapText="true" GridPane.rowIndex="1" GridPane.valignment="TOP">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="17.0" text="Irányítás" GridPane.rowIndex="2">
-                     <font>
-                        <Font size="36.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="10.0" layoutY="80.0" prefHeight="169.0" prefWidth="998.0" text="Irányítása: WASD SPACE" wrapText="true" GridPane.rowIndex="3">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-               </children>
-            </GridPane>
-         </content>
-      </ScrollPane>
-   </center>
+
    <left>
       <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
    </left>
    <right>
       <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
    </right>
+   <center>
+      <ScrollPane fx:id="scrollPane" prefHeight="353.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+        </content>
+      </ScrollPane>
+   </center>
 </BorderPane>

@@ -45,9 +45,7 @@ public class LayoutCreator {
         }
 
         //teszt powerup
-        gm.powerUps.add(new PowerUp(8*40, 9*40, PowerUpType.IMMADIATEBOMB));
-        gm.powerUps.add(new PowerUp(9*40, 9*40, PowerUpType.DETONATOR));
-        gm.powerUps.add(new PowerUp(10*40, 9*40, PowerUpType.ROLLERSKATE));
+        gm.powerUps.add(new PowerUp(10*40, 9*40, PowerUpType.GATE));
     }
 
     private void createBoxes(){
@@ -128,20 +126,13 @@ public class LayoutCreator {
         player1.addBomb();
         player2.addBomb();
 
-        //powerUp-ok kipróbálása:
-        //PowerUp p = new PowerUp(0,0,PowerUpType.ROLLERSKATE);
-        //PowerUp p2 = new PowerUp(0,0,PowerUpType.SNAIL);
-        //player1.addPowerUp(p2);
-        //player2.addPowerUp(new PowerUp(0,0, PowerUpType.SMALLERRADIUS));
-        //player2.addPowerUp(new PowerUp(0,0, PowerUpType.IMMADIATEBOMB));
-
         gm.players.add(player1);
         gm.players.add(player2);
     }
     private void createMonsters() {
         Monster monster = new Monster(40*4, 40);
         gm.monsters.add(monster);
-        monster = new Monster(40*7, 40*4);
+        monster = new Monster(40*7, 40*9);
         gm.monsters.add(monster);
     }
 }
