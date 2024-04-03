@@ -570,7 +570,7 @@ public class GameModel {
             if (!found) {
                 isGate(ind_x, ind_y);
             }
-            this.edgeWalls.add(new EdgeWall(ind_x, ind_y));
+            this.edgeWalls.add(new EdgeWall(ind_x*40, ind_y*40));
 
             // UTOLSÓ sor
             found = false;
@@ -596,7 +596,7 @@ public class GameModel {
             if (!found) {
                 isGate(ind_x, ind_y);
             }
-            this.edgeWalls.add(new EdgeWall(ind_x, ind_y));
+            this.edgeWalls.add(new EdgeWall(ind_x*40, ind_y*40));
         }
 
         // Oszlopok vizsgálata
@@ -626,7 +626,7 @@ public class GameModel {
             if (!found) {
                 isGate(ind_x, ind_y);
             }
-            this.edgeWalls.add(new EdgeWall(ind_x, ind_y));
+            this.edgeWalls.add(new EdgeWall(ind_x*40, ind_y*40));
 
             // JOBB oszlop
             found = false;
@@ -653,7 +653,7 @@ public class GameModel {
             if (!found) {
                 isGate(ind_x, ind_y);
             }
-            this.edgeWalls.add(new EdgeWall(ind_x, ind_y));
+            this.edgeWalls.add(new EdgeWall(ind_x*40, ind_y*40));
         }
     }
 
