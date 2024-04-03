@@ -484,7 +484,7 @@ public class GameModel {
         ++narrowing_cnt;
         boolean found;
         for (int i = narrowing_cnt; i < (11 - narrowing_cnt - 1); i++) { // sorok
-            for (int j = narrowing_cnt; j < (13 - narrowing_cnt - 1); i++) { // oszlopok
+            for (int j = narrowing_cnt; j < (13 - narrowing_cnt - 1); j++) { // oszlopok
                 found = false;
                 for (Wall wall : walls) {
                     if (checkInteraction(i, j, wall.x, wall.y)) {

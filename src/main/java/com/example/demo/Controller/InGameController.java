@@ -168,6 +168,9 @@ public class InGameController {
                 int seconds = time % 60;
                 int minutes = (int)Math.ceil(time / 60);
                 timerLabel.setText("Idő: " + String.format("%02d:%02d", minutes, seconds));
+                if (time % 2 == 0 && time != 0) {
+                    gm.narrowing();
+                }
             })
         );
 /*        timer = new AnimationTimer() {
