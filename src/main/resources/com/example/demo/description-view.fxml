@@ -2,14 +2,15 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-image: url('bg.jpg'); -fx-background-position: center; -fx-background-size: contain; -fx-background-repeat: no-repeat;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <VBox alignment="TOP_CENTER" prefHeight="183.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="135.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="98.0" fitWidth="207.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="50.0" fitWidth="207.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../title.png" />
                </image>
@@ -17,12 +18,15 @@
                   <Insets top="30.0" />
                </VBox.margin>
             </ImageView>
-            <Label text="Leírás" />
+            <Label fx:id="title" text="Leírás" textFill="WHITE">
+               <effect>
+                  <DropShadow height="10.0" radius="4.5" spread="1.0" width="10.0" />
+               </effect></Label>
          </children>
       </VBox>
    </top>
    <bottom>
-      <Button mnemonicParsing="false" onAction="#goToMainPage" text="Vissza a főmenübe" BorderPane.alignment="CENTER">
+      <Button mnemonicParsing="false" onAction="#goToMainPage" prefHeight="54.0" prefWidth="355.0" style="-fx-font-size: 22;" styleClass="btn" stylesheets="@mainpage.css" text="Vissza a főmenübe" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="30.0" top="30.0" />
          </BorderPane.margin>
@@ -36,7 +40,7 @@
       <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
    </right>
    <center>
-      <ScrollPane fx:id="scrollPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="scrollPane" prefHeight="353.0" prefWidth="700.0" BorderPane.alignment="CENTER">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
         </content>
