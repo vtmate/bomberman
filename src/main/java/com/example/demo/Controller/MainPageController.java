@@ -36,12 +36,6 @@ public class MainPageController {
     }
 
     @FXML
-    protected void goToMainPage() throws IOException {
-        System.out.println("Főoldal");
-        this.gc.changeScene("mainPage");
-    }
-
-    @FXML
     protected void exitGame() throws IOException {
         exit();
     }

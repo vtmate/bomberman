@@ -61,7 +61,6 @@ public class InGameController {
     private final String map;
     private final String playerName1;
     private final String playerName2;
-    private long startTime;
     private int pauseStageCount = 0;
     public Timeline timeline;
     public Timeline timer;
@@ -157,14 +156,11 @@ public class InGameController {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
-        startTime = System.currentTimeMillis();
-
         // Időzítő létrehozása és indítása
         time = 0;
         timer = new Timeline(
             new KeyFrame(Duration.seconds(1), e -> {
                 time++;
-                long elapsedTime = System.currentTimeMillis() - startTime;
                 int seconds = time % 60;
                 int minutes = (int)Math.ceil(time / 60);
                 timerLabel.setText("Idő: " + String.format("%02d:%02d", minutes, seconds));

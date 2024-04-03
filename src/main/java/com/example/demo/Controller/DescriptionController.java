@@ -24,7 +24,7 @@ import java.util.List;
 
 public class DescriptionController {
     GameController gc;
-    GridPane powerUpGrid;
+    private GridPane powerUpGrid;
     private GridPane badPowerUpGrid;
     private final int WIDTH = 700;
     private int powerUpGridRows = 0;
@@ -33,9 +33,9 @@ public class DescriptionController {
     private int controlGridRows = 0;
 
     @FXML
-    ScrollPane scrollPane;
+    private ScrollPane scrollPane;
     @FXML
-    Label title;
+    private Label title;
     public DescriptionController(GameController gc) {
         this.gc = gc;
     }

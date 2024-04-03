@@ -546,8 +546,8 @@ public class GameModel {
         // Sorok vizsgálata
         for (int i = narrowing_cnt; i < (12 - narrowing_cnt); i++) {
             found = false;
-            ind_x = narrowing_cnt;
-            ind_y = i;
+            ind_x = narrowing_cnt * 40;
+            ind_y = i * 40;
             // ELSŐ sor
             if (isWall(ind_x, ind_y)) {
                 found = true;
@@ -603,8 +603,8 @@ public class GameModel {
         for (int j = narrowing_cnt + 1; j < (8 - narrowing_cnt); j++) {
             // BAL oszlop
             found = false;
-            ind_x = j;
-            ind_y = narrowing_cnt;
+            ind_x = j*40;
+            ind_y = narrowing_cnt*40;
             if (isWall(ind_x, ind_y)) {
                 found = true;
             }
@@ -630,8 +630,8 @@ public class GameModel {
 
             // JOBB oszlop
             found = false;
-            ind_x = j;
-            ind_y = 13 - narrowing_cnt;
+            ind_x = j*40;
+            ind_y = (13 - narrowing_cnt)*40;
             if (isWall(ind_x, ind_y)) {
                 found = true;
             }
