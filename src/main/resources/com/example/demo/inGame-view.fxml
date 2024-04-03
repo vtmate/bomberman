@@ -97,7 +97,7 @@
          </children></VBox>
    </top>
    <center>
-      <Pane fx:id="gamePane" prefHeight="495.0" prefWidth="776.0" style="-fx-background-color: red;" BorderPane.alignment="CENTER">
+      <Pane fx:id="gamePane" prefHeight="495.0" prefWidth="776.0" style="-fx-background-color: #C9A784;" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets top="10.0" />
          </BorderPane.margin></Pane>

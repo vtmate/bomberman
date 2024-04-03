@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class GameController {
-    Stage stage;
+    public Stage stage;
     FXMLLoader fxmlLoader;
     String map;
     protected String playerName1;
@@ -27,7 +27,7 @@ public class GameController {
         switch (name) {
             case "mainPage" -> this.fxmlLoader.setController(new MainPageController(this));
             case "gameConfiguration" -> this.fxmlLoader.setController(new GameConfigurationController(this));
-            case "description" -> this.fxmlLoader.setController(new MainPageController(this));
+            case "description" -> this.fxmlLoader.setController(new DescriptionController(this));
             case "inGame" -> this.fxmlLoader.setController(new InGameController(this, playerName1, playerName2, map));
         }
         System.out.println(map);

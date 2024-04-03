@@ -57,26 +57,43 @@ public class GameModel {
 
     public void placeBomb(Player player) {
 
-        for (PowerUp powerUp : player.getPowerUps()){
-            System.out.println("power: " + powerUp.getPowerUpType());
-        }
-
-        if(!player.hasPowerUp(PowerUpType.NOBOMBS)) {
-            if(player.hasPowerUp(PowerUpType.DETONATOR)){
-                if(player.placedDetonators.size() == player.numOfAllBombs()){
-                    //vagy ha az összes bombáját detonátor felszedése után helyezte le
-                    System.out.println("size before: " + player.placedDetonators.size());
-                    for(Bomb bomb : player.placedDetonators){ //összes bomba felrobbantása egyből
-                        bomb.removeBomb(this, player, 1);
+        if(player != null){
+            for (PowerUp powerUp : player.getPowerUps()){
+                System.out.println("power: " + powerUp.getPowerUpType());
+            }
+            if(!player.hasPowerUp(PowerUpType.NOBOMBS)) {
+                if(player.hasPowerUp(PowerUpType.DETONATOR)){
+                    if(player.placedDetonators.size() == player.numOfAllBombs()){
+                        //vagy ha az összes bombáját detonátor felszedése után helyezte le
+                        System.out.println("size before: " + player.placedDetonators.size());
+                        for(Bomb bomb : player.placedDetonators){ //összes bomba felrobbantása egyből
+                            bomb.removeBomb(this, player, 1);
+                        }
+                        System.out.println("size after: " + player.placedDetonators.size());
+                        player.placedDetonators.clear();
+                        for (int i = 0; i < player.placedDetonators.size(); i++) { //minden bomba visszaadása
+                            player.addBomb();
+                        }
+                        System.out.println("összes bomba felrobbantása detonatorból");
+                    } else if(player.getCountOfBombs() > 0){
+                        //van még lehelyezhető bombája
+                        player.removeBomb();
+                        Bomb bomb;
+                        double x = Math.round(player.x / 40) * 40;
+                        double y = Math.round(player.y / 40) * 40;
+                        if (player.hasPowerUp(PowerUpType.BIGGERRADIUS)) {
+                            bomb = new Bomb(x, y, 3);
+                        } else if (player.hasPowerUp(PowerUpType.SMALLERRADIUS)) {
+                            bomb = new Bomb(x, y, 1);
+                        } else {
+                            bomb = new Bomb(x, y, 2);
+                        }
+                        //this.bombs.add(bomb);
+                        player.placedDetonators.add(bomb);
+                        this.bombs.add(bomb);
+                        System.out.println("bomba hozzáadva detonatorba");
                     }
-                    System.out.println("size after: " + player.placedDetonators.size());
-                    player.placedDetonators.clear();
-                    for (int i = 0; i < player.placedDetonators.size(); i++) { //minden bomba visszaadása
-                        player.addBomb();
-                    }
-                    System.out.println("összes bomba felrobbantása detonatorból");
-                } else if(player.getCountOfBombs() > 0){
-                    //van még lehelyezhető bombája
+                } else if (player.getCountOfBombs() > 0){
                     player.removeBomb();
                     Bomb bomb;
                     double x = Math.round(player.x / 40) * 40;
@@ -88,26 +105,10 @@ public class GameModel {
                     } else {
                         bomb = new Bomb(x, y, 2);
                     }
-                    //this.bombs.add(bomb);
-                    player.placedDetonators.add(bomb);
-                    this.bombs.add(bomb);
-                    System.out.println("bomba hozzáadva detonatorba");
-                }
-            } else if (player.getCountOfBombs() > 0){
-                player.removeBomb();
-                Bomb bomb;
-                double x = Math.round(player.x / 40) * 40;
-                double y = Math.round(player.y / 40) * 40;
-                if (player.hasPowerUp(PowerUpType.BIGGERRADIUS)) {
-                    bomb = new Bomb(x, y, 3);
-                } else if (player.hasPowerUp(PowerUpType.SMALLERRADIUS)) {
-                    bomb = new Bomb(x, y, 1);
-                } else {
-                    bomb = new Bomb(x, y, 2);
-                }
 
-                this.bombs.add(bomb);
-                bomb.removeBomb(this, player, 2000); // TEST
+                    this.bombs.add(bomb);
+                    bomb.removeBomb(this, player, 2000); // TEST
+                }
             }
         }
     }
@@ -308,6 +309,13 @@ public class GameModel {
                 lastPlayerTimeline.setCycleCount(5); // A timeline egy végtelen ciklusban fog futni
                 lastPlayerTimeline.play();
             }
+
+            if (this.players.size() == 0) {
+                lastPlayerTimeline.stop();
+                lastPlayerTimeline = null;
+                stopTimers();
+                new WinStage(GameModel.this);
+            }
         }
     }
 
@@ -440,7 +448,7 @@ public class GameModel {
             explosions.get(i).pause();
         }
         igc.timeline.pause();
-
+        igc.timer.pause();
     }
 
     public void startTimers() {
@@ -457,6 +465,7 @@ public class GameModel {
             explosions.get(i).resume();
         }
         igc.timeline.play();
+        igc.timer.play();
     }
 
     public boolean checkPosForWall(double expX, double expY) {
