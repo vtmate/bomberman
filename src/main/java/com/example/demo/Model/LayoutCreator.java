@@ -121,8 +121,8 @@ public class LayoutCreator {
     }
 
     private void setUpPlayers() {
-        Player player1 = new Player(40,40, 0);
-        Player player2 = new Player(440,360, 1);
+        Player player1 = new Player(40,40, 0, true);
+        Player player2 = new Player(440,360, 1, false);
         player1.addBomb();
         player2.addBomb();
 
@@ -130,9 +130,9 @@ public class LayoutCreator {
         gm.players.add(player2);
     }
     private void createMonsters() {
-        Monster monster = new Monster(40*4, 40);
+        Monster monster = new Monster(40*4, 40, true);
         gm.monsters.add(monster);
-        monster = new Monster(40*7, 40*9);
+        monster = new Monster(40*7, 40*9, true);
         gm.monsters.add(monster);
     }
 }

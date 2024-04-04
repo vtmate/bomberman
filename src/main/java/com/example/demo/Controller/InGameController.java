@@ -73,7 +73,8 @@ public class InGameController {
     Image powerUpImage;
     Image explosionImage;
     Image bombImage;
-    Image monsterImage;
+    Image monsterImage1;
+    Image monsterImage2;
     Image gateImage;
 
 
@@ -168,7 +169,7 @@ public class InGameController {
                 if (time % 5 == 0 && time != 0) {
                     System.out.println("szűkítés");
 //                    gm.narrowing();
-                    gm.battleRoyale();
+//                    gm.battleRoyale();
                 }
             })
         );
@@ -218,7 +219,8 @@ public class InGameController {
                 powerUpImage = new Image("powerUp1.png");
                 explosionImage = new Image("exposion1.png");
                 bombImage = new Image("bomb1.png");
-                monsterImage = new Image("monster2.png");
+                monsterImage1 = new Image("monster2.png");
+                monsterImage2 = new Image("monster2.png");
                 gateImage = new Image("gate2.png");
             break;
             case "Pokol":
@@ -229,7 +231,8 @@ public class InGameController {
                 powerUpImage = new Image("powerUp1.png");
                 explosionImage = new Image("exposion1.png");
                 bombImage = new Image("bomb1.png");
-                monsterImage = new Image("monster3.png");
+                monsterImage1 = new Image("monster3.png");
+                monsterImage2 = new Image("monster3.png");
                 gateImage = new Image("gate3.png");
             break;
             default:
@@ -240,7 +243,8 @@ public class InGameController {
                 powerUpImage = new Image("powerUp1.png");
                 explosionImage = new Image("exposion1.png");
                 bombImage = new Image("bomb1.png");
-                monsterImage = new Image("monsterr1.png");
+                monsterImage1 = new Image("monsterr1.png");
+                monsterImage2 = new Image("monsterr1.png");
                 gateImage = new Image("gate1.png");
             break;
         }
@@ -268,7 +272,9 @@ public class InGameController {
         }
     }
     public void createMonsters(ArrayList<Monster> monsters, int i) {
-        createImageView(monsters, monsterImage, i);
+        createImageView(monsters.get(0), monsterImage1, i);
+        createImageView(monsters.get(1), monsterImage2, i);
+//        createImageView(monsters, monsterImage, i);
     }
     public void createBombs(ArrayList<Bomb> bombs, int i) {
         createImageView(bombs, bombImage, i);
@@ -301,7 +307,12 @@ public class InGameController {
             imageView.setY(entity.y - 10);
             imageView.setFitWidth(size);
             imageView.setFitHeight(size);
-            if(image == player2Image) imageView.setScaleX(-1);
+            System.out.println(gm.monsters.get(0).isRight);
+            System.out.println(gm.monsters.get(1).isRight);
+            if(image == monsterImage1 && !gm.monsters.get(0).isRight) imageView.setScaleX(-1);
+            if(image == monsterImage2 && !gm.monsters.get(1).isRight) imageView.setScaleX(-1);
+            if(image == player1Image && !gm.players.get(0).isRight) imageView.setScaleX(-1);
+            if(image == player2Image && !gm.players.get(1).isRight) imageView.setScaleX(-1);
             this.gamePane.getChildren().add(imageView);
         }
     }
