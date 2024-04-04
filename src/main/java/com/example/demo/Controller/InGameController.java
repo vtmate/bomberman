@@ -169,7 +169,7 @@ public class InGameController {
                 if (time % 5 == 0 && time != 0) {
                     System.out.println("szűkítés");
 //                    gm.narrowing();
-//                    gm.battleRoyale();
+                    gm.battleRoyale();
                 }
             })
         );
