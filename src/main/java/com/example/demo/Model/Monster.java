@@ -10,8 +10,12 @@ import java.util.Random;
 public class Monster extends Entity{
     public String direction = "RIGHT";
     private Timeline monsterTimeline;
-    public Monster(double x, double y) {
+    public boolean isRight;
+    public int id;
+    public Monster(double x, double y, boolean isRight, int id) {
         super(x, y);
+        this.isRight = isRight;
+        this.id = id;
     }
     public void moveMonster(Control control){
         System.out.println("run");
@@ -23,10 +27,20 @@ public class Monster extends Entity{
                     }
                     if(control.monsterIntersectsEntity(this, this.direction)) {
                         switch(this.direction){
-                            case "UP" -> this.y -= 1;
-                            case "DOWN" -> this.y += 1;
-                            case "LEFT" -> this.x -= 1;
-                            case "RIGHT" -> this.x += 1;
+                            case "UP":
+                                this.y -= 1;
+                            break;
+                            case "DOWN":
+                                this.y += 1;
+                            break;
+                            case "LEFT":
+                                this.x -= 1;
+                                this.isRight = false;
+                            break;
+                            case "RIGHT":
+                                this.x += 1;
+                                this.isRight = true;
+                            break;
                         }
                     }
                     else {

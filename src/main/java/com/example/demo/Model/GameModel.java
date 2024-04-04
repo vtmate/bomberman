@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GameModel {
     public ArrayList<Wall> walls;
@@ -468,33 +469,255 @@ public class GameModel {
         igc.timer.play();
     }
 
-    public boolean checkPosForWall(double expX, double expY) {
-        for(Wall wall : walls){
-            if(checkInteraction(wall.x, wall.y, expX, expY)){
-                walls.remove(wall);
+    private boolean isWall(int x, int y) {
+        for (Wall wall : walls) {
+            if (checkInteraction(x*40, y*40, wall.x, wall.y)) {
+                this.walls.remove(wall);
                 return true;
             }
         }
         return false;
     }
 
-    public void narrowing() {
-        ++narrowing_cnt;
-        for (int i = narrowing_cnt; i < (11 - narrowing_cnt - 1); i++) { // sorok
-            for (int j = narrowing_cnt; j < (13 - narrowing_cnt - 1); i++) { // oszlopok
-                if (checkForBox(i*40, j*40)) { // box van ott
-                    this.edgeWalls.add(new EdgeWall(i*40, j*40));
-                } else if (checkForMonster(i*40, j*40)) { // monster van ott
-                    this.edgeWalls.add(new EdgeWall(i*40, j*40));
-                } else if (checkPosForWall(i*40, j*40)) { // fal van ott
-                    this.edgeWalls.add(new EdgeWall(i*40, j*40));
-                } else { // nincs ott semmi
-                    this.edgeWalls.add(new EdgeWall(i*40, j*40));
-                }
+    private boolean isPlayer(int x, int y) {
+        for (Player player : players) {
+            if (checkInteraction(x*40, y*40, player.x, player.y)) {
+                this.players.remove(player);
+                return true;
+            }
+        }
+        return false;
+    }
 
-                // lehet ott játékos is, és akkor ő meghal...
+    private boolean isMonster(int x, int y) {
+        for (Monster monster : monsters) {
+            if (checkInteraction(x*40, y*40, monster.x, monster.y)) {
+                this.monsters.remove(monster);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isBomb(int x, int y) {
+        for (Bomb bomb : bombs) {
+            if (checkInteraction(x*40, y*40, bomb.x, bomb.y)) {
+                this.bombs.remove(bomb);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isBox(int x, int y) {
+        for (Box box : boxes) {
+            if (checkInteraction(x*40, y*40, box.x, box.y)) {
+                this.boxes.remove(box);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isPowerUp(int x, int y) {
+        for (PowerUp powerUp : powerUps) {
+            if (checkInteraction(x*40, y*40, powerUp.x, powerUp.y)) {
+                this.powerUps.remove(powerUp);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void isGate(int x, int y) {
+        for (Gate gate : gates) {
+            if (checkInteraction(x*40, y*40, gate.x, gate.y)) {
+                this.gates.remove(gate);
+                break;
             }
         }
     }
 
+    public void narrowing() {
+        narrowing_cnt += 1;
+        boolean found;
+        int ind_x, ind_y;
+        // Sorok vizsgálata
+        for (int i = narrowing_cnt; i < (12 - narrowing_cnt); i++) {
+            found = false;
+            ind_x = narrowing_cnt * 40;
+            ind_y = i * 40;
+            // ELSŐ sor
+            if (isWall(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isPlayer(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isMonster(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isBomb(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isBox(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isPowerUp(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found) {
+                isGate(ind_x, ind_y);
+            }
+            this.edgeWalls.add(new EdgeWall(ind_x*40, ind_y*40));
+
+            // UTOLSÓ sor
+            found = false;
+            ind_x = 12 - narrowing_cnt;
+            if (isWall(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isPlayer(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isMonster(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isBomb(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isBox(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isPowerUp(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found) {
+                isGate(ind_x, ind_y);
+            }
+            this.edgeWalls.add(new EdgeWall(ind_x*40, ind_y*40));
+        }
+
+        // Oszlopok vizsgálata
+        for (int j = narrowing_cnt + 1; j < (8 - narrowing_cnt); j++) {
+            // BAL oszlop
+            found = false;
+            ind_x = j*40;
+            ind_y = narrowing_cnt*40;
+            if (isWall(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isPlayer(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isMonster(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isBomb(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isBox(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isPowerUp(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found) {
+                isGate(ind_x, ind_y);
+            }
+            this.edgeWalls.add(new EdgeWall(ind_x*40, ind_y*40));
+
+            // JOBB oszlop
+            found = false;
+            ind_x = j*40;
+            ind_y = (13 - narrowing_cnt)*40;
+            if (isWall(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isPlayer(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isMonster(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isBomb(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isBox(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found && isPowerUp(ind_x, ind_y)) {
+                found = true;
+            }
+            if (!found) {
+                isGate(ind_x, ind_y);
+            }
+            this.edgeWalls.add(new EdgeWall(ind_x*40, ind_y*40));
+        }
+    }
+
+    public void battleRoyale(){
+        narrowing_cnt ++;
+        for (int i = 0 + narrowing_cnt; i < 13 - narrowing_cnt; i++) { //felső és alsó sor
+            edgeWalls.add(new EdgeWall(i*40, 0 + narrowing_cnt * 40));
+            edgeWalls.add(new EdgeWall(i*40,40*10 - narrowing_cnt * 40));
+            removeEntities(narrowing_cnt * 40, (12 - narrowing_cnt) * 40,
+                    narrowing_cnt * 40, 40*10 - narrowing_cnt * 40, true);
+        }
+        for (int i = 1 + narrowing_cnt; i < 10 - narrowing_cnt; i++) { //bal és jobb oszlop
+            edgeWalls.add(new EdgeWall(0 + narrowing_cnt * 40, i*40));
+            edgeWalls.add(new EdgeWall(12*40 - narrowing_cnt * 40,i*40));
+            removeEntities((1+narrowing_cnt)*40, (9-narrowing_cnt) * 40,
+                    narrowing_cnt * 40, 12*40 - narrowing_cnt * 40, false);
+        }
+    }
+
+    private void removeEntities(int from, int to, int same1, int same2, boolean isHorizontal){
+        for (int i = 0; i < players.size(); i++) {
+            Player player = players.get(i);
+            if(isHorizontal){
+                if (player.x >= from && player.x <= to &&
+                   ((player.y >= same1 && player.y < same1 + 40)||
+                    (player.y <= same2 && player.y > same2 - 40))){
+                    playerDeath(player);
+                }
+            } else {
+                if (player.y >= from && player.y <= to &&
+                   ((player.x >= same1 && player.x < same1 + 40)||
+                    (player.x <= same2 && player.x > same2 - 40))){
+                    playerDeath(player);
+                }
+            }
+        }
+
+        Iterator<Bomb> bombIterator = bombs.iterator();
+        removeEntity(bombIterator, from, to, same1, same2, isHorizontal);
+        Iterator<Box> boxIterator = boxes.iterator();
+        removeEntity(boxIterator, from, to, same1, same2, isHorizontal);
+        Iterator<Gate> gateIterator = gates.iterator();
+        removeEntity(gateIterator, from, to, same1, same2, isHorizontal);
+        Iterator<PowerUp> powerUpIterator = powerUps.iterator();
+        removeEntity(powerUpIterator, from, to, same1, same2, isHorizontal);
+        Iterator<Monster> monsterIterator = monsters.iterator();
+        removeEntity(monsterIterator, from, to, same1, same2, isHorizontal);
+    }
+
+    private <T extends Entity> void removeEntity(Iterator<T> iterator, int from, int to, int same1, int same2, boolean isHorizontal) {
+        while (iterator.hasNext()) {
+            T entity = iterator.next();
+            if(isHorizontal){
+                if (entity.x >= from && entity.x <= to &&
+                   ((entity.y >= same1 && entity.y < same1 + 40)||
+                    (entity.y <= same2 && entity.y > same2 - 40))){
+                    iterator.remove();
+                }
+            } else {
+                if(entity.y >= from && entity.y <= to &&
+                   ((entity.x >= same1 && entity.x < same1 + 40)||
+                   (entity.x <= same2 && entity.x > same2 - 40))){
+                    iterator.remove();
+                }
+            }
+        }
+    }
 }

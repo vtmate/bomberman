@@ -77,7 +77,7 @@ public class LayoutCreator {
             gm.edgeWalls.add(new EdgeWall(i*40, 0));
             gm.edgeWalls.add(new EdgeWall(i*40,40*10));
         }
-        for (int i = 1; i < 11; i++) { //bal és jobb oszlop
+        for (int i = 1; i < 10; i++) { //bal és jobb oszlop
             gm.edgeWalls.add(new EdgeWall(0, i*40));
             gm.edgeWalls.add(new EdgeWall(12*40,i*40));
         }
@@ -121,8 +121,8 @@ public class LayoutCreator {
     }
 
     private void setUpPlayers() {
-        Player player1 = new Player(40,40, 0);
-        Player player2 = new Player(440,360, 1);
+        Player player1 = new Player(40,40, 0, true);
+        Player player2 = new Player(440,360, 1, false);
         player1.addBomb();
         player2.addBomb();
 
@@ -130,9 +130,9 @@ public class LayoutCreator {
         gm.players.add(player2);
     }
     private void createMonsters() {
-        Monster monster = new Monster(40*4, 40);
+        Monster monster = new Monster(40*4, 40, true, 0);
         gm.monsters.add(monster);
-        monster = new Monster(40*7, 40*9);
+        monster = new Monster(40*7, 40*9, true, 1);
         gm.monsters.add(monster);
     }
 }

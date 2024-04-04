@@ -61,7 +61,6 @@ public class InGameController {
     private final String map;
     private final String playerName1;
     private final String playerName2;
-    private long startTime;
     private int pauseStageCount = 0;
     public Timeline timeline;
     public Timeline timer;
@@ -74,7 +73,8 @@ public class InGameController {
     Image powerUpImage;
     Image explosionImage;
     Image bombImage;
-    Image monsterImage;
+    Image monsterImage1;
+    Image monsterImage2;
     Image gateImage;
 
 
@@ -157,17 +157,20 @@ public class InGameController {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
-        startTime = System.currentTimeMillis();
 
         // Időzítő létrehozása és indítása
         time = 0;
         timer = new Timeline(
             new KeyFrame(Duration.seconds(1), e -> {
                 time++;
-                long elapsedTime = System.currentTimeMillis() - startTime;
                 int seconds = time % 60;
                 int minutes = (int)Math.ceil(time / 60);
                 timerLabel.setText("Idő: " + String.format("%02d:%02d", minutes, seconds));
+                if (time % 5 == 0 && time != 0) {
+                    System.out.println("szűkítés");
+//                    gm.narrowing();
+                    gm.battleRoyale();
+                }
             })
         );
 /*        timer = new AnimationTimer() {
@@ -192,7 +195,6 @@ public class InGameController {
         gamePane.getChildren().removeIf(node -> node instanceof ImageView);
         for (int i = 0; i < 11; i++) {
             createWalls(gm.walls, i);
-            createEdgeWalls(gm.edgeWalls, i);
             createGates(gm.gates, i);
             createBombs(gm.bombs, i);
             createPowerUps(gm.powerUps, i);
@@ -200,6 +202,7 @@ public class InGameController {
             createMonsters(gm.monsters, i);
             createPlayers(gm.players, i);
             createExplosion(gm.explosions, i);
+            createEdgeWalls(gm.edgeWalls, i);
         }
         gm.checkImmadiateBombs();
         checkPlayerPowerUp(gm.getPlayer(0));
@@ -216,7 +219,8 @@ public class InGameController {
                 powerUpImage = new Image("powerUp1.png");
                 explosionImage = new Image("exposion1.png");
                 bombImage = new Image("bomb1.png");
-                monsterImage = new Image("monster2.png");
+                monsterImage1 = new Image("monster2.png");
+                monsterImage2 = new Image("monster2.png");
                 gateImage = new Image("gate2.png");
             break;
             case "Pokol":
@@ -227,7 +231,8 @@ public class InGameController {
                 powerUpImage = new Image("powerUp1.png");
                 explosionImage = new Image("exposion1.png");
                 bombImage = new Image("bomb1.png");
-                monsterImage = new Image("monster3.png");
+                monsterImage1 = new Image("monster3.png");
+                monsterImage2 = new Image("monster3.png");
                 gateImage = new Image("gate3.png");
             break;
             default:
@@ -238,7 +243,8 @@ public class InGameController {
                 powerUpImage = new Image("powerUp1.png");
                 explosionImage = new Image("exposion1.png");
                 bombImage = new Image("bomb1.png");
-                monsterImage = new Image("monsterr1.png");
+                monsterImage1 = new Image("monsterr1.png");
+                monsterImage2 = new Image("monsterr1.png");
                 gateImage = new Image("gate1.png");
             break;
         }
@@ -266,7 +272,13 @@ public class InGameController {
         }
     }
     public void createMonsters(ArrayList<Monster> monsters, int i) {
-        createImageView(monsters, monsterImage, i);
+        if(monsters.size() == 2){
+            createImageView(monsters.get(0), monsterImage1, i);
+            createImageView(monsters.get(1), monsterImage2, i);
+        } else if (monsters.size() == 1){
+            Image img = monsters.get(0).id == 0 ? monsterImage1 : monsterImage2;
+            createImageView(monsters.get(0), img, i);
+        }
     }
     public void createBombs(ArrayList<Bomb> bombs, int i) {
         createImageView(bombs, bombImage, i);
@@ -279,7 +291,7 @@ public class InGameController {
     }
 
     private void createImageView(ArrayList<? extends Entity> entities, Image image, int i) {
-        int size = 60;
+        int size = 55;
         for (Entity entity : entities) {
             if(entity.y >= i*40 && entity.y < (i+1)*40){
                 ImageView imageView = new ImageView(image);
@@ -299,7 +311,18 @@ public class InGameController {
             imageView.setY(entity.y - 10);
             imageView.setFitWidth(size);
             imageView.setFitHeight(size);
-            if(image == player2Image) imageView.setScaleX(-1);
+            if(gm.players.size() == 2){
+                if(image == player1Image && !gm.players.get(0).isRight) imageView.setScaleX(-1);
+                if(image == player2Image && !gm.players.get(1).isRight) imageView.setScaleX(-1);
+            } else if (gm.players.size() == 1){
+                if(!gm.players.getFirst().isRight) imageView.setScaleX(-1);
+            }
+            if(gm.monsters.size() == 2){
+                if(image == monsterImage1 && !gm.monsters.get(0).isRight) imageView.setScaleX(-1);
+                if(image == monsterImage2 && !gm.monsters.get(1).isRight) imageView.setScaleX(-1);
+            } else if (gm.monsters.size() == 1){
+                if(!gm.monsters.getFirst().isRight) imageView.setScaleX(-1);
+            }
             this.gamePane.getChildren().add(imageView);
         }
     }

@@ -22,6 +22,9 @@ public class Control {
         else {
             return;
         }
+        if(direction.equals("RIGHT")) player.isRight = true;
+        else if(direction.equals("LEFT")) player.isRight = false;
+
 
         if(!playerIntersectsEdge(player, direction)){
             if(playerIntersectsEntity(player, direction) || player.hasPowerUp(PowerUpType.GHOST)){
@@ -128,6 +131,8 @@ public class Control {
     }
 
     public void changeDirection(Monster monster, String direction) {
+//        if(direction.equals("RIGHT")) monster.isRight = true;
+//        else if(direction.equals("LEFT")) monster.isRight = false;
         ArrayList<String> directions = new ArrayList<>(Arrays.asList("UP", "DOWN", "LEFT", "RIGHT"));
         String newDirection = direction;
         Random rand = new Random();

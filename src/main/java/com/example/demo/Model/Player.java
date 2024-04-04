@@ -21,11 +21,13 @@ public class Player extends Entity{
     private final ArrayList<PowerUp> powerUps;
     public boolean isMoving;
     public Timeline timeline; //timecontrol
-    public Player(double x, double y, int id) {
+    public boolean isRight;
+    public Player(double x, double y, int id, boolean isRight) {
         super(x, y);
         this.id = id;
         this.powerUps = new ArrayList<PowerUp>();
         this.placedDetonators = new ArrayList<>();
+        this.isRight = isRight;
     }
     public int getCountOfBombs() {
         return countOfBombs;
