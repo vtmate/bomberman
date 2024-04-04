@@ -130,9 +130,9 @@ public class LayoutCreator {
         gm.players.add(player2);
     }
     private void createMonsters() {
-        Monster monster = new Monster(40*4, 40, true);
+        Monster monster = new Monster(40*4, 40, true, 0);
         gm.monsters.add(monster);
-        monster = new Monster(40*7, 40*9, true);
+        monster = new Monster(40*7, 40*9, true, 1);
         gm.monsters.add(monster);
     }
 }

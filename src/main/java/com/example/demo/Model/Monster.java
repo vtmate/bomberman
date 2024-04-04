@@ -11,9 +11,11 @@ public class Monster extends Entity{
     public String direction = "RIGHT";
     private Timeline monsterTimeline;
     public boolean isRight;
-    public Monster(double x, double y, boolean isRight) {
+    public int id;
+    public Monster(double x, double y, boolean isRight, int id) {
         super(x, y);
         this.isRight = isRight;
+        this.id = id;
     }
     public void moveMonster(Control control){
         System.out.println("run");

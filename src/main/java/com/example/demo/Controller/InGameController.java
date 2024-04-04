@@ -272,9 +272,13 @@ public class InGameController {
         }
     }
     public void createMonsters(ArrayList<Monster> monsters, int i) {
-        createImageView(monsters.get(0), monsterImage1, i);
-        createImageView(monsters.get(1), monsterImage2, i);
-//        createImageView(monsters, monsterImage, i);
+        if(monsters.size() == 2){
+            createImageView(monsters.get(0), monsterImage1, i);
+            createImageView(monsters.get(1), monsterImage2, i);
+        } else if (monsters.size() == 1){
+            Image img = monsters.get(0).id == 0 ? monsterImage1 : monsterImage2;
+            createImageView(monsters.get(0), img, i);
+        }
     }
     public void createBombs(ArrayList<Bomb> bombs, int i) {
         createImageView(bombs, bombImage, i);
@@ -307,12 +311,18 @@ public class InGameController {
             imageView.setY(entity.y - 10);
             imageView.setFitWidth(size);
             imageView.setFitHeight(size);
-            System.out.println(gm.monsters.get(0).isRight);
-            System.out.println(gm.monsters.get(1).isRight);
-            if(image == monsterImage1 && !gm.monsters.get(0).isRight) imageView.setScaleX(-1);
-            if(image == monsterImage2 && !gm.monsters.get(1).isRight) imageView.setScaleX(-1);
-            if(image == player1Image && !gm.players.get(0).isRight) imageView.setScaleX(-1);
-            if(image == player2Image && !gm.players.get(1).isRight) imageView.setScaleX(-1);
+            if(gm.players.size() == 2){
+                if(image == player1Image && !gm.players.get(0).isRight) imageView.setScaleX(-1);
+                if(image == player2Image && !gm.players.get(1).isRight) imageView.setScaleX(-1);
+            } else if (gm.players.size() == 1){
+                if(!gm.players.getFirst().isRight) imageView.setScaleX(-1);
+            }
+            if(gm.monsters.size() == 2){
+                if(image == monsterImage1 && !gm.monsters.get(0).isRight) imageView.setScaleX(-1);
+                if(image == monsterImage2 && !gm.monsters.get(1).isRight) imageView.setScaleX(-1);
+            } else if (gm.monsters.size() == 1){
+                if(!gm.monsters.getFirst().isRight) imageView.setScaleX(-1);
+            }
             this.gamePane.getChildren().add(imageView);
         }
     }
