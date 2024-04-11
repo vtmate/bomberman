@@ -48,7 +48,7 @@ public class GameModel {
         this.gates = new ArrayList<>();
         this.powerUps = new ArrayList<>();
         //majd itt kellene megcsinálni az elégazást, hogy melyik pálya legyen meghívva
-        this.layoutCreator = new LayoutCreator(this, map);
+//        this.layoutCreator = new LayoutCreator(this, map);
             //példányosítással le is futnak az inicializáló függvények
         printEntity(this.players);
 
