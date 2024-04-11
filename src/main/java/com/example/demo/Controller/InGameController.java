@@ -113,6 +113,8 @@ public class InGameController {
         this.playerNameLabel2.setText(playerName2);
         this.gm = new GameModel(map, this);
 
+
+
         gm.players.getFirst().name = this.playerName1;
         gm.players.getLast().name = this.playerName2;
 
@@ -361,10 +363,10 @@ public class InGameController {
             rect.setEffect(dropShadow);
 
             panePowerUp.getChildren().add(rect);
-            panePowerUp.getChildren().add(powerUps.get(i).imageView);
+            panePowerUp.getChildren().add(new ImageView(powerUps.get(i).image));
 
             StackPane.setAlignment(rect, Pos.CENTER);
-            StackPane.setAlignment(powerUps.get(i).imageView, Pos.CENTER);
+            StackPane.setAlignment(new ImageView(powerUps.get(i).image), Pos.CENTER);
             if (player.id != 0) {
                 playerPowerUps2.getChildren().add(panePowerUp);
             }

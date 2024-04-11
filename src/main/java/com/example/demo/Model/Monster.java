@@ -53,6 +53,7 @@ public class Monster extends Entity{
     }
 
     public void stop(){
+        if (monsterTimeline == null) return;
         monsterTimeline.stop();
     }
     public void pause() {
