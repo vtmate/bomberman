@@ -95,6 +95,7 @@ public class GameModel {
                         System.out.println("bomba hozzáadva detonatorba");
                     }
                 } else if (player.getCountOfBombs() > 0){
+                    System.out.println("PLACE");
                     player.removeBomb();
                     Bomb bomb;
                     double x = Math.round(player.x / 40) * 40;
@@ -390,7 +391,7 @@ public class GameModel {
         }
         return false;
     }
-    private boolean checkForGate(double expX, double expY){
+    public boolean checkForGate(double expX, double expY){
         for(Gate gate : gates){
             if(checkInteraction(gate.x, gate.y, expX, expY)){
                 gates.remove(gate);
@@ -413,7 +414,7 @@ public class GameModel {
         }
     }
 
-    private boolean isBetween(double value, double smaller, double bigger){
+    public boolean isBetween(double value, double smaller, double bigger){
         return smaller <= value && bigger >= value;
     }
 
