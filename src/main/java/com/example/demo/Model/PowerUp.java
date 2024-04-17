@@ -87,7 +87,7 @@ public class PowerUp extends Entity{
         }
     }
 
-    private static void isSnail(Player player, PowerUp powerUp) {
+    public static void isSnail(Player player, PowerUp powerUp) {
         player.removePowerUpByType(PowerUpType.ROLLERSKATE);
         timer.schedule(new TimerTask() {
             @Override

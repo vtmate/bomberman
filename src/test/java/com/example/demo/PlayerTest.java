@@ -17,7 +17,7 @@ class PlayerTest {
     Player player;
 
     @BeforeEach
-    public void initGameModel() {
+    public void initPlayerTest() {
         player = new Player(40, 40, 0, false);
         player.addPowerUp(new PowerUp(40, 40, PowerUpType.MOREBOMBS));
     }
