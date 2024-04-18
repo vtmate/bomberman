@@ -9,7 +9,7 @@ public class Box extends Entity{
 
     /**
      * Ha szellem a játékos, akkor rá tud menni a dobozokra,
-     * ezért meg kell nézni, hogy egy adott powerUp felett van-e
+     * ezért meg kell nézni, hogy egy adott powerUp felett van-e.
      * doboz (,hogy így ne tudja felvenni)
      * @param boxes     a játékban található aktív dobozok
      * @param x         a powerUp x koordinátája

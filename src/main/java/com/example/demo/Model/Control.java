@@ -1,10 +1,5 @@
 package com.example.demo.Model;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.fxml.FXML;
-import javafx.util.Duration;
-
 import java.util.*;
 
 public class Control {
@@ -14,6 +9,12 @@ public class Control {
         this.gm = gm;
     }
 
+    /**
+     * A beérkező input alapján a játékos mozgatását kezelő függvények
+     * meghívása a megfelelő irányokkal.
+     * @param direction     milyen nyilat nyomott le a játékos
+     * @param playerId      melyik játékos
+     */
     public void moveCharacter(String direction, int playerId){
         Player player;
         if (gm.getPlayer(playerId) != null) {
@@ -61,15 +62,27 @@ public class Control {
         }
     }
 
+    /**
+     * Szörny mozgatásának átirányítása.
+     * @param monster   adott monster
+     */
     public void moveMonster(Monster monster) {
         monster.moveMonster(this);
     }
 
+    /**
+     * Bomba lerakásának átirányítása.
+     * @param playerId  amelyik játékos lehelyezte a bombát
+     */
     public void placeBomb(int playerId) {
         Player player = gm.getPlayer(playerId);
         gm.placeBomb(player);
     }
 
+    /**
+     * GATE lehelyezésének áritányítása.
+     * @param playerId  amelyik játékos lehelyezte a GATE-t
+     */
     public void placeGate(int playerId){
         Player player = gm.getPlayer(playerId);
         if(player != null){
@@ -77,9 +90,14 @@ public class Control {
                 gm.placeGate(player);
             }
         }
-        System.out.println("GATE lehelyezése by: " + playerId);
     }
 
+    /**
+     * Minden entitásra vizsgálódás, hogy az adott játékos érintkezik-e velük.
+     * @param player        adott játékos
+     * @param direction     az irány amerre a játékos halad
+     * @return              hogy érintkezik-e
+     */
     public boolean playerIntersectsEntity(Player player, String direction){
         double x = player.x;
         double y = player.y;
@@ -91,10 +109,24 @@ public class Control {
         return true;
     }
 
+    /**
+     * Vizsgálódás, hogy a játékos érintkezik-e a pálya szélével.
+     * @param player        az adott játékos
+     * @param direction     az irány amerre a játékos halad
+     * @return              hogy érintkezik-e
+     */
     private boolean playerIntersectsEdge(Player player, String direction){
         return checkEntitiesIntersection(player.x, player.y, gm.edgeWalls, direction);
     }
 
+    /**
+     * Adott entitás típusú tömbön az érintkezés figyelése.
+     * @param x             a figyelt karakter x koordinátája
+     * @param y             a figyelt karakter y koordinátája
+     * @param entities      az adott tömb
+     * @param direction     az irány, amerre a karakter halad
+     * @return              hogy érintkezik-e
+     */
     public boolean checkEntitiesIntersection(double x, double y, ArrayList<? extends Entity> entities, String direction) {
         for (Entity entity : entities) {
             if (Objects.equals(direction, "DOWN")) {
@@ -113,6 +145,14 @@ public class Control {
         return false;
     }
 
+    /**
+     * Ne lehessen megváltoztatni a játékos haladási irányát miközben mozog, mivel
+     * ekkor nem csak x*40-el lehet mozgazni a játékost.
+     * @param x             a pixelszám amennyivel x-en mozgazjuk
+     * @param y             a pixelszám amennyivel Y-On mozgazjuk
+     * @param playerId      adott játékos
+     * @param iteration     hányszor fut le az eltolás
+     */
     private void move(int x, int y, int playerId, int iteration) {
         if (playerId == 0){
             if (gm.getPlayer(0).isMoving) {
@@ -130,9 +170,12 @@ public class Control {
         }
     }
 
+    /**
+     * Szörny irányának megváltoztatása.
+     * @param monster       adott szörny
+     * @param direction     új irány
+     */
     public void changeDirection(Monster monster, String direction) {
-//        if(direction.equals("RIGHT")) monster.isRight = true;
-//        else if(direction.equals("LEFT")) monster.isRight = false;
         ArrayList<String> directions = new ArrayList<>(Arrays.asList("UP", "DOWN", "LEFT", "RIGHT"));
         String newDirection = direction;
         Random rand = new Random();
@@ -145,6 +188,12 @@ public class Control {
         monster.direction = newDirection;
     }
 
+    /**
+     * Minden entitásra vizsgálódás, hogy az adott szörny érintkezik-e velük.
+     * @param monster       az adott szörny
+     * @param direction     az irány, amerre a szörny halad
+     * @return              érintkezik-e
+     */
     public boolean monsterIntersectsEntity(Monster monster, String direction){
         double x = monster.x;
         double y = monster.y;
@@ -158,6 +207,14 @@ public class Control {
         return true;
     }
 
+    /**
+     * Adott entitás típusú tömbön az érintkezés figyelése szörny esetén.
+     * @param x             a figyelt szörny x koordinátája
+     * @param y             a figyelt szörny y koordinátája
+     * @param entities      az adott tömb
+     * @param direction     az irány, amerre a szörny halad
+     * @return              hogy érintkezik-e
+     */
     private boolean checkEntitiesIntersectionM(double x, double y, ArrayList<? extends Entity> entities, String direction) {
         for (Entity entity : entities) {
             if (Objects.equals(direction, "DOWN")) {
@@ -176,6 +233,11 @@ public class Control {
         return false;
     }
 
+    /**
+     * Játékos és szörny találkozásának átirányítása
+     * @param x     a szörny x koordinátája
+     * @param y     a szörny y koordinátája
+     */
     private void checkPlayer(double x, double y) {
         for (int i = 0; i < gm.players.size(); i++) {
             if (gm.checkInteraction(x, y, gm.players.get(i).x, gm.players.get(i).y)) {

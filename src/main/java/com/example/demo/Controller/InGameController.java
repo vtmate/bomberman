@@ -168,7 +168,7 @@ public class InGameController {
                 int seconds = time % 60;
                 int minutes = (int)Math.ceil(time / 60);
                 timerLabel.setText("Idő: " + String.format("%02d:%02d", minutes, seconds));
-                if (time % 5 == 0 && time != 0) {
+                if (time % 12 == 0 && time != 0) {
                     System.out.println("szűkítés");
 //                    gm.narrowing();
                     gm.battleRoyale();
