@@ -12,26 +12,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
 
 public class GameConfigurationController {
-    private GameController gc;
-
+    private final GameController gc;
     @FXML
     TextField playerNameInput1;
-
     @FXML
     TextField playerNameInput2;
     @FXML
     Label playerNameLabel1;
-
     @FXML
     Label playerNameLabel2;
-
     @FXML
     ImageView mapImage1, mapImage2, mapImage3;
     @FXML
@@ -44,14 +37,20 @@ public class GameConfigurationController {
     Label title;
     private String playerName1;
     private String playerName2;
-
     private String map;
 
+    /**
+     *
+     * @param gc    átveszi a GameController-t
+     */
     public GameConfigurationController(GameController gc) {
         this.gc = gc;
-
-
     }
+
+    /**
+     * A gameConfiguration-view.fxml betöltésekor lefut egyszer.
+     * Stílus beállítása.
+     */
     public void initialize() {
         startButton.setDisable(true);
         Font adumuFont = Font.loadFont(getClass().getResourceAsStream("/Adumu.ttf"), 30);
@@ -67,15 +66,14 @@ public class GameConfigurationController {
 
         playerNameInput1.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                System.out.println(playerNameInput1.getText());
             }
         });
 
         playerNameInput2.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                System.out.println(playerNameInput2.getText());
             }
         });
+
         mapImage1.setOnMouseClicked(event ->  {
             map = "Dzsungel";
             startButton.setDisable(false);
@@ -108,25 +106,38 @@ public class GameConfigurationController {
         });
     }
 
+    /**
+     * Meghívja a GameController changeScene függvényét, a kívánt megjelenítés paraméterével.
+     * Ez a metódus egy FXML fájlban kerül meghívásra.
+     *
+     * @throws IOException  ha a kinézet nem létezik
+     */
     @FXML
     protected void goToMainPage() throws IOException {
-        System.out.println("Főoldal");
         this.gc.changeScene("mainPage");
     }
 
+    /**
+     * Meghívja a GameController changeScene függvényét, a kívánt megjelenítés paraméterével.
+     * Ez a metódus egy FXML fájlban kerül meghívásra.
+     *
+     * @throws IOException  ha a kinézet nem létezik
+     */
     @FXML
     protected void goToInGame() throws IOException {
-        System.out.println("Játszma");
         if (checkInputs()) this.gc.changeScene("inGame");
     }
 
+    /**
+     * A játék elindításához szükséges paraméterek ellenőrzése.
+     * Játékosnevek és a pálya nevének beállítása.
+     *
+     * @return  hogy minden paraméter megfelelő-e
+     */
     private boolean checkInputs() {
         if (map == null) {
-            System.out.println("\u001B[31mNincs kiválasztott pálya!\u001B[37m");
             return false;
         }
-
-        System.out.println("\u001B[33mA kiválasztott pálya:" + map + "\u001B[37m");
 
         if (!Objects.equals(playerNameInput1.getText(), "")) {
             playerName1 = playerNameInput1.getText();
@@ -134,7 +145,6 @@ public class GameConfigurationController {
         else {
             playerName1 = "1. játékos";
         }
-        System.out.println("\u001B[33m1. játéko neve: " + playerName1 + "\u001B[37m");
         gc.playerName1 = playerName1;
 
         if (!Objects.equals(playerNameInput2.getText(), "")) {
@@ -143,10 +153,8 @@ public class GameConfigurationController {
         else {
             playerName2 = "2. játékos";
         }
-        System.out.println("\u001B[33m2. játéko neve: " + playerName2 + "\u001B[37m");
         gc.playerName2 = playerName2;
 
         return true;
-
     }
 }
