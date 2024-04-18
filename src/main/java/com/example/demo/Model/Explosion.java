@@ -11,30 +11,45 @@ public class Explosion extends Entity{
     public Explosion(double x, double y) {
         super(x, y);
     }
+
+    /**
+     * Robbanás után a kirajzolásának eltüntetése.
+     * @param gm        maga a gameModel
+     * @param delay     ennyi idő után tüntetjük el
+     */
     public void removeExplosion(GameModel gm, int delay) {
         timeline = new Timeline();
-        timeline.stop(); // Leállítjuk a timeline-ot, ha éppen fut
 
-        timeline.getKeyFrames().clear(); // Töröljük az eseményeket a timeline-ból
+        // Leállítjuk a timeline-ot, ha éppen fut
+        timeline.stop();
 
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
+        // Töröljük az eseményeket a timeline-ból
+        timeline.getKeyFrames().clear();
+
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(delay), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 gm.explosions.remove(Explosion.this);
                 timeline = null;
-                //bomb = null; // A bombariadót töröltük, hogy már ne hivatkozzon rá semmi
             }
         }));
 
-        timeline.setCycleCount(1); // A timeline csak egyszer fog futni
+        // A timeline csak egyszer fog futni
+        timeline.setCycleCount(1);
         timeline.play();
     }
 
+    /**
+     * Timeline megállítása.
+     */
     public void pause() {
         if (timeline == null) return;
         timeline.pause();
     }
 
+    /**
+     * Timeline újraindítása.
+     */
     public void resume() {
         if (timeline == null) return;
         timeline.play();
