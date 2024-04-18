@@ -7,18 +7,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
 import java.io.IOException;
-
 import static javafx.scene.paint.Color.WHITE;
 
 public class WinStage extends Stage {
+    /**
+     * Megjelnik egy új ablakot amikor a játék véget ért.
+     * Tájékoztatást nyújt arról, hogy melyik játékos nyert, illetve azt hogy döntetlen lett-e.
+     * Gombok segítségével indíthatunk új játékot vagy bezárhatjuk a játékot.
+     *
+     * @param gm a játék modelljének átadása
+     */
     public WinStage(GameModel gm) {
         super();
 
