@@ -1,0 +1,27 @@
+# GitLab CI/CD configuration for Maven Java project
+
+# Specify the image to use for the job
+image: maven:latest
+
+# Cache for dependecies
+cache:
+  paths:
+    - .m2/repository
+
+# Define stages for the pipeline
+stages:
+  - build
+  - test
+
+# Job for building the Maven project
+build:
+  stage: build
+  script:
+    - mvn clean compile
+
+# Job for running unit tests
+test:
+  stage: test
+  script:
+    - mvn test
+
