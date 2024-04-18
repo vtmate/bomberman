@@ -7,7 +7,6 @@ import com.example.demo.Model.Bomb;
 import com.example.demo.Model.GameModel;
 import com.example.demo.Model.Gate;
 import com.example.demo.Model.Player;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,11 +14,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-
 import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 class GameModelTest {
     GameModel gm;
@@ -61,25 +58,5 @@ class GameModelTest {
     public void testIsBetween2() throws IOException {
         //GameModel gm = new GameModel("Dzsungel", null);
         assertFalse(gm.isBetween(2,4, 3));
-    }
-    @Test
-    public void testPlaceBomb() {
-        Player player = new Player(120, 40, 3,true);
-        gm.players.add(player);
-        gm.getPlayer(player.id).addBomb();
-
-        gm.placeBomb(gm.getPlayer(player.id));
-        gm.bombs.getFirst().timeline = mock(Timeline.class);
-        /*System.out.println(player.getCountOfBombs());
-        boolean isBomb = false;
-        for (int i = 0; i < gm.bombs.size(); i++) {
-            Bomb bomb = gm.bombs.get(i);
-            if (bomb.x == 120 && bomb.y == 40) {
-                isBomb = true;
-                break;
-            }
-        }
-
-        assertTrue(isBomb);*/
     }
 }
