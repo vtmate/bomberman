@@ -19,7 +19,7 @@ class PlayerTest {
     @BeforeEach
     public void initPlayerTest() {
         player = new Player(40, 40, 0, false);
-        player.addPowerUp(new PowerUp(40, 40, PowerUpType.MOREBOMBS));
+        player.addPowerUp(new PowerUp(40, 40, PowerUpType.MOREBOMBS, null));
     }
 
     @Test

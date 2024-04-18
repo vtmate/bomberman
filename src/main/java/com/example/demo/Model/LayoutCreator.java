@@ -1,13 +1,18 @@
 package com.example.demo.Model;
 
+import com.example.demo.Controller.InGameController;
+
 import java.util.Random;
 
 public class LayoutCreator {
     private final GameModel gm;
     private final String map;
-    public LayoutCreator(GameModel gm, String map){
+    public InGameController igc;
+
+    public LayoutCreator(GameModel gm, String map, InGameController igc){
         this.gm = gm;
         this.map = map;
+        this.igc = igc;
         System.out.println("map: " + map);
 
         createWalls();
@@ -39,7 +44,7 @@ public class LayoutCreator {
                 //random powerUp kiválasztása
                 int typeIndex = random.nextInt(PowerUpType.values().length);
                 PowerUpType type = PowerUpType.values()[typeIndex];
-                gm.powerUps.add(new PowerUp(x, y, type));
+                gm.powerUps.add(new PowerUp(x, y, type, igc));
                 counter++;
             }
         }

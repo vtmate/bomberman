@@ -30,7 +30,7 @@ public class LayoutCreatorTest {
         gm.boxes.add(new Box(40,80));
         gm.boxes.add(new Box(120,80));
         gm.boxes.add(new Box(40,120));
-        layoutCreator = new LayoutCreator(gm, "Dzsungel");
+        layoutCreator = new LayoutCreator(gm, "Dzsungel", null);
     }
 
     @Test

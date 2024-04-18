@@ -1,5 +1,6 @@
 package com.example.demo.Model;
 
+import com.example.demo.Controller.InGameController;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -13,13 +14,13 @@ public class PowerUp extends Entity{
     private static final int milliSeconds = 8000;
     public ImageView imageView;
     public Image image;
-    public PowerUp(double x, double y, PowerUpType powerUpType) {
+    public PowerUp(double x, double y, PowerUpType powerUpType, InGameController igc) {
         super(x, y);
         this.powerUpType = powerUpType;
-        image = new Image(getPowerUpImage(powerUpType));
-        imageView = new ImageView(image);
-        imageView.setFitWidth(25);
-        imageView.setFitHeight(25);
+        if (igc != null) {
+            image = new Image(getPowerUpImage(powerUpType));
+        }
+
     }
     public PowerUpType getPowerUpType() {
         return powerUpType;
