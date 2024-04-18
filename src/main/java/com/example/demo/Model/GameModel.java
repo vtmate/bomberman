@@ -1,18 +1,12 @@
 package com.example.demo.Model;
 
 import com.example.demo.Controller.InGameController;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -29,13 +23,13 @@ public class GameModel {
     public Timeline lastPlayerTimeline;
     private LayoutCreator layoutCreator;
     public InGameController igc;
-
     private int narrowing_cnt = 0;
 
-    //private boolean tovabb; //ehelyett majd a hatótávot kell csekkolni
-    //private int toUp, toRight, toDown, toLeft;
-
-
+    /**
+     *
+     * @param map   a pálya típusa
+     * @param igc   InGameController
+     */
     public GameModel(String map, InGameController igc) {
         this.igc = igc;
         this.walls = new ArrayList<>();
@@ -47,37 +41,32 @@ public class GameModel {
         this.boxes = new ArrayList<>();
         this.gates = new ArrayList<>();
         this.powerUps = new ArrayList<>();
-        //majd itt kellene megcsinálni az elégazást, hogy melyik pálya legyen meghívva
+
         new LayoutCreator(this, map, igc);
-            //példányosítással le is futnak az inicializáló függvények
+
         printEntity(this.players);
-
-        System.out.println("Created GameModel");
-
     }
 
+    /**
+     * Bomba lehelyezése.
+     * A bomba lehelyezésének ellenőrzése. (detonátor, lehelyezhető bombák száma)
+     *
+     * @param player    a játékos
+     */
     public void placeBomb(Player player) {
 
         if(player != null){
-            for (PowerUp powerUp : player.getPowerUps()){
-                System.out.println("power: " + powerUp.getPowerUpType());
-            }
             if(!player.hasPowerUp(PowerUpType.NOBOMBS)) {
                 if(player.hasPowerUp(PowerUpType.DETONATOR)){
                     if(player.placedDetonators.size() == player.numOfAllBombs()){
-                        //vagy ha az összes bombáját detonátor felszedése után helyezte le
-                        System.out.println("size before: " + player.placedDetonators.size());
                         for(Bomb bomb : player.placedDetonators){ //összes bomba felrobbantása egyből
                             bomb.removeBomb(this, player, 1);
                         }
-                        System.out.println("size after: " + player.placedDetonators.size());
                         player.placedDetonators.clear();
                         for (int i = 0; i < player.placedDetonators.size(); i++) { //minden bomba visszaadása
                             player.addBomb();
                         }
-                        System.out.println("összes bomba felrobbantása detonatorból");
                     } else if(player.getCountOfBombs() > 0){
-                        //van még lehelyezhető bombája
                         player.removeBomb();
                         Bomb bomb;
                         double x = Math.round(player.x / 40) * 40;
@@ -89,13 +78,10 @@ public class GameModel {
                         } else {
                             bomb = new Bomb(x, y, 2);
                         }
-                        //this.bombs.add(bomb);
                         player.placedDetonators.add(bomb);
                         this.bombs.add(bomb);
-                        System.out.println("bomba hozzáadva detonatorba");
                     }
                 } else if (player.getCountOfBombs() > 0){
-                    System.out.println("PLACE");
                     player.removeBomb();
                     Bomb bomb;
                     double x = Math.round(player.x / 40) * 40;
@@ -115,6 +101,11 @@ public class GameModel {
         }
     }
 
+    /**
+     * Akadály lehelyezése.
+     *
+     * @param player    a játékos
+     */
     public void placeGate(Player player){
         player.setCountOfGates(player.getCountOfGates()-1);
 
@@ -123,12 +114,19 @@ public class GameModel {
         this.gates.add(new Gate(x,y, player));
     }
 
+    /**
+     * Robbanás kezelése minden irányba.
+     *
+     * @param bombX     a bomba x koordinátája
+     * @param bombY     a bomba y koordinátája
+     * @param radius    a bomba robbanásának hatótávja
+     */
     public void explosion(double bombX, double bombY, int radius){
         int toUp = 0;
         int toRight = 0;
         int toDown = 0;
         int toLeft = 0;
-        if(!isPlayerOnBomb(bombX, bombY)){ //ha a karakter nem maradt a bombán, akkor tovább nézzük
+        if(!isPlayerOnBomb(bombX, bombY)){
             rightExplosion(bombX, bombY, radius, toRight);
             leftExplosion(bombX, bombY, radius, toLeft);
             upExplosion(bombX, bombY, radius, toUp);
@@ -136,6 +134,13 @@ public class GameModel {
         }
     }
 
+    /**
+     * Ellenőrizzük, hogy a játékos bombán áll-e.
+     *
+     * @param bombX a bomba x koordinátája
+     * @param bombY a bomba y koordinátája
+     * @return      hogy a játékos bombán áll-e
+     */
     public boolean isPlayerOnBomb(double bombX, double bombY){
         for (int i = 0; i < players.size(); i++) {
             double x = this.players.get(i).x;
@@ -148,11 +153,20 @@ public class GameModel {
         checkForGate(bombX, bombY);
         return false;
     }
+
+    /**
+     * Kezeljük a bomba robbanását jobbra:
+     * - van-e játékos, ha igen akkor a játékos meghal
+     * - van-e szörny, ha igen akkor a szörny meghal
+     * - van-e doboz vagy akadály, ha igen, akkor a robbanás nem terjed tovább
+     *
+     * @param bombX     a bomba x koordinátája
+     * @param bombY     a bomba y koordinátája
+     * @param radius    a bomba robbanásának hatótávja
+     * @param iteration iterátor
+     */
     private void rightExplosion(double bombX, double bombY, int radius, int iteration){
-        if (checkForWall(bombY, bombX, bombX+40, true)){
-            //System.out.println("Jobbra fal volt, nem történik semmi");
-        } else {
-            //System.out.println("Jobbra nem volt fal");
+        if (!checkForWall(bombY, bombX, bombX+40, true)) {
             boolean iterate = true;
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX+40, bombY);
@@ -168,11 +182,9 @@ public class GameModel {
                 iterate = false;
             }
             if (checkForMonster(bombX+40, bombY)){
-                //System.out.println("az egyik szörny meghalt");
                 iterate = false;
             }
             if (iterate){
-                //System.out.println("Nem volt ott semmi");
                 if(iteration < radius-1){
                     iteration++;
                     rightExplosion(bombX+40, bombY, radius, iteration);
@@ -180,11 +192,20 @@ public class GameModel {
             }
         }
     }
+
+    /**
+     * Kezeljük a bomba robbanását balra:
+     * - van-e játékos, ha igen akkor a játékos meghal
+     * - van-e szörny, ha igen akkor a szörny meghal
+     * - van-e doboz vagy akadály, ha igen, akkor a robbanás nem terjed tovább
+     *
+     * @param bombX     a bomba x koordinátája
+     * @param bombY     a bomba y koordinátája
+     * @param radius    a bomba robbanásának hatótávja
+     * @param iteration iterátor
+     */
     private void leftExplosion(double bombX, double bombY, int radius, int iteration){
-        if (checkForWall(bombY, bombX-40, bombX, true)){
-            //System.out.println("Balra fal volt, nem történik semmi");
-        } else {
-            //System.out.println("Balra nem volt fal");
+        if (!checkForWall(bombY, bombX-40, bombX, true)){
             boolean iterate = true;
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX-40, bombY);
@@ -200,11 +221,9 @@ public class GameModel {
                 iterate = false;
             }
             if (checkForMonster(bombX-40, bombY)){
-                //System.out.println("az egyik szörny meghalt");
                 iterate = false;
             }
             if (iterate){
-                //System.out.println("Nem volt ott semmi");
                 if(iteration < radius-1){
                     iteration++;
                     leftExplosion(bombX-40, bombY, radius, iteration);
@@ -212,6 +231,18 @@ public class GameModel {
             }
         }
     }
+
+    /**
+     * Kezeljük a bomba robbanását felfelé:
+     * - van-e játékos, ha igen akkor a játékos meghal
+     * - van-e szörny, ha igen akkor a szörny meghal
+     * - van-e doboz vagy akadály, ha igen, akkor a robbanás nem terjed tovább
+     *
+     * @param bombX     a bomba x koordinátája
+     * @param bombY     a bomba y koordinátája
+     * @param radius    a bomba robbanásának hatótávja
+     * @param iteration iterátor
+     */
     private void upExplosion(double bombX, double bombY, int radius, int iteration){
         if (checkForWall(bombX, bombY-40, bombY, false)){
             //System.out.println("Felfelé fal volt, nem történik semmi");
@@ -244,11 +275,20 @@ public class GameModel {
             }
         }
     }
+
+    /**
+     * Kezeljük a bomba robbanását lefelé:
+     * - van-e játékos, ha igen akkor a játékos meghal
+     * - van-e szörny, ha igen akkor a szörny meghal
+     * - van-e doboz vagy akadály, ha igen, akkor a robbanás nem terjed tovább
+     *
+     * @param bombX     a bomba x koordinátája
+     * @param bombY     a bomba y koordinátája
+     * @param radius    a bomba robbanásának hatótávja
+     * @param iteration iterátor
+     */
     private void downExplosion(double bombX, double bombY, int radius, int iteration){
-        if (checkForWall(bombX, bombY, bombY+40, false)){
-            //.out.println("Lefelé fal volt, nem történik semmi");
-        } else {
-            //System.out.println("Lefelé nem volt fal:");
+        if (!checkForWall(bombX, bombY, bombY+40, false)){
             boolean iterate = true;
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX, bombY+40);
@@ -264,11 +304,9 @@ public class GameModel {
                 iterate = false;
             }
             if (checkForMonster(bombX, bombY+40)){
-                //System.out.println("az egyik szörny meghalt");
                 iterate = false;
             }
             if(iterate) {
-                //System.out.println("Nem volt ott semmi");
                 if(iteration < radius-1){
                     iteration++;
                     downExplosion(bombX, bombY+40, radius, iteration);
@@ -277,29 +315,41 @@ public class GameModel {
         }
     }
 
+    /**
+     * Robbanása hozzáadása a robbanások listájához.
+     *
+     * @param x a robbanás x koordinátája
+     * @param y a robbanás y koordinátája
+     */
     private void drawExposion(double x, double y){
         Explosion explosion = new Explosion(x, y);
         this.explosions.add(explosion);
         explosion.removeExplosion(this, 500);
     }
 
+    /**
+     * A játékos halálának kezelése.
+     * Időzítő indítása, ilyenkor a másik játékosnak 5 másodpercig kell életben maradnia.
+     * Ha ezen idő alatt meghal a másik játékos akkor a játszma döntetlen eredménnyel zárul.
+     * Az 5 másodperc leteltével, vagy az döntetlen eredmény után megjelenik egy ablak, ahol
+     * kiírjuk a győztes játékos, vagy a döntetlen eredmény.
+     * Ebből az ablakból navigálhatunk tovább. (Új játék, Játék bezárása)
+     *
+     *
+     * @param player a játékos
+     */
     public void playerDeath(Player player){
         if(!player.hasPowerUp(PowerUpType.SHIELD)){
-            System.out.println(player.id + ". játékos meghalt");
             this.players.remove(player);
             if (this.players.size() == 1) {
-                System.out.println("Már csak egy játékosmaradt");
                 if (igc != null) {
                     lastPlayerTimeline = new Timeline();
                     igc.timerLabel.setTextFill(Color.RED);
                     lastPlayerTimeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-
                         int second = 0;
-
                         @Override
                         public void handle(ActionEvent event) {
                             second++;
-
 
                             if (second == 5) {
                                 lastPlayerTimeline.stop(); // Ha elértük a maximális iterációt, leállítjuk a timeline-ot
@@ -315,7 +365,7 @@ public class GameModel {
                 }
             }
 
-            if (this.players.size() == 0) {
+            if (this.players.isEmpty()) {
                 lastPlayerTimeline.stop();
                 lastPlayerTimeline = null;
                 stopTimers();
@@ -402,7 +452,9 @@ public class GameModel {
         return false;
     }
 
-
+    /**
+     * Ha a játékosnak azonnali bomba lehelyezése bónusza van, akkor lerakja a bombát.
+     */
     public void checkImmadiateBombs(){
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
@@ -414,6 +466,14 @@ public class GameModel {
         }
     }
 
+    /**
+     * Vizsgáljuk, hogy egy megadott érték két másik érték között van-e.
+     *
+     * @param value     a vizsgált érték
+     * @param smaller   a kisebb érték
+     * @param bigger    a nagyobb érték
+     * @return          hogy a megadott érték a két másik érték között van-e
+     */
     public boolean isBetween(double value, double smaller, double bigger){
         return smaller <= value && bigger >= value;
     }
@@ -424,6 +484,17 @@ public class GameModel {
         }
     }
 
+    /**
+     * Két téglalap alapú alakzat fedi-e egymást.
+     * A két téglalapnak csak az egyik csúcsának koordinátáit adjuk meg.
+     *
+     * @param x1    1. alakzat x koordinátája
+     * @param y1    1. alakzat y koordinátája
+     * @param x2    2. alakzat x koordinátája
+     * @param y2    2. alakzat y koordinátája
+     *
+     * @return      hogy a két alakzat fedi-e egymást
+     */
     public boolean checkInteraction(double x1, double y1, double x2, double y2) {
         int SIZE = 40;
         if (x1 + SIZE - 1 < x2 || x2 + SIZE - 1 < x1 || y1 + SIZE - 1 < y2 || y2 + SIZE - 1 < y1) {
@@ -439,6 +510,9 @@ public class GameModel {
         return null;
     }
 
+    /**
+     * A játék időzítőjének leállítása.
+     */
     public void stopTimers() {
         for (int i = 0; i < players.size(); i++) {
             players.get(i).pause();
@@ -456,6 +530,9 @@ public class GameModel {
         igc.timer.pause();
     }
 
+    /**
+     * A játék időzítőjének elindítása.
+     */
     public void startTimers() {
         for (int i = 0; i < monsters.size(); i++) {
             monsters.get(i).resume();
@@ -473,6 +550,7 @@ public class GameModel {
         igc.timer.play();
     }
 
+    //NOUSAGE
     private boolean isWall(int x, int y) {
         for (Wall wall : walls) {
             if (checkInteraction(x*40, y*40, wall.x, wall.y)) {
@@ -483,6 +561,7 @@ public class GameModel {
         return false;
     }
 
+    //NOUSAGE
     private boolean isPlayer(int x, int y) {
         for (Player player : players) {
             if (checkInteraction(x*40, y*40, player.x, player.y)) {
@@ -493,6 +572,7 @@ public class GameModel {
         return false;
     }
 
+    //NOUSAGE
     private boolean isMonster(int x, int y) {
         for (Monster monster : monsters) {
             if (checkInteraction(x*40, y*40, monster.x, monster.y)) {
@@ -503,6 +583,7 @@ public class GameModel {
         return false;
     }
 
+    //NOUSAGE
     private boolean isBomb(int x, int y) {
         for (Bomb bomb : bombs) {
             if (checkInteraction(x*40, y*40, bomb.x, bomb.y)) {
@@ -513,6 +594,7 @@ public class GameModel {
         return false;
     }
 
+    //NOUSAGE
     private boolean isBox(int x, int y) {
         for (Box box : boxes) {
             if (checkInteraction(x*40, y*40, box.x, box.y)) {
@@ -523,6 +605,7 @@ public class GameModel {
         return false;
     }
 
+    //NOUSAGE
     private boolean isPowerUp(int x, int y) {
         for (PowerUp powerUp : powerUps) {
             if (checkInteraction(x*40, y*40, powerUp.x, powerUp.y)) {
@@ -533,6 +616,7 @@ public class GameModel {
         return false;
     }
 
+    //NOUSAGE
     private void isGate(int x, int y) {
         for (Gate gate : gates) {
             if (checkInteraction(x*40, y*40, gate.x, gate.y)) {
@@ -542,6 +626,7 @@ public class GameModel {
         }
     }
 
+    //NOUSAGE
     public void narrowing() {
         narrowing_cnt += 1;
         boolean found;
@@ -660,6 +745,9 @@ public class GameModel {
         }
     }
 
+    /**
+     * A BattleRoyale mód logikája.
+     */
     public void battleRoyale(){
         narrowing_cnt ++;
         for (int i = 0 + narrowing_cnt; i < 13 - narrowing_cnt; i++) { //felső és alsó sor
