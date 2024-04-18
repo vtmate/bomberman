@@ -1,16 +1,11 @@
 package com.example.demo.Controller;
 
-
-import com.example.demo.BombermanApplication;
 import com.example.demo.Model.*;
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,7 +15,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -29,15 +23,11 @@ import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import java.util.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
 import static javafx.scene.paint.Color.*;
 
 public class InGameController {
-    private final int WIDTH = 900;
-    private final int HEIGHT = 600;
     @FXML
     private Pane gamePane;
     @FXML
@@ -65,7 +55,6 @@ public class InGameController {
     public Timeline timeline;
     public Timeline timer;
     private int time;
-    //képek
     Image wallImage;
     Image boxImage;
     Image player1Image;
@@ -77,17 +66,27 @@ public class InGameController {
     Image monsterImage2;
     Image gateImage;
 
-
+    /**
+     * A kinézet összekapcsolása a játékmodellel.
+     *
+     * @param gc            a GameController, melyből adatokat vesz át egy másik ablakból
+     * @param playerName1   az 1. játékos neve
+     * @param playerName2   a 2. játékos neve
+     * @param map           a pálya azonosítója
+     */
     public InGameController(GameController gc, String playerName1, String playerName2, String map) {
         this.gc = gc;
         this.playerName1 = playerName1;
-
-        System.out.println("Játékosnév: " + playerName1);
         this.playerName2 = playerName2;
         this.map = map;
 
     }
 
+    /**
+     * A gameConfiguration-view.fxml betöltésekor lefut egyszer.
+     * Stílus beállítása.
+     * A játék modelljét és az irányítást kezelő osztályok létrehozása.
+     */
     public void initialize() {
 
         initImages();
@@ -96,8 +95,6 @@ public class InGameController {
         playerNameLabel1.setFont(adumuFont);
         playerNameLabel2.setFont(adumuFont);
         timerLabel.setFont(adumuFont);
-
-        //header.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
         header.setBackground(new Background(new BackgroundImage(new Image("brickwall.png"), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER,
                 new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, false, false))));
@@ -117,8 +114,6 @@ public class InGameController {
 
         gm.players.getFirst().name = this.playerName1;
         gm.players.getLast().name = this.playerName2;
-
-        System.out.println("gamemodel created");
 
         Control control = new Control(this.gm);
 
@@ -159,8 +154,6 @@ public class InGameController {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
-
-        // Időzítő létrehozása és indítása
         time = 0;
         timer = new Timeline(
             new KeyFrame(Duration.seconds(1), e -> {
@@ -169,22 +162,10 @@ public class InGameController {
                 int minutes = (int)Math.ceil(time / 60);
                 timerLabel.setText("Idő: " + String.format("%02d:%02d", minutes, seconds));
                 if (time % 12 == 0 && time != 0) {
-                    System.out.println("szűkítés");
-//                    gm.narrowing();
                     gm.battleRoyale();
                 }
             })
         );
-/*        timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                long elapsedTime = System.currentTimeMillis() - startTime;
-                long seconds = elapsedTime / 1000;
-                long minutes = seconds / 60;
-                seconds = seconds % 60;
-                timerLabel.setText("Idő: " + String.format("%d:%02d", minutes, seconds));
-            }
-        };*/
         timer.setCycleCount(Timeline.INDEFINITE);
         timer.play();
 
@@ -192,6 +173,9 @@ public class InGameController {
         control.moveMonster(gm.monsters.get(1));
     }
 
+    /**
+     * A megjelenítés frissítése.
+     */
     public void refresh() {
         gamePane.getChildren().removeIf(node -> node instanceof Rectangle);
         gamePane.getChildren().removeIf(node -> node instanceof ImageView);
@@ -211,6 +195,9 @@ public class InGameController {
         checkPlayerPowerUp(gm.getPlayer(1));
     }
 
+    /**
+     * A pálya függvényében az entitások kinézetének inicializálása
+     */
     private void initImages(){
         switch (map){
             case "Dzsungel":
@@ -252,18 +239,47 @@ public class InGameController {
         }
     }
 
+    /**
+     *
+     * @param powerUps  a bónuszok listája
+     * @param i         a tábla (pálya) aktuális sorának száma
+     */
     private void createPowerUps(ArrayList<PowerUp> powerUps, int i){
         createImageView(powerUps, powerUpImage, i);
     }
+
+    /**
+     *
+     * @param boxes     a dobozok listája
+     * @param i         a tábla (pálya) aktuális sorának száma
+     */
     private void createBoxes(ArrayList<Box> boxes, int i){
         createImageView(boxes, boxImage, i);
     }
+
+    /**
+     *
+     * @param gates     az akadályok listája
+     * @param i         a tábla (pálya) aktuális sorának száma
+     */
     private void createGates(ArrayList<Gate> gates, int i){
         createImageView(gates, gateImage, i);
     }
+
+    /**
+     *
+     * @param edgeWalls az külső falak listája
+     * @param i         a tábla (pálya) aktuális sorának száma
+     */
     public void createEdgeWalls(ArrayList<EdgeWall> edgeWalls, int i) {
         createImageView(edgeWalls, wallImage, i);
     }
+
+    /**
+     *
+     * @param players   a játékosok listája
+     * @param i         a tábla (pálya) aktuális sorának száma
+     */
     public void createPlayers(ArrayList<Player> players, int i) {
         if(players.size() == 2){
             createImageView(players.get(0), player1Image, i);
@@ -273,6 +289,12 @@ public class InGameController {
             createImageView(players.get(0), img, i);
         }
     }
+
+    /**
+     *
+     * @param monsters  a szörnyek listsája
+     * @param i         a tábla (pálya) aktuális sorának száma
+     */
     public void createMonsters(ArrayList<Monster> monsters, int i) {
         if(monsters.size() == 2){
             createImageView(monsters.get(0), monsterImage1, i);
@@ -282,16 +304,42 @@ public class InGameController {
             createImageView(monsters.get(0), img, i);
         }
     }
+
+    /**
+     *
+     * @param bombs a bombák listája
+     * @param i     a tábla (pálya) aktuális sorának száma
+     */
     public void createBombs(ArrayList<Bomb> bombs, int i) {
         createImageView(bombs, bombImage, i);
     }
+
+    /**
+     *
+     * @param explosions    a robbanások listája
+     * @param i             a tábla (pálya) aktuális sorának száma
+     */
     public void createExplosion(ArrayList<Explosion> explosions, int i){
         createImageView(explosions, explosionImage, i);
     }
+
+    /**
+     *
+     * @param walls a fal elemek listája
+     * @param i     a tábla (pálya) aktuális sorának száma
+     */
     private void createWalls(ArrayList<Wall> walls, int i) {
         createImageView(walls, wallImage, i);
     }
 
+    /**
+     * Kirajzolja az entitások képét a megfelelő koordinátára.
+     * Beállítja az entitások képének méretét.
+     *
+     * @param entities  entitások listája
+     * @param image     entitás képe
+     * @param i         a tábla (pálya) aktuális sorának száma
+     */
     private void createImageView(ArrayList<? extends Entity> entities, Image image, int i) {
         int size = 55;
         for (Entity entity : entities) {
@@ -305,6 +353,15 @@ public class InGameController {
             }
         }
     }
+
+    /**
+     * Kirajzolja a megadott entitás képét a megfelelő koordinátára a megfelelő irányba.
+     * Beállítja a megadott entitás képének méretét.
+     *
+     * @param entity    egy entitás
+     * @param image     entitás képe
+     * @param i         a tábla (pálya) aktuális sorának száma
+     */
     private void createImageView(Entity entity, Image image, int i) {
         int size = 60;
         if(entity.y >= i*40 && entity.y < (i+1)*40){
@@ -329,6 +386,12 @@ public class InGameController {
         }
     }
 
+    /**
+     * Kirajzolja a megfelelő játékos neve alá, a felvett bónuszokat.
+     * Stílus beállítása.
+     *
+     * @param player    a játékos
+     */
     private void checkPlayerPowerUp(Player player) {
 
         if (Objects.isNull(player)) return;
@@ -347,9 +410,6 @@ public class InGameController {
             StackPane panePowerUp = new StackPane();
 
             panePowerUp.setPrefSize(35, 35);
-
-
-            //panePowerUp.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
 
             Rectangle rect = new Rectangle(35, 35);
             rect.setFill(WHITE);
@@ -380,12 +440,15 @@ public class InGameController {
         }
     }
 
+    /**
+     * Megjelenítás szüneteltetése.
+     * Egy szünet menü megjelenítése, és a megfelelő gombok megjelenítése: Folytatás, Új játék, Játék bezárása.
+     * Stílus beállítása.
+     */
     private void pause() {
         if (pauseStageCount != 0) return;
         pauseStageCount++;
-        //timeline.pause();
         gm.stopTimers();
-
 
         Stage pauseStage = new Stage();
         pauseStage.setResizable(false);
@@ -393,7 +456,6 @@ public class InGameController {
         pauseStage.setHeight(300);
         pauseStage.setWidth(400);
         pauseStage.initStyle(StageStyle.UNDECORATED);
-
 
         Button backToGame = new Button();
         backToGame.setText("Folytatás");
@@ -436,7 +498,6 @@ public class InGameController {
 
         Label label = new Label("Szünet");
         label.setTextFill(WHITE);
-        //label.setStyle("-fx-font-size: 30px;");
         Font adumuFont = Font.loadFont(getClass().getResourceAsStream("/Adumu.ttf"), 30);
         label.setFont(adumuFont);
 
@@ -446,14 +507,12 @@ public class InGameController {
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(20);
 
-
         backToGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 gm.startTimers();
                 pauseStageCount--;
                 pauseStage.close();
-
             }
         });
         pauseStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -484,16 +543,13 @@ public class InGameController {
             }
         });
 
-
         Scene scene = new Scene(vbox, 300, 300);
         vbox.setStyle("-fx-border-color: white;" +
                         "-fx-border-width: 5px;" +
                 "-fx-background-color: #161C1C;");
         pauseStage.setScene(scene);
-        pauseStage.initModality(Modality.WINDOW_MODAL); // Set modality
+        pauseStage.initModality(Modality.WINDOW_MODAL);
         pauseStage.initOwner(gc.stage);
         pauseStage.show();
     }
-
-
 }
