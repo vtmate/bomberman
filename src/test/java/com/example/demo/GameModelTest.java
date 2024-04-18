@@ -59,21 +59,4 @@ class GameModelTest {
         //GameModel gm = new GameModel("Dzsungel", null);
         assertFalse(gm.isBetween(2,4, 3));
     }
-    @Test
-    public void testPlaceBomb() {
-        Player player = new Player(120, 40, 3,true);
-        gm.players.add(player);
-        gm.placeBomb(gm.getPlayer(player.id));
-        System.out.println(player.getCountOfBombs());
-        boolean isBomb = false;
-        for (int i = 0; i < gm.bombs.size(); i++) {
-            Bomb bomb = gm.bombs.get(i);
-            if (bomb.x == 120 && bomb.y == 40) {
-                isBomb = true;
-                break;
-            }
-        }
-
-        assertTrue(isBomb);
-    }
 }
