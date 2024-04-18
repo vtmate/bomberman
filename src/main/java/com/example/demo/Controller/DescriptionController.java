@@ -1,15 +1,9 @@
 package com.example.demo.Controller;
 
-import com.example.demo.Model.Player;
-import com.example.demo.Model.PowerUp;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -18,10 +12,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class DescriptionController {
     GameController gc;
     private GridPane powerUpGrid;
@@ -31,15 +21,23 @@ public class DescriptionController {
     private int badPowerUpGridRows = 0;
     private GridPane controlGrid;
     private int controlGridRows = 0;
-
     @FXML
     private ScrollPane scrollPane;
     @FXML
     private Label title;
+
+    /**
+     *
+     * @param gc    átveszi a GameController-t
+     */
     public DescriptionController(GameController gc) {
         this.gc = gc;
     }
 
+    /**
+     * A description-view.fxml betöltésekor lefut egyszer.
+     * Beállítja a kinézet stílusát és betöltésre kerülnek a szövegek.
+     */
     public void initialize() {
         scrollPane.setContent(new ImageView(new Image("bg.jpg")));
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
@@ -86,7 +84,6 @@ public class DescriptionController {
         powerUpGrid = new GridPane(10,10);
         powerUpGrid.setPrefWidth(WIDTH);
 
-
         newPowerUpDesc("Bombák száma", "A játékos által lehelyezhető bombák száma 1-gyel növekszik.", "morebombsPowerUp.png");
         newPowerUpDesc("Robbanás hatótáva", "A játékos bombáinak hatótávja mind a 4 irányba 1-1 mezővel növekszik.", "biggerRadiusP.png");
         newPowerUpDesc("Detonátor",  " A játékos által lehelyezett bomba / bombák ne időzítő hatására robbanjanak fel, hanem az utolsó bomba lehelyezése után, a bomba lehelyezés funkciót még egyszer használva, az összes bombája robbanjon fel a játékosnak.", "detonator.png");
@@ -112,15 +109,27 @@ public class DescriptionController {
         vbox.setSpacing(10);
 
         scrollPane.setContent(vbox);
-
     }
 
+    /**
+     * Meghívja a GameController changeScene függvényét, a kívánt megjelenítés paraméterével.
+     * Ez a metódus egy FXML fájlban kerül meghívásra.
+     *
+     * @throws IOException  ha a kinézet nem létezik
+     */
     @FXML
     protected void goToMainPage() throws IOException {
-        System.out.println("Főoldal");
         this.gc.changeScene("mainPage");
     }
 
+    /**
+     * Új leírás hozzáadása egy irányításhoz.
+     * Stílus beállítása.
+     *
+     * @param eventData     esemény megnevezése
+     * @param player1Data   1. játékos irányítása
+     * @param player2Data   2. játékos irányítása
+     */
     private void newControlDesc(String eventData, String player1Data, String player2Data) {
         controlGridRows++;
         Label event = new Label(eventData);
@@ -147,8 +156,16 @@ public class DescriptionController {
             player1.setStyle("-fx-pref-width: 200; -fx-font-size: 20; -fx-background-color: #252B2B; -fx-padding: 10 10 10 20");
             player2.setStyle("-fx-pref-width: 200; -fx-font-size: 20; -fx-background-color: #252B2B; -fx-padding: 10 10 10 20");
         }
-
     }
+
+    /**
+     * Új leírás hozzáadása egy bónuszhoz.
+     * Stylus beáéllítása.
+     *
+     * @param nameData  a bónusz neve
+     * @param descData  a bónuszhoz tartozó leírás
+     * @param image     a bónuszhoz tartozó kép
+     */
     private void newPowerUpDesc(String nameData, String descData, String image) {
         HBox hbox = new HBox();
 
@@ -172,6 +189,14 @@ public class DescriptionController {
         powerUpGrid.add(desc, 1, powerUpGridRows++);
     }
 
+    /**
+     * Új leírás hozzáadása egy hátráltató bónuszhoz.
+     * Stylus beáéllítása.
+     *
+     * @param nameData  a hátráltató bónusz neve
+     * @param descData  a hátráltató bónuszhoz tartozó leírás
+     * @param image     a hátráltató bónuszhoz tartozó kép
+     */
     private void newBadPowerUpDesc(String nameData, String descData, String image) {
         HBox hbox = new HBox();
 
