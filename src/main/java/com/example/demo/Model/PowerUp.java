@@ -12,13 +12,14 @@ public class PowerUp extends Entity{
     private static final Timer timer = new Timer();
     private static final int milliSeconds = 8000;
     public ImageView imageView;
-    public Image image = null;
+    public Image image;
     public PowerUp(double x, double y, PowerUpType powerUpType) {
         super(x, y);
         this.powerUpType = powerUpType;
-        //image = new Image(getPowerUpImage(powerUpType));
-        //imageView.setFitWidth(25);
-        //imageView.setFitHeight(25);
+        image = new Image(getPowerUpImage(powerUpType));
+        imageView = new ImageView(image);
+        imageView.setFitWidth(25);
+        imageView.setFitHeight(25);
     }
     public PowerUpType getPowerUpType() {
         return powerUpType;
