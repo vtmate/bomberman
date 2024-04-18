@@ -1,42 +1,48 @@
 package com.example.demo.Controller;
 
-import com.example.demo.BombermanApplication;
-import com.example.demo.Model.Control;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
-
 import java.io.IOException;
-
 import static javafx.application.Platform.exit;
 
 public class MainPageController {
+    private final GameController gc;
 
-    private GameController gc;
-
+    /**
+     *
+     * @param gc    átveszi a GameController-t
+     */
     public MainPageController(GameController gc) {
         this.gc = gc;
     }
 
+    /**
+     * Meghívja a GameController changeScene függvényét, a kívánt megjelenítés paraméterével.
+     * Ez a metódus egy FXML fájlban kerül meghívásra.
+     *
+     * @throws IOException  ha a kinézet nem létezik
+     */
     @FXML
     protected void goToGameConfiguration() throws IOException {
-        System.out.println("Játék konfigurálása");
         this.gc.changeScene("gameConfiguration");
     }
 
+    /**
+     * Meghívja a GameController changeScene függvényét, a kívánt megjelenítés paraméterével.
+     * Ez a metódus egy FXML fájlban kerül meghívásra.
+     *
+     * @throws IOException  ha a kinézet nem létezik
+     */
     @FXML
     protected void goToDescription() throws IOException {
-        System.out.println("Leírás");
         this.gc.changeScene("description");
     }
 
+    /**
+     * Kilépés a játékból.
+     * Ez a metódus egy FXML fájlban kerül meghívásra.
+     */
     @FXML
-    protected void exitGame() throws IOException {
+    protected void exitGame() {
         exit();
     }
 }
