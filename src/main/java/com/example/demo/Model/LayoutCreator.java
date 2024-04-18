@@ -17,7 +17,7 @@ public class LayoutCreator {
         createPowerUps();
     }
 
-    private void createPowerUps(){
+    public void createPowerUps(){
         System.out.println("createpowerups");
         int counter = 0;
         int numOfPowerUps = 4;
@@ -43,9 +43,6 @@ public class LayoutCreator {
                 counter++;
             }
         }
-
-        //teszt powerup
-        gm.powerUps.add(new PowerUp(10*40, 9*40, PowerUpType.GATE));
     }
 
     private void createBoxes(){

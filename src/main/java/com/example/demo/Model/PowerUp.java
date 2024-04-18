@@ -12,12 +12,13 @@ public class PowerUp extends Entity{
     private static final Timer timer = new Timer();
     private static final int milliSeconds = 8000;
     public ImageView imageView;
+    public Image image = null;
     public PowerUp(double x, double y, PowerUpType powerUpType) {
         super(x, y);
         this.powerUpType = powerUpType;
-        imageView = new ImageView(new Image(getPowerUpImage(powerUpType)));
-        imageView.setFitWidth(25);
-        imageView.setFitHeight(25);
+        //image = new Image(getPowerUpImage(powerUpType));
+        //imageView.setFitWidth(25);
+        //imageView.setFitHeight(25);
     }
     public PowerUpType getPowerUpType() {
         return powerUpType;
@@ -86,7 +87,7 @@ public class PowerUp extends Entity{
         }
     }
 
-    private static void isSnail(Player player, PowerUp powerUp) {
+    public static void isSnail(Player player, PowerUp powerUp) {
         player.removePowerUpByType(PowerUpType.ROLLERSKATE);
         timer.schedule(new TimerTask() {
             @Override

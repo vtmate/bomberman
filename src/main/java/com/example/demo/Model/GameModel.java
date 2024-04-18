@@ -48,7 +48,7 @@ public class GameModel {
         this.gates = new ArrayList<>();
         this.powerUps = new ArrayList<>();
         //majd itt kellene megcsinálni az elégazást, hogy melyik pálya legyen meghívva
-        this.layoutCreator = new LayoutCreator(this, map);
+        new LayoutCreator(this, map);
             //példányosítással le is futnak az inicializáló függvények
         printEntity(this.players);
 
@@ -95,6 +95,7 @@ public class GameModel {
                         System.out.println("bomba hozzáadva detonatorba");
                     }
                 } else if (player.getCountOfBombs() > 0){
+                    System.out.println("PLACE");
                     player.removeBomb();
                     Bomb bomb;
                     double x = Math.round(player.x / 40) * 40;
@@ -135,7 +136,7 @@ public class GameModel {
         }
     }
 
-    private boolean isPlayerOnBomb(double bombX, double bombY){
+    public boolean isPlayerOnBomb(double bombX, double bombY){
         for (int i = 0; i < players.size(); i++) {
             double x = this.players.get(i).x;
             double y = this.players.get(i).y;
@@ -288,27 +289,30 @@ public class GameModel {
             this.players.remove(player);
             if (this.players.size() == 1) {
                 System.out.println("Már csak egy játékosmaradt");
-                lastPlayerTimeline = new Timeline();
-                igc.timerLabel.setTextFill(Color.RED);
-                lastPlayerTimeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+                if (igc != null) {
+                    lastPlayerTimeline = new Timeline();
+                    igc.timerLabel.setTextFill(Color.RED);
+                    lastPlayerTimeline.getKeyFrames().add(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
 
-                    int second = 0;
-                    @Override
-                    public void handle(ActionEvent event) {
-                        second++;
+                        int second = 0;
+
+                        @Override
+                        public void handle(ActionEvent event) {
+                            second++;
 
 
-                        if (second == 5) {
-                            lastPlayerTimeline.stop(); // Ha elértük a maximális iterációt, leállítjuk a timeline-ot
-                            lastPlayerTimeline = null;
-                            stopTimers();
-                            new WinStage(GameModel.this);
+                            if (second == 5) {
+                                lastPlayerTimeline.stop(); // Ha elértük a maximális iterációt, leállítjuk a timeline-ot
+                                lastPlayerTimeline = null;
+                                stopTimers();
+                                new WinStage(GameModel.this);
+                            }
                         }
-                    }
-                }));
+                    }));
 
-                lastPlayerTimeline.setCycleCount(5); // A timeline egy végtelen ciklusban fog futni
-                lastPlayerTimeline.play();
+                    lastPlayerTimeline.setCycleCount(5); // A timeline egy végtelen ciklusban fog futni
+                    lastPlayerTimeline.play();
+                }
             }
 
             if (this.players.size() == 0) {
@@ -365,7 +369,7 @@ public class GameModel {
         return false;
     }
 
-    private boolean checkForMonster(double expX, double expY){
+    public boolean checkForMonster(double expX, double expY){
         for(Monster monster : monsters){
             if(checkInteraction(monster.x, monster.y, expX, expY)){
                 monsters.remove(monster);
@@ -377,7 +381,7 @@ public class GameModel {
         return false;
     }
 
-    private boolean checkForBox(double expX, double expY){
+    public boolean checkForBox(double expX, double expY){
         for(Box box : boxes){
             if(checkInteraction(box.x, box.y, expX, expY)){
                 boxes.remove(box);
@@ -387,7 +391,7 @@ public class GameModel {
         }
         return false;
     }
-    private boolean checkForGate(double expX, double expY){
+    public boolean checkForGate(double expX, double expY){
         for(Gate gate : gates){
             if(checkInteraction(gate.x, gate.y, expX, expY)){
                 gates.remove(gate);
@@ -400,8 +404,6 @@ public class GameModel {
 
 
     public void checkImmadiateBombs(){
-        //valahogy meg lehet azt csinálni, hogy csak akkor kerüljön ez bele a gameloopba, ha az ????????????????????
-        //adott játékos felveszi a powerupot?
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             if(player.hasPowerUp(PowerUpType.IMMADIATEBOMB)){
@@ -412,7 +414,7 @@ public class GameModel {
         }
     }
 
-    private boolean isBetween(double value, double smaller, double bigger){
+    public boolean isBetween(double value, double smaller, double bigger){
         return smaller <= value && bigger >= value;
     }
 
