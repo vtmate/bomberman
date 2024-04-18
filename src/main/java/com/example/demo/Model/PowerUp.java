@@ -2,29 +2,38 @@ package com.example.demo.Model;
 
 import com.example.demo.Controller.InGameController;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class PowerUp extends Entity{
-
     private final PowerUpType powerUpType;
     private static final Timer timer = new Timer();
     private static final int milliSeconds = 8000;
-    public ImageView imageView;
     public Image image;
+
+    /**
+     *
+     * @param x             a bónusz x koordinátája
+     * @param y             a bónusz y koordinátája
+     * @param powerUpType   a bónusz típusa
+     * @param igc           InGameController átadása
+     */
     public PowerUp(double x, double y, PowerUpType powerUpType, InGameController igc) {
         super(x, y);
         this.powerUpType = powerUpType;
         if (igc != null) {
             image = new Image(getPowerUpImage(powerUpType));
         }
-
     }
     public PowerUpType getPowerUpType() {
         return powerUpType;
     }
+
+    /**
+     *
+     * @param pt    a bónusz típusa
+     * @return      hogy mi a bónusz típusához tartozó kép
+     */
     private String getPowerUpImage(PowerUpType pt) {
         return switch (pt) {
             case PowerUpType.GATE -> "gatePowerUp.png";
@@ -41,12 +50,18 @@ public class PowerUp extends Entity{
         };
     }
 
+    /**
+     * Ellenőrzésre kerül, hogy a játékos felvesz-e valamilyen bónuszt, ha igen,
+     * akkor a játékos megkapja a megfelelő bónuszt.
+     *
+     * @param x         a játékos x koordinátája
+     * @param y         a játékos y koordinátája
+     * @param player    átadjuk a játékost
+     * @param gm        átadjuk a játék modelljét
+     */
     public static void checkForPowerUp(double x, double y, Player player, GameModel gm){
-        //ez minden egyes lépésnél lefut
         for(PowerUp powerUp : gm.powerUps){
             if (gm.checkInteraction(x, y, powerUp.x, powerUp.y) && !Box.hasBoxOnTop(gm.boxes, powerUp.x, powerUp.y)){
-                //ez csak akkor, ha felszedtünk egy powerUp-ot
-                System.out.println(powerUp.getPowerUpType());
                 player.addPowerUp(powerUp);
                 gm.powerUps.remove(powerUp);
 
@@ -89,6 +104,13 @@ public class PowerUp extends Entity{
         }
     }
 
+    /**
+     * Időzítő beállítása a bónuszhoz, majd a lejártával a bónusz törlése.
+     * Ütköző bónusz törlése: ROLLERSKATE
+     *
+     * @param player    a játékos
+     * @param powerUp   a bónusz
+     */
     public static void isSnail(Player player, PowerUp powerUp) {
         player.removePowerUpByType(PowerUpType.ROLLERSKATE);
         timer.schedule(new TimerTask() {
@@ -98,6 +120,14 @@ public class PowerUp extends Entity{
             }
         }, milliSeconds);
     }
+
+    /**
+     * Időzítő beállítása a bónuszhoz, majd a lejártával a bónusz törlése.
+     * Ütköző bónusz törlése: SNAIL
+     *
+     * @param player    a játékos
+     * @param powerUp   a bónusz
+     */
     private static void isRollerskate(Player player, PowerUp powerUp) {
         player.removePowerUpByType(PowerUpType.SNAIL);
         timer.schedule(new TimerTask() {
@@ -107,6 +137,14 @@ public class PowerUp extends Entity{
             }
         }, milliSeconds);
     }
+
+    /**
+     * Időzítő beállítása a bónuszhoz, majd a lejártával a bónusz törlése.
+     * Ütköző bónusz törlése: BIGGERRADIUS
+     *
+     * @param player    a játékos
+     * @param powerUp   a bónusz
+     */
     private static void isSmallerRadius(Player player, PowerUp powerUp) {
         player.removePowerUpByType(PowerUpType.BIGGERRADIUS);
         timer.schedule(new TimerTask() {
@@ -116,6 +154,14 @@ public class PowerUp extends Entity{
             }
         }, milliSeconds);
     }
+
+    /**
+     * Időzítő beállítása a bónuszhoz, majd a lejártával a bónusz törlése.
+     * Ütköző bónusz törlése: SMALLERRADIUS
+     *
+     * @param player    a játékos
+     * @param powerUp   a bónusz
+     */
     private static void isBiggerRadius(Player player, PowerUp powerUp) {
         player.removePowerUpByType(PowerUpType.SMALLERRADIUS);
         timer.schedule(new TimerTask() {
@@ -125,6 +171,13 @@ public class PowerUp extends Entity{
             }
         }, milliSeconds);
     }
+
+    /**
+     * Időzítő beállítása a bónuszhoz, majd a lejártával a bónusz törlése.
+     *
+     * @param player    a játékos
+     * @param powerUp   a bónusz
+     */
     private static void isNoBombs(Player player, PowerUp powerUp) {
         timer.schedule(new TimerTask() {
             @Override
@@ -133,6 +186,13 @@ public class PowerUp extends Entity{
             }
         }, milliSeconds);
     }
+
+    /**
+     * Időzítő beállítása a bónuszhoz, majd a lejártával a bónusz törlése.
+     *
+     * @param player    a játékos
+     * @param powerUp   a bónusz
+     */
     private static void isShield(Player player, PowerUp powerUp) {
         timer.schedule(new TimerTask() {
             @Override
@@ -141,6 +201,14 @@ public class PowerUp extends Entity{
             }
         }, milliSeconds);
     }
+
+    /**
+     * Időzítő beállítása a bónuszhoz, majd a lejártával a bónusz törlése.
+     * Ütköző bónusz törlése: DETONATOR
+     *
+     * @param player
+     * @param powerUp
+     */
     private static void isImmadiate(Player player, PowerUp powerUp) {
         if(player.hasPowerUp(PowerUpType.DETONATOR)){
             player.removePowerUpByType(PowerUpType.DETONATOR);
@@ -152,14 +220,34 @@ public class PowerUp extends Entity{
             }
         }, milliSeconds);
     }
+
+    /**
+     * Akadály elem lehelyezésszámának növelése.
+     *
+     * @param player    a játékos
+     */
     private static void isGate(Player player){
         player.setCountOfGates(player.getCountOfGates()+3);
     }
+
+    /**
+     * Ütköző bónusz törlése: IMMADIATEBOMB
+     * @param player    a játékos
+     */
     private static void isDetonator(Player player){
         if(player.hasPowerUp(PowerUpType.IMMADIATEBOMB)){
             player.removePowerUpByType(PowerUpType.IMMADIATEBOMB);
         }
     }
+
+    /**
+     * Időzítő beállítása a bónuszhoz, majd a lejártával a bónusz törlése.
+     * Ha a játékos falon vagy dobozon veszti el a képességét, akkor meghal.
+     *
+     * @param player    a játékos
+     * @param powerUp   a bónusz
+     * @param gm        a játék modellje
+     */
     private static void isGhost(Player player, PowerUp powerUp, GameModel gm) {
         timer.schedule(new TimerTask() {
             @Override
@@ -177,8 +265,14 @@ public class PowerUp extends Entity{
             }
         }, milliSeconds);
     }
+
+    /**
+     * Növeljük a játékos lehelyezhető bombáinak számát, maximális érték a 3 lehet.
+     *
+     * @param player    a játékos
+     */
     private static void isMoreBombs(Player player){
-        if(player.getCountOfBombs() <= 3){ //maximum három bombája lehet a játékosnak
+        if(player.getCountOfBombs() <= 3){
             player.addBomb();
         }
     }
