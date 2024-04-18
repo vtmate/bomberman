@@ -363,10 +363,10 @@ public class InGameController {
             rect.setEffect(dropShadow);
 
             panePowerUp.getChildren().add(rect);
-            panePowerUp.getChildren().add(new ImageView(powerUps.get(i).image));
+            panePowerUp.getChildren().add(powerUps.get(i).imageView);
 
             StackPane.setAlignment(rect, Pos.CENTER);
-            StackPane.setAlignment(new ImageView(powerUps.get(i).image), Pos.CENTER);
+            StackPane.setAlignment(powerUps.get(i).imageView, Pos.CENTER);
             if (player.id != 0) {
                 playerPowerUps2.getChildren().add(panePowerUp);
             }

@@ -8,7 +8,7 @@ import javafx.util.Duration;
 
 public class Bomb extends Entity{
     private final int radius;
-    private Timeline timeline;
+    public Timeline timeline;
     public Bomb(double x, double y, int radius) {
         super(x, y);
         this.radius = radius;
