@@ -159,14 +159,14 @@ public class Control {
                 return;
             }
             gm.getPlayer(0).isMoving = true;
-            gm.getPlayer(0).moveMove(x, y, iteration);
+            gm.getPlayer(0).move(x, y, iteration);
         }
         else {
             if (gm.getPlayer(1).isMoving) {
                 return;
             }
             gm.getPlayer(1).isMoving = true;
-            gm.getPlayer(1).moveMove(x, y, iteration);
+            gm.getPlayer(1).move(x, y, iteration);
         }
     }
 
