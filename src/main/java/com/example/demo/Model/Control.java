@@ -95,7 +95,7 @@ public class Control {
         return checkEntitiesIntersection(player.x, player.y, gm.edgeWalls, direction);
     }
 
-    private boolean checkEntitiesIntersection(double x, double y, ArrayList<? extends Entity> entities, String direction) {
+    public boolean checkEntitiesIntersection(double x, double y, ArrayList<? extends Entity> entities, String direction) {
         for (Entity entity : entities) {
             if (Objects.equals(direction, "DOWN")) {
                 if (gm.checkInteraction(x, y+SIZE, entity.x, entity.y)) return true;
