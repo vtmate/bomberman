@@ -35,7 +35,8 @@ public class LayoutCreatorTest {
 
     @Test
     public void testCheckEntitiesIntersection() throws IOException {
+        assertEquals(8, gm.powerUps.size());
         layoutCreator.createPowerUps();
-//        assertEquals(4);
+        assertEquals(12, gm.powerUps.size());
     }
 }
