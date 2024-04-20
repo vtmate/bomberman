@@ -1,22 +1,30 @@
 package com.example.demo;
 
 import com.example.demo.Controller.GameController;
-import com.example.demo.Model.GameModel;
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
+/**
+ * A játék ablakának létrehozása és beállítása.
+ */
 public class BombermanApplication extends Application {
     public Stage stage;
 
+    /**
+     *
+     * @param stage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * Stílus beállítása.
+     *
+     * @throws IOException  ha a GameController hibát dob, kezeljük
+     */
     @Override
     public void start(Stage stage) throws IOException {
         this.stage = stage;

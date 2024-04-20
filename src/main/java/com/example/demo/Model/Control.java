@@ -30,10 +30,10 @@ public class Control {
         if(!playerIntersectsEdge(player, direction)){
             if(playerIntersectsEntity(player, direction) || player.hasPowerUp(PowerUpType.GHOST)){
                 switch(direction){
-                    case "UP" -> PowerUp.checkForPowerUp(player.x, player.y-40, player, gm);
-                    case "DOWN" -> PowerUp.checkForPowerUp(player.x, player.y+40, player, gm);
-                    case "LEFT" -> PowerUp.checkForPowerUp(player.x-40, player.y, player, gm);
-                    case "RIGHT" -> PowerUp.checkForPowerUp(player.x+40, player.y, player, gm);
+                    case "UP" -> player.checkForPowerUp(player.x, player.y-40, gm);
+                    case "DOWN" -> player.checkForPowerUp(player.x, player.y+40, gm);
+                    case "LEFT" -> player.checkForPowerUp(player.x-40, player.y, gm);
+                    case "RIGHT" -> player.checkForPowerUp(player.x+40, player.y, gm);
                 }
                 //ha van adott powerupja emberünknek, akkor ez így fusson le
                 if(player.hasPowerUp(PowerUpType.SNAIL)){ //ez mondjuk lehetne osztályszintű metódusa a player-nek

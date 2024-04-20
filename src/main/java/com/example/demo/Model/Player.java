@@ -165,4 +165,18 @@ public class Player extends Entity{
         if (timeline == null) return;
         timeline.play();
     }
+
+    /**
+     * Ellenőrizzük, hogy a játékos felvette-e valamilyen bónuszt.
+     * @param x     a játékos x koordinátája
+     * @param y     a játékos y koordinátája
+     * @param gm    a játék modellje
+     */
+    public void checkForPowerUp(double x, double y, GameModel gm) {
+        for(int i = 0; i < gm.powerUps.size(); i++){
+            if (gm.checkInteraction(x, y, gm.powerUps.get(i).x, gm.powerUps.get(i).y) && !Box.hasBoxOnTop(gm.boxes, gm.powerUps.get(i).x, gm.powerUps.get(i).y)){
+                gm.powerUps.get(i).handlePowerUp(gm.powerUps.get(i), this, gm);
+            }
+        }
+    }
 }

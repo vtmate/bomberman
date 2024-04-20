@@ -162,7 +162,7 @@ public class InGameController {
                 int minutes = (int)Math.ceil(time / 60);
                 timerLabel.setText("Idő: " + String.format("%02d:%02d", minutes, seconds));
                 if (time % 12 == 0 && time != 0) {
-                    gm.battleRoyale();
+                    //gm.battleRoyale();
                 }
             })
         );
@@ -427,10 +427,10 @@ public class InGameController {
             iw.setFitHeight(25);
 
             panePowerUp.getChildren().add(rect);
-            panePowerUp.getChildren().add(iw);
+            panePowerUp.getChildren().add(powerUps.get(i).iw);
 
             StackPane.setAlignment(rect, Pos.CENTER);
-            StackPane.setAlignment(iw, Pos.CENTER);
+            StackPane.setAlignment(powerUps.get(i).iw, Pos.CENTER);
             if (player.id != 0) {
                 playerPowerUps2.getChildren().add(panePowerUp);
             }

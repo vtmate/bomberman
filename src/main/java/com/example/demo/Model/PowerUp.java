@@ -2,14 +2,17 @@ package com.example.demo.Model;
 
 import com.example.demo.Controller.InGameController;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class PowerUp extends Entity{
     private final PowerUpType powerUpType;
-    private static final Timer timer = new Timer();
-    private static final int milliSeconds = 8000;
+    private final Timer timer = new Timer();
+    private final int milliSeconds = 8000;
     public Image image;
+    public ImageView iw;
 
     /**
      *
@@ -23,8 +26,26 @@ public class PowerUp extends Entity{
         this.powerUpType = powerUpType;
         if (igc != null) {
             image = new Image(getPowerUpImage(powerUpType));
+            iw = new ImageView(image);
+            iw.setFitWidth(25);
+            iw.setFitHeight(25);
         }
     }
+
+    /**
+     * A bónusz lejárta előtti utolsó 3 másodpercben a bónusz ikonja félig átlátszó lesz,
+     * így jelezve, hogy hamarosan lejár a hatása.
+     */
+    public void timeIsDown(){
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                iw.setOpacity(0.3);
+            }
+        }, milliSeconds-3000);
+    }
+
     public PowerUpType getPowerUpType() {
         return powerUpType;
     }
@@ -51,56 +72,50 @@ public class PowerUp extends Entity{
     }
 
     /**
-     * Ellenőrzésre kerül, hogy a játékos felvesz-e valamilyen bónuszt, ha igen,
-     * akkor a játékos megkapja a megfelelő bónuszt.
+     * Bónusz kezelése, mikor a játékos felveszi.
      *
-     * @param x         a játékos x koordinátája
-     * @param y         a játékos y koordinátája
-     * @param player    átadjuk a játékost
-     * @param gm        átadjuk a játék modelljét
+     * @param powerUp   a bónusz
+     * @param player    a játékos, aki felvette
+     * @param gm        a játék modellje
      */
-    public static void checkForPowerUp(double x, double y, Player player, GameModel gm){
-        for(PowerUp powerUp : gm.powerUps){
-            if (gm.checkInteraction(x, y, powerUp.x, powerUp.y) && !Box.hasBoxOnTop(gm.boxes, powerUp.x, powerUp.y)){
-                player.addPowerUp(powerUp);
-                gm.powerUps.remove(powerUp);
+    public void handlePowerUp(PowerUp powerUp, Player player, GameModel gm){
 
-                switch (powerUp.powerUpType){
-                    case PowerUpType.MOREBOMBS:
-                        isMoreBombs(player);
-                    break;
-                    case PowerUpType.NOBOMBS:
-                        isNoBombs(player, powerUp);
-                    break;
-                    case PowerUpType.BIGGERRADIUS:
-                        isBiggerRadius(player, powerUp);
-                    break;
-                    case PowerUpType.SMALLERRADIUS:
-                        isSmallerRadius(player, powerUp);
-                    break;
-                    case PowerUpType.ROLLERSKATE:
-                        isRollerskate(player, powerUp);
-                    break;
-                    case PowerUpType.SNAIL:
-                        isSnail(player, powerUp);
-                    break;
-                    case PowerUpType.GATE:
-                        isGate(player);
-                    case PowerUpType.IMMADIATEBOMB:
-                        isImmadiate(player, powerUp);
-                    break;
-                    case PowerUpType.DETONATOR:
-                        isDetonator(player);
-                    break;
-                    case PowerUpType.SHIELD:
-                        isShield(player, powerUp);
-                    break;
-                    case PowerUpType.GHOST:
-                        isGhost(player, powerUp, gm);
-                    break;
-                }
-                return;
-            }
+        player.addPowerUp(powerUp);
+        gm.powerUps.remove(powerUp);
+
+        switch (this.powerUpType){
+            case PowerUpType.MOREBOMBS:
+                isMoreBombs(player);
+            break;
+            case PowerUpType.NOBOMBS:
+                isNoBombs(player, powerUp);
+            break;
+            case PowerUpType.BIGGERRADIUS:
+                isBiggerRadius(player, powerUp);
+            break;
+            case PowerUpType.SMALLERRADIUS:
+                isSmallerRadius(player, powerUp);
+            break;
+            case PowerUpType.ROLLERSKATE:
+                isRollerskate(player, powerUp);
+            break;
+            case PowerUpType.SNAIL:
+                isSnail(player, powerUp);
+            break;
+            case PowerUpType.GATE:
+                isGate(player);
+            case PowerUpType.IMMADIATEBOMB:
+                isImmadiate(player, powerUp);
+            break;
+            case PowerUpType.DETONATOR:
+                isDetonator(player);
+            break;
+            case PowerUpType.SHIELD:
+                isShield(player, powerUp);
+            break;
+            case PowerUpType.GHOST:
+                isGhost(player, powerUp, gm);
+            break;
         }
     }
 
@@ -111,8 +126,9 @@ public class PowerUp extends Entity{
      * @param player    a játékos
      * @param powerUp   a bónusz
      */
-    public static void isSnail(Player player, PowerUp powerUp) {
+    public void isSnail(Player player, PowerUp powerUp) {
         player.removePowerUpByType(PowerUpType.ROLLERSKATE);
+        timeIsDown();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -128,8 +144,9 @@ public class PowerUp extends Entity{
      * @param player    a játékos
      * @param powerUp   a bónusz
      */
-    private static void isRollerskate(Player player, PowerUp powerUp) {
+    private void isRollerskate(Player player, PowerUp powerUp) {
         player.removePowerUpByType(PowerUpType.SNAIL);
+        timeIsDown();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -145,8 +162,9 @@ public class PowerUp extends Entity{
      * @param player    a játékos
      * @param powerUp   a bónusz
      */
-    private static void isSmallerRadius(Player player, PowerUp powerUp) {
+    private void isSmallerRadius(Player player, PowerUp powerUp) {
         player.removePowerUpByType(PowerUpType.BIGGERRADIUS);
+        timeIsDown();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -162,8 +180,9 @@ public class PowerUp extends Entity{
      * @param player    a játékos
      * @param powerUp   a bónusz
      */
-    private static void isBiggerRadius(Player player, PowerUp powerUp) {
+    private void isBiggerRadius(Player player, PowerUp powerUp) {
         player.removePowerUpByType(PowerUpType.SMALLERRADIUS);
+        timeIsDown();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -178,7 +197,8 @@ public class PowerUp extends Entity{
      * @param player    a játékos
      * @param powerUp   a bónusz
      */
-    private static void isNoBombs(Player player, PowerUp powerUp) {
+    private void isNoBombs(Player player, PowerUp powerUp) {
+        timeIsDown();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -193,7 +213,8 @@ public class PowerUp extends Entity{
      * @param player    a játékos
      * @param powerUp   a bónusz
      */
-    private static void isShield(Player player, PowerUp powerUp) {
+    private void isShield(Player player, PowerUp powerUp) {
+        timeIsDown();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -206,13 +227,14 @@ public class PowerUp extends Entity{
      * Időzítő beállítása a bónuszhoz, majd a lejártával a bónusz törlése.
      * Ütköző bónusz törlése: DETONATOR
      *
-     * @param player
-     * @param powerUp
+     * @param player    a játékos
+     * @param powerUp   a bónusz
      */
-    private static void isImmadiate(Player player, PowerUp powerUp) {
+    private void isImmadiate(Player player, PowerUp powerUp) {
         if(player.hasPowerUp(PowerUpType.DETONATOR)){
             player.removePowerUpByType(PowerUpType.DETONATOR);
         }
+        timeIsDown();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -248,7 +270,8 @@ public class PowerUp extends Entity{
      * @param powerUp   a bónusz
      * @param gm        a játék modellje
      */
-    private static void isGhost(Player player, PowerUp powerUp, GameModel gm) {
+    private void isGhost(Player player, PowerUp powerUp, GameModel gm) {
+        timeIsDown();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -271,7 +294,7 @@ public class PowerUp extends Entity{
      *
      * @param player    a játékos
      */
-    private static void isMoreBombs(Player player){
+    private void isMoreBombs(Player player){
         if(player.getCountOfBombs() <= 3){
             player.addBomb();
         }

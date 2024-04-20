@@ -28,25 +28,27 @@ public class PowerUpTest {
     }
     @Test
     public void testPowerUp() throws IOException {
-            PowerUp.isSnail(player, new PowerUp(40, 40, PowerUpType.MOREBOMBS, null));
-            assertTrue(player.hasPowerUp(PowerUpType.MOREBOMBS));
-            timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                assertFalse(player.hasPowerUp(PowerUpType.MOREBOMBS));
-            }
-        }, 9000);
+        PowerUp powerUp = new PowerUp(40, 40, PowerUpType.MOREBOMBS, null);
+        powerUp.isSnail(player, powerUp);
+        assertTrue(player.hasPowerUp(PowerUpType.MOREBOMBS));
+        timer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+            assertFalse(player.hasPowerUp(PowerUpType.MOREBOMBS));
+        }
+    }, 9000);
     }
     @Test
     public void testPowerUp2() throws IOException {
-            PowerUp.isSnail(player, new PowerUp(40, 40, PowerUpType.SHIELD, null));
+        PowerUp powerUp = new PowerUp(40, 40, PowerUpType.SHIELD, null);
+        powerUp.isSnail(player, powerUp);
+        assertFalse(player.hasPowerUp(PowerUpType.SHIELD));
+        timer.schedule(new TimerTask() {
+        @Override
+        public void run() {
             assertFalse(player.hasPowerUp(PowerUpType.SHIELD));
-            timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                assertFalse(player.hasPowerUp(PowerUpType.SHIELD));
-            }
-        }, 9000);
+        }
+    }, 9000);
     }
 
 
