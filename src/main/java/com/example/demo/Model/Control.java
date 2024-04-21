@@ -35,8 +35,7 @@ public class Control {
                     case "LEFT" -> player.checkForPowerUp(player.x-40, player.y, gm);
                     case "RIGHT" -> player.checkForPowerUp(player.x+40, player.y, gm);
                 }
-                //ha van adott powerupja emberünknek, akkor ez így fusson le
-                if(player.hasPowerUp(PowerUpType.SNAIL)){ //ez mondjuk lehetne osztályszintű metódusa a player-nek
+                if(player.hasPowerUp(PowerUpType.SNAIL)){
                     switch(direction){
                         case "UP" -> move(0, -1, playerId, 40);
                         case "DOWN" -> move(0, 1, playerId, 40);

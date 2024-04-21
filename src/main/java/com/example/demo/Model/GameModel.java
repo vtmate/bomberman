@@ -43,8 +43,6 @@ public class GameModel {
         this.powerUps = new ArrayList<>();
 
         new LayoutCreator(this, map, igc);
-
-        printEntity(this.players);
     }
 
     /**
@@ -245,9 +243,7 @@ public class GameModel {
      */
     private void upExplosion(double bombX, double bombY, int radius, int iteration){
         if (checkForWall(bombX, bombY-40, bombY, false)){
-            //System.out.println("Felfelé fal volt, nem történik semmi");
         } else {
-            //System.out.println("Felfelé nem volt fal");
             boolean iterate = true;
             //nem volt fal -> kirajzoljuk a bombát
             drawExposion(bombX, bombY-40);
@@ -263,11 +259,9 @@ public class GameModel {
                 iterate = false;
             }
             if (checkForMonster(bombX, bombY-40)){
-                //System.out.println("az egyik szörny meghalt");
                 iterate = false;
             }
             if(iterate){
-                //System.out.println("Nem volt ott semmi");
                 if(iteration < radius-1){
                     iteration++;
                     upExplosion(bombX, bombY-40, radius, iteration);
@@ -352,7 +346,8 @@ public class GameModel {
                             second++;
 
                             if (second == 5) {
-                                lastPlayerTimeline.stop(); // Ha elértük a maximális iterációt, leállítjuk a timeline-ot
+                                // Ha elértük a maximális iterációt, leállítjuk a timeline-ot
+                                lastPlayerTimeline.stop();
                                 lastPlayerTimeline = null;
                                 stopTimers();
                                 new WinStage(GameModel.this);
@@ -360,7 +355,8 @@ public class GameModel {
                         }
                     }));
 
-                    lastPlayerTimeline.setCycleCount(5); // A timeline egy végtelen ciklusban fog futni
+                    // A timeline egy végtelen ciklusban fog futni
+                    lastPlayerTimeline.setCycleCount(5);
                     lastPlayerTimeline.play();
                 }
             }
@@ -374,6 +370,15 @@ public class GameModel {
         }
     }
 
+    /**
+     * Robbanás következtében megnézzük, hogy áll-e valamelyik játékos a robbanás útjában.
+     *
+     * @param same          az azonos tengely (x vagy y) koordinátája
+     * @param smaller       a robbanás kezdeti koordinátája
+     * @param bigger        a robbanás végső koordinátája
+     * @param isHorizontal  y tengelyen van-e a robbanás
+     * @return              a meghalt játékos sorszámát, vagy -1-et ha nem halt meg egyikőjük sem
+     */
     private int checkForPlayer(double same, double smaller, double bigger, boolean isHorizontal){
         for (int i = 0; i < players.size(); i++) {
             double x = this.players.get(i).x;
@@ -393,6 +398,15 @@ public class GameModel {
         return -1; //egyik játékos sem halt meg
     }
 
+    /**
+     * Robbanás következtében megnézzük, hogy áll-e fal az útjában.
+     *
+     * @param same          az azonos tengely (x vagy y) koordinátája
+     * @param smaller       a robbanás kezdeti koordinátája
+     * @param bigger        a robbanás végső koordinátája
+     * @param horizontal    y tengelyen van-e a robbanás
+     * @return              hogy van-e ott fal
+     */
     private boolean checkForWall(double same, double smaller, double bigger, boolean horizontal){
         for(Wall wall : walls){
             if(horizontal){
@@ -419,6 +433,13 @@ public class GameModel {
         return false;
     }
 
+    /**
+     * Robbanás következtében megnézzük, hogy áll-e szörny az útjában.
+     *
+     * @param expX  a robbanás x koordinátája
+     * @param expY  a robbanás y koordinátája
+     * @return      hogy van-e ott szörny
+     */
     public boolean checkForMonster(double expX, double expY){
         for(Monster monster : monsters){
             if(checkInteraction(monster.x, monster.y, expX, expY)){
@@ -431,6 +452,13 @@ public class GameModel {
         return false;
     }
 
+    /**
+     * Robbanás következtében megnézzük, hogy áll-e doboz az útjában.
+     *
+     * @param expX  a robbanás x koordinátája
+     * @param expY  a robbanás y koordinátája
+     * @return      hogy van-e ott doboz
+     */
     public boolean checkForBox(double expX, double expY){
         for(Box box : boxes){
             if(checkInteraction(box.x, box.y, expX, expY)){
@@ -441,6 +469,14 @@ public class GameModel {
         }
         return false;
     }
+
+    /**
+     * Robbanás következtében megnézzük, hogy áll-e gát az útjában.
+     *
+     * @param expX  a robbanás x koordinátája
+     * @param expY  a robbanás y koordinátája
+     * @return      hogy van-e ott gát
+     */
     public boolean checkForGate(double expX, double expY){
         for(Gate gate : gates){
             if(checkInteraction(gate.x, gate.y, expX, expY)){
@@ -478,12 +514,6 @@ public class GameModel {
         return smaller <= value && bigger >= value;
     }
 
-    public void printEntity(ArrayList<? extends Entity> entities) {
-        for ( int i = 0; i < entities.size(); i++) {
-            System.out.println(entities.get(i).x + ", " + entities.get(i).y);
-        }
-    }
-
     /**
      * Két téglalap alapú alakzat fedi-e egymást.
      * A két téglalapnak csak az egyik csúcsának koordinátáit adjuk meg.
@@ -503,6 +533,12 @@ public class GameModel {
         return true;
     }
 
+    /**
+     * Játékos objektum megkeresése id alapján.
+     *
+     * @param playerId  a keresett id
+     * @return          a megtalált játékos objektum
+     */
     public Player getPlayer(int playerId) {
         for (Player player : players) {
             if (player.id == playerId) return player;
@@ -764,6 +800,16 @@ public class GameModel {
         }
     }
 
+    /**
+     * Elemek eltávolítása egy oszlopban vagy sorban.
+     * A terület megállapítása után meghívjuk az összes típusú elemre az eltávolítást.
+     *
+     * @param from          a sor/oszlop kezdőpontja
+     * @param to            a sor/oszlop végpontja
+     * @param same1         a sor/oszlop szélességének kezdőpontja
+     * @param same2         a sor/oszlop szélességének kezdőpontja
+     * @param isHorizontal  horizontálisan nézzük-e az elemeket
+     */
     private void removeEntities(int from, int to, int same1, int same2, boolean isHorizontal){
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
@@ -794,6 +840,17 @@ public class GameModel {
         removeEntity(monsterIterator, from, to, same1, same2, isHorizontal);
     }
 
+    /**
+     * Az elemek tényleges eltávolítása.
+     *
+     * @param iterator      adott elem típusú iterátor
+     * @param from          a sor/oszlop kezdőpontja
+     * @param to            a sor/oszlop végpontja
+     * @param same1         a sor/oszlop szélességének kezdőpontja
+     * @param same2         a sor/oszlop szélességének kezdőpontja
+     * @param isHorizontal  horizontálisan nézzük-e az elemeket
+     * @param <T>           az adott elem típusa
+     */
     private <T extends Entity> void removeEntity(Iterator<T> iterator, int from, int to, int same1, int same2, boolean isHorizontal) {
         while (iterator.hasNext()) {
             T entity = iterator.next();
