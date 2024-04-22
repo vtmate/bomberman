@@ -162,7 +162,7 @@ public class InGameController {
                 int minutes = (int)Math.ceil(time / 60);
                 timerLabel.setText("Idő: " + String.format("%02d:%02d", minutes, seconds));
                 if (time % 12 == 0 && time != 0) {
-                    //gm.battleRoyale();
+                    gm.battleRoyale();
                 }
             })
         );

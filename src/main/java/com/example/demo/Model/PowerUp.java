@@ -248,7 +248,7 @@ public class PowerUp extends Entity{
      *
      * @param player    a játékos
      */
-    private static void isGate(Player player){
+    private void isGate(Player player){
         player.setCountOfGates(player.getCountOfGates()+3);
     }
 
@@ -256,7 +256,7 @@ public class PowerUp extends Entity{
      * Ütköző bónusz törlése: IMMADIATEBOMB
      * @param player    a játékos
      */
-    private static void isDetonator(Player player){
+    private void isDetonator(Player player){
         if(player.hasPowerUp(PowerUpType.IMMADIATEBOMB)){
             player.removePowerUpByType(PowerUpType.IMMADIATEBOMB);
         }
